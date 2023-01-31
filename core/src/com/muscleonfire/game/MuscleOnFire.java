@@ -13,6 +13,7 @@ public class MuscleOnFire extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		// hihihihihih
 	}
 
 	@Override
