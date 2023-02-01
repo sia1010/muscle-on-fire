@@ -8,6 +8,7 @@ public class Menu implements Screen {
     public Menu(final MuscleOnFire game) {
         this.game = game;
         game.setScreen(new GameScreen(this.game));
+        //hi
     }
 
     @Override
