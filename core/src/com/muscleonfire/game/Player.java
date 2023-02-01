@@ -60,12 +60,12 @@ public class Player extends GameObject{
                 touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
                 game.camera.unproject(touchPos);
 
-                // if touch left, move patrick left
-                if (touchPos.x < 240) {
+                // if touch left of patrick, move patrick left
+                if (touchPos.x < object.x) {
                     goLeft(100 * delta);
                 }
-                // if touch right, move patrick right
-                if (touchPos.x > 240) {
+                // if touch right of patrick, move patrick right
+                if (touchPos.x > object.x) {
                     goRight(100 * delta);
                 }
             }
