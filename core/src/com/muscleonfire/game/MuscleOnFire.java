@@ -1,32 +1,42 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
-public class MuscleOnFire extends ApplicationAdapter {
+public class MuscleOnFire extends Game {
 	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
+	BitmapFont font;
+
+	public void create() {
+		// initialise a SpriteBatch to be assigned to 'batch'
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-		// hihihihihih jocelyn
+
+		// create freetype font generator and assign a .ttf font to it
+		FreeTypeFontGenerator generator;
+		generator = new FreeTypeFontGenerator(Gdx.files.internal("Minecraft.ttf"));
+
+		// create a freetype font parameter to set the properties of the font we want to use
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 30; // size = 30
+		parameter.color = new Color(0,0,0,1); // color = black
+
+		// generate the font needed and assign it to the BitmapFont
+		font = generator.generateFont(parameter);
+
+		// set the Screen to the Menu
+		this.setScreen(new Menu(this));
 	}
 
-	@Override
-	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+	public void render() {
+		super.render(); // important!
 	}
-	
-	@Override
-	public void dispose () {
+
+	public void dispose() {
 		batch.dispose();
-		img.dispose();
+		font.dispose();
 	}
 }
