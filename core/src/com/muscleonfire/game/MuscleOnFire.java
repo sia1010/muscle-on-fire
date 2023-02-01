@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class MuscleOnFire extends Game {
 	SpriteBatch batch;
-	BitmapFont font;
+	BitmapFont font;//chai?
 
 	public void create() {
 		// initialise a SpriteBatch to be assigned to 'batch'
