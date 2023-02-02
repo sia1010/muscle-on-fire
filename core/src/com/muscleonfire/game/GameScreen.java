@@ -8,7 +8,7 @@ public class GameScreen implements Screen {
 
     final MuscleOnFire game;
     Player patrick;
-    Array<Floor> floors = new Array<Floor>();
+    Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     float time_passed, lastFloorAddTime;
 
     public GameScreen(final MuscleOnFire game) {
@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
         game.batch.draw(patrick.getTexture(), patrick.getX(), patrick.getY());
 
         // draw all the floors
-        for (Floor floor : floors) {
+        for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
         }
 

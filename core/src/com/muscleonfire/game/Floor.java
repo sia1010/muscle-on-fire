@@ -7,15 +7,15 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
 
-public class Floor extends GameObject {
+public class Floor extends GameObject { // inheritance
 
 
     void spawn(){ // spawn a floor
-        object = new Rectangle();
+        object = new Rectangle(); // from GameObject
         object.height = 8;
         object.width = 128;
-        object.x = MathUtils.random(0, 480 - 128);
-        object.y = -20;
+        object.x = MathUtils.random(0, 480 - 128); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
+        object.y = -20; // below screen
         image = new Texture(Gdx.files.internal("floor_original.png"));
     }
 

@@ -16,13 +16,13 @@ public class Player extends GameObject{
         object = new Rectangle();
         object.height = 64;
         object.width = 64;
-        object.x = 240 - 32;
+        object.x = 240 - 32; // center - half of patrick's body width
         object.y = 600;
 
-        // this is the feet (for collision detection)
+        // this is the feet (for collision detection or floor detection)
         feet = new Rectangle();
         feet.height = 4;
-        feet.width = 36;
+        feet.width = 36; // smaller than the object, if the body touch the floor but the feet not, then will drop
         updateFeetPosition();
 
         // initialise the picture of patrick
@@ -31,7 +31,7 @@ public class Player extends GameObject{
 
     void updateFeetPosition(){
         // make the feet Rectangle() located beneath the body
-        feet.x = object.x + 14;
+        feet.x = object.x + 14; // from left + 14 pixel (left 14, center 36 - feet, right 14 = 64 pixel)
         feet.y = object.y;
     }
 
@@ -39,7 +39,7 @@ public class Player extends GameObject{
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
-            if (feet.overlaps(floor.object)) {
+            if (feet.overlaps(floor.object)) { // floor.object = the rectangle
                 onFloor = true;
             }
         }
@@ -84,9 +84,9 @@ public class Player extends GameObject{
 
     Texture getTexture(){return image;} // return the image when called
 
-    @Override
+    @Override // overlap the old thing which u inherit
     void transpose(float delta) {
-        super.transpose(delta);
+        super.transpose(delta); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
         updateFeetPosition();
     }
 }
