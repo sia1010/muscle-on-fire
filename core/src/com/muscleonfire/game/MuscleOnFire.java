@@ -3,17 +3,23 @@ package com.muscleonfire.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class MuscleOnFire extends Game {
 	SpriteBatch batch;
-	BitmapFont font;//chai?
+	BitmapFont font;
+	OrthographicCamera camera;
 
 	public void create() {
 		// initialise a SpriteBatch to be assigned to 'batch'
 		batch = new SpriteBatch();
+
+		// initialise camera and set camera size to 480 x 800
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 480,800);
 
 		// create freetype font generator and assign a .ttf font to it
 		FreeTypeFontGenerator generator;

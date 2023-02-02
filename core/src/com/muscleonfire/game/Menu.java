@@ -8,13 +8,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Menu implements Screen {
     final MuscleOnFire game;
-    OrthographicCamera camera;
 
     public Menu(final MuscleOnFire game) {
         this.game = game;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 480, 800);
-        //hi
     }
 
     @Override
@@ -24,11 +20,7 @@ public class Menu implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(1,1,1,1);
-        game.batch.setProjectionMatrix(camera.combined);
-        game.batch.begin();
-        game.batch.draw(new Texture(Gdx.files.internal("img.png")), 200, 400);
-        game.batch.end();
+        this.game.setScreen(new GameScreen(this.game));
     }
 
     @Override
