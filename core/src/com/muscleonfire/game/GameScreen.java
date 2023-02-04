@@ -8,6 +8,8 @@ public class GameScreen implements Screen {
 
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
+
+    Building background;
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     float time_passed, lastFloorAddTime;
 
@@ -20,6 +22,9 @@ public class GameScreen implements Screen {
         // spawn patrick
         patrick = new Player();
         patrick.spawn();
+
+        background= new Building();
+        background.spawn();
 
         // time
         time_passed = 0;
@@ -70,6 +75,7 @@ public class GameScreen implements Screen {
         // draw all objects in the area
         game.batch.begin();
 
+        game.batch.draw(background.getTexture(),background.getX(),background.getY());
         // draw patrick
         game.batch.draw(patrick.getTexture(), patrick.getX(), patrick.getY());
 
@@ -77,6 +83,8 @@ public class GameScreen implements Screen {
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
         }
+
+
 
         // stop drawing (for now)
         game.batch.end();
