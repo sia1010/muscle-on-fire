@@ -53,7 +53,7 @@ public class Player extends GameObject{
 
     void move(float delta, MuscleOnFire game, Array<Floor> floors){
         // check if got touch screen (use for loop for multiple touches)
-        for(int i =0; i < 10; i++){
+        for(int i =0; i < 10; i++){ //for many fingers touch together
             if (Gdx.input.isTouched(i)){
                 // if got touch, get the position of the touch
                 Vector3 touchPos = new Vector3();
@@ -73,20 +73,37 @@ public class Player extends GameObject{
     }
 
     void goLeft(float px){ // move patrick left
-        object.x -= px;
-        updateFeetPosition();
+        if(object.x>10){
+            object.x -= px;
+            updateFeetPosition();
+        }
+
     }
 
     void goRight(float px){ // move patrick right
-        object.x += px;
-        updateFeetPosition();
+        if(object.x<400) {
+            object.x += px;
+            updateFeetPosition();
+        }
     }
 
     Texture getTexture(){return image;} // return the image when called
+
+
 
     @Override // overlap the old thing which u inherit
     void transpose(float delta) {
         super.transpose(delta); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
         updateFeetPosition();
     }
+
+    boolean updateGameOver(){
+        boolean gameOver=false;
+        if(object.y<-64){
+            gameOver=true;
+
+        }
+        return gameOver;
+    }
+
 }

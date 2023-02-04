@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
-public class MuscleOnFire extends Game {
+public class MuscleOnFire extends Game { //Game like main,can change screen using setscreen(in built method)
 	SpriteBatch batch;
 	BitmapFont font;
 	OrthographicCamera camera;
@@ -34,13 +34,14 @@ public class MuscleOnFire extends Game {
 		font = generator.generateFont(parameter);
 
 		// set the Screen to the Menu
-		this.setScreen(new Menu(this));
+		this.setScreen(new Menu(this)); //this = me (vb), setscreen=open
 	}
 
 	public void render() {
 		super.render(); // important!
 	}
 
+	//after closing the app
 	public void dispose() {
 		batch.dispose();
 		font.dispose();

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
 
-public class GameObject{
+public class GameObject{ //main branch of player and floor
     protected Rectangle object; // protected is in between public and private, can be used in this project
     protected Texture image;
 

@@ -5,23 +5,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+public class GameOver implements Screen {
 
-public class Menu implements Screen { //implements=inherit, Screen-inbuilt class, can use f(x) below
-    final MuscleOnFire game; //declare class as variable
-
-    public Menu(final MuscleOnFire game) {
-        this.game = game;
-    } //parameter is from muscleonfire
-
+    final MuscleOnFire game;
     @Override
-    public void show(){
+    public void show() {
 
     }
 
+    public GameOver(final MuscleOnFire game){
+        this.game = game;
+    }
     @Override
-    public void render(float delta) { //change screen to gamescreen
+    public void render(float delta) {
 
-        this.game.setScreen(new GameScreen(this.game));
     }
 
     @Override

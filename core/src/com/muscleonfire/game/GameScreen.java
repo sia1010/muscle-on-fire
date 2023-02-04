@@ -6,10 +6,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
 
-    final MuscleOnFire game;
+    final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     float time_passed, lastFloorAddTime;
+
+    boolean over;
+
 
     public GameScreen(final MuscleOnFire game) {
         this.game = game;
@@ -55,7 +58,7 @@ public class GameScreen implements Screen {
 
 
         // DISPLAY THE SCREEN
-        // clear the screen
+        // clear the screen but not rectangle
         ScreenUtils.clear(1,1,1,1);
 
         // update camera
@@ -80,7 +83,7 @@ public class GameScreen implements Screen {
 
 
         // PLAYER INPUTS
-        // player movement
+        // player movement (next frame)
         patrick.move(delta, this.game, floors);
 
 
@@ -98,6 +101,14 @@ public class GameScreen implements Screen {
         // ADD NEW GAME OBJECTS
         // add new floors
         addFloor();
+
+
+        //check if patrick fall beyond the screen,if yes then game over
+        over= patrick.updateGameOver();
+        if(over==true){
+            this.game.setScreen(new GameOver(this.game));
+        }
+
     }
 
     @Override
