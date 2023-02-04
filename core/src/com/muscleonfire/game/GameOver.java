@@ -16,9 +16,24 @@ public class GameOver implements Screen {
     public GameOver(final MuscleOnFire game){
         this.game = game;
     }
+
     @Override
     public void render(float delta) {
+        // DISPLAY THE SCREEN
+        // clear the screen but not rectangle
+        ScreenUtils.clear(1,1,1,1);
+        // update camera
+        game.camera.update();
+        // set the projection area
+        game.batch.setProjectionMatrix(game.camera.combined);
 
+        game.batch.begin();
+        game.font.draw(game.batch, "TAP TO RETRY", 135, 400);
+        game.batch.end();
+
+        if (Gdx.input.justTouched()){
+            game.setScreen(new Menu(this.game));
+        }
     }
 
     @Override

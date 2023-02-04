@@ -14,10 +14,9 @@ public class Floor extends GameObject { // inheritance
         object = new Rectangle(); // from GameObject
         object.height = 8;
         object.width = 128;
-        object.x = MathUtils.random(0, 480 - 128); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
+        object.x = MathUtils.random(32, 480 - 128 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
         object.y = -20; // below screen
         image = new Texture(Gdx.files.internal("floor_original.png"));
     }
-
 
 }

@@ -73,7 +73,7 @@ public class Player extends GameObject{
     }
 
     void goLeft(float px){ // move patrick left
-        if(object.x>10){
+        if(object.x>32){
             object.x -= px;
             updateFeetPosition();
         }
@@ -81,7 +81,7 @@ public class Player extends GameObject{
     }
 
     void goRight(float px){ // move patrick right
-        if(object.x<400) {
+        if(object.x<(480 - 64 - 32)) {
             object.x += px;
             updateFeetPosition();
         }
@@ -98,12 +98,7 @@ public class Player extends GameObject{
     }
 
     boolean updateGameOver(){
-        boolean gameOver=false;
-        if(object.y<-64){
-            gameOver=true;
-
-        }
-        return gameOver;
+        return (object.y < -64 || object.y > 800 - 64);
     }
 
 }
