@@ -15,6 +15,7 @@ public class GameScreen implements Screen {
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
     Building background;
+    Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     float time_passed;
     enum State{
@@ -54,6 +55,12 @@ public class GameScreen implements Screen {
     }
 
     void drawAllObjects(){
+        // draw score
+        game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 700);
+
+        //draw high score
+        game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 90, 750);
+
         // draw background
         game.batch.draw(background.getTexture(),background.getX(),background.getY());
 
@@ -87,6 +94,9 @@ public class GameScreen implements Screen {
 
         // time
         time_passed = 0;
+
+        //open High Score File
+        score.openHighScoreFile();
     }
 
     @Override
@@ -108,6 +118,8 @@ public class GameScreen implements Screen {
         // record time
         time_passed += delta;
 
+        //add score
+        score.addScore(delta);
 
         // DISPLAY THE SCREEN
         // clear the screen(but not rectangle)
@@ -140,6 +152,7 @@ public class GameScreen implements Screen {
             game.font.draw(game.batch, "GAME OVER", 160, 420);
             game.font.draw(game.batch, "TAP TO CONTINUE", 110, 380);
             game.batch.setColor(1,1,1,1);
+            score.saveScore();
         }
 
         // stop drawing (for now)
