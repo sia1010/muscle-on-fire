@@ -94,6 +94,9 @@ public class GameScreen implements Screen {
 
         // time
         time_passed = 0;
+
+        //open High Score File
+        score.openHighScoreFile();
     }
 
     @Override

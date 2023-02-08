@@ -6,19 +6,19 @@ public class Score {
     int score = 0,highScore;
     FileHandle highScoreFile;
 
-    void addScore(float delta){
-
-        score += (delta*100);
-
+    void openHighScoreFile(){
         // open highScore.txt file and set highScore to the record
         // if no record exists, make one and set value to zero
-        highScoreFile = Gdx.files.local("highScore.txt");
+        highScoreFile = Gdx.files.internal("highScore.txt");
         if(highScoreFile.exists()){
             highScore = Integer.parseInt(highScoreFile.readString());
         } else {
             highScore = 0;
             highScoreFile.writeString(Integer.toString(highScore), false);
         }
+    }
+    void addScore(float delta){
+        score += (delta*100);
     }
 
     String displayScore(){
