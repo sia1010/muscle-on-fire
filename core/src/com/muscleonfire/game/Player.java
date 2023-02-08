@@ -84,6 +84,8 @@ public class Player extends GameObject{
             }
         }
 
+
+        // Keyboard controls for debugging
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             goLeft(150 * delta);
         }
@@ -92,8 +94,8 @@ public class Player extends GameObject{
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onFloor) {
-            isJumping = true;
-            jumpTime = 0;
+            isJumping = true; // set isJumping to true
+            jumpTime = 0; // set jumpTime to 0
         }
     }
 
@@ -112,11 +114,11 @@ public class Player extends GameObject{
         }
     }
 
-    void jump(float delta, Array<Floor> floors){
-        if (isJumping && !headIsTouching(floors)) {
-            object.y += 25 * Math.pow(0.01, jumpTime);
+    void jump(float delta, Array<Floor> floors){ // check for isJumping, if isJumping, then jump
+        if (isJumping && !headIsTouching(floors)) { // check for jumping and not hitting head
+            object.y += 25 * Math.pow(0.01, jumpTime); // higher jump at start and lower jump when ending (a < 1 exponential graph)
             jumpTime += delta;
-            if (jumpTime > 1.8f) {
+            if (jumpTime > 1.8f) { // after 1.8 seconds, stop jumping
                 isJumping = false;
             }
         }else{
@@ -124,7 +126,7 @@ public class Player extends GameObject{
         }
     }
 
-    boolean headIsTouching(Array<Floor> floors){
+    boolean headIsTouching(Array<Floor> floors){ // check if head is touching
         for (Floor floor: floors){
             if (head.overlaps(floor.object)) { // floor.object = the rectangle
                 return true;
