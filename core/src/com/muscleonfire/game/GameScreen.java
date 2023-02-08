@@ -15,6 +15,7 @@ public class GameScreen implements Screen {
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
     Building background;
+    Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     float time_passed;
     enum State{
@@ -59,6 +60,9 @@ public class GameScreen implements Screen {
 
         // draw patrick
         game.batch.draw(patrick.getTexture(), patrick.getX(), patrick.getY());
+
+        // draw score
+        game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 750);
 
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
@@ -108,6 +112,8 @@ public class GameScreen implements Screen {
         // record time
         time_passed += delta;
 
+        //add score
+        score.addScore(delta);
 
         // DISPLAY THE SCREEN
         // clear the screen(but not rectangle)
