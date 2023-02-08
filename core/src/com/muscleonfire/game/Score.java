@@ -9,7 +9,7 @@ public class Score {
     void openHighScoreFile(){
         // open highScore.txt file and set highScore to the record
         // if no record exists, make one and set value to zero
-        highScoreFile = Gdx.files.internal("highScore.txt");
+        highScoreFile = Gdx.files.external("highScore.txt");
         if(highScoreFile.exists()){
             highScore = Integer.parseInt(highScoreFile.readString());
         } else {
