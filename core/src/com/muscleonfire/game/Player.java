@@ -1,6 +1,8 @@
 package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
@@ -9,7 +11,9 @@ import com.badlogic.gdx.utils.Array;
 public class Player extends GameObject{
 
     boolean onFloor;
-    Rectangle feet;
+    Rectangle feet, head;
+    float jumpTime = 0;
+    boolean isJumping;
 
     void spawn(){ // spawn patrick
         // this is the main body
@@ -23,13 +27,22 @@ public class Player extends GameObject{
         feet = new Rectangle();
         feet.height = 4;
         feet.width = 36; // smaller than the object, if the body touch the floor but the feet not, then will drop
-        updateFeetPosition();
+
+        head = new Rectangle();
+        head.height = 4;
+        head.width = 36; // smaller than the object, if the body touch the floor but the feet not, then will drop
+
+        updateFeetAndHeadPosition();
 
         // initialise the picture of patrick
         image = new Texture(Gdx.files.internal("patrick_original.png"));
     }
 
-    void updateFeetPosition(){
+    void updateFeetAndHeadPosition(){
+        // make the head Rectangle above the body
+        head.x = object.x + 14;
+        head.y = object.y + 64;
+
         // make the feet Rectangle() located beneath the body
         feet.x = object.x + 14; // from left + 14 pixel (left 14, center 36 - feet, right 14 = 64 pixel)
         feet.y = object.y;
@@ -46,8 +59,8 @@ public class Player extends GameObject{
 
         // if not on floor, fall down
         if (!onFloor){
-            object.y -= 200 * delta;
-            updateFeetPosition();
+            object.y -= 300 * delta;
+            updateFeetAndHeadPosition();
         }
     }
 
@@ -70,12 +83,24 @@ public class Player extends GameObject{
                 }
             }
         }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            goLeft(150 * delta);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            goRight(150 * delta);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onFloor) {
+            isJumping = true;
+            jumpTime = 0;
+        }
     }
 
     void goLeft(float px){ // move patrick left
         if(object.x>32){
             object.x -= px;
-            updateFeetPosition();
+            updateFeetAndHeadPosition();
         }
 
     }
@@ -83,22 +108,38 @@ public class Player extends GameObject{
     void goRight(float px){ // move patrick right
         if(object.x<(480 - 64 - 32)) {
             object.x += px;
-            updateFeetPosition();
+            updateFeetAndHeadPosition();
         }
     }
 
-    Texture getTexture(){return image;} // return the image when called
+    void jump(float delta, Array<Floor> floors){
+        if (isJumping && !headIsTouching(floors)) {
+            object.y += 25 * Math.pow(0.01, jumpTime);
+            jumpTime += delta;
+            if (jumpTime > 1.8f) {
+                isJumping = false;
+            }
+        }else{
+            isJumping = false;
+        }
+    }
 
-
-
-    @Override // overlap the old thing which u inherit
-    void transpose(float delta) {
-        super.transpose(delta); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
-        updateFeetPosition();
+    boolean headIsTouching(Array<Floor> floors){
+        for (Floor floor: floors){
+            if (head.overlaps(floor.object)) { // floor.object = the rectangle
+                return true;
+            }
+        }
+        return false;
     }
 
     boolean updateGameOver(){
         return (object.y < -64 || object.y > 800 - 64);
     }
 
+    @Override // overlap the old thing which u inherit
+    void transpose(float delta) {
+        super.transpose(delta); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
+        updateFeetAndHeadPosition();
+    }
 }

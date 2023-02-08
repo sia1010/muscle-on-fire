@@ -156,6 +156,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta, this.game, floors);
+            patrick.jump(delta, floors);
         }
         if (gameState == State.OVER){
             // press to continue to game over screen
