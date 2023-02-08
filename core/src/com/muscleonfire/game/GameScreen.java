@@ -55,14 +55,17 @@ public class GameScreen implements Screen {
     }
 
     void drawAllObjects(){
+        // draw score
+        game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 700);
+
+        //draw high score
+        game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 90, 750);
+
         // draw background
         game.batch.draw(background.getTexture(),background.getX(),background.getY());
 
         // draw patrick
         game.batch.draw(patrick.getTexture(), patrick.getX(), patrick.getY());
-
-        // draw score
-        game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 750);
 
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
@@ -146,6 +149,7 @@ public class GameScreen implements Screen {
             game.font.draw(game.batch, "GAME OVER", 160, 420);
             game.font.draw(game.batch, "TAP TO CONTINUE", 110, 380);
             game.batch.setColor(1,1,1,1);
+            score.saveScore();
         }
 
         // stop drawing (for now)
