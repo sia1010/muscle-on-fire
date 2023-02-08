@@ -75,11 +75,11 @@ public class Player extends GameObject{
 
                 // if touch left of patrick, move patrick left
                 if (touchPos.x < object.x) {
-                    goLeft(100 * delta);
+                    goLeft(150 * delta);
                 }
                 // if touch right of patrick, move patrick right
                 if (touchPos.x > object.x) {
-                    goRight(100 * delta);
+                    goRight(150 * delta);
                 }
             }
         }
