@@ -66,23 +66,7 @@ public class Player extends GameObject{
 
     void move(float delta, MuscleOnFire game){
         // check if got touch screen (use for loop for multiple touches)
-        for(int i =0; i < 10; i++){ //for many fingers touch together
-            if (Gdx.input.isTouched(i)){
-                // if got touch, get the position of the touch
-                Vector3 touchPos = new Vector3();
-                touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-                game.camera.unproject(touchPos);
 
-                // if touch left of patrick, move patrick left
-                if (touchPos.x < object.x) {
-                    goLeft(150 * delta);
-                }
-                // if touch right of patrick, move patrick right
-                if (touchPos.x > object.x) {
-                    goRight(150 * delta);
-                }
-            }
-        }
 
 
         // Keyboard controls for debugging

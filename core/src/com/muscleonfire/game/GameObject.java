@@ -10,9 +10,6 @@ public class GameObject{
     protected Rectangle object;
     protected Texture image;
 
-    void spawn(){
-
-    }
     void transpose(float delta){
         object.y += 100 * delta;
     }
