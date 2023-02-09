@@ -17,6 +17,7 @@ public class GameScreen implements Screen {
     Building background;
     Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
+    Controls controls;
     float time_passed;
     enum State{
         READY,
@@ -71,6 +72,9 @@ public class GameScreen implements Screen {
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
         }
+
+        // draw all the buttons
+        controls.drawButtons(this.game.batch);
     }
 
 
@@ -95,8 +99,14 @@ public class GameScreen implements Screen {
         // time
         time_passed = 0;
 
-        //open High Score File
+        // open High Score File
         score.openHighScoreFile();
+
+        // initialise Controls
+        controls = new Controls();
+        controls.jumpButton.setTexture();
+        controls.leftButton.setTexture();
+        controls.rightButton.setTexture();
     }
 
     @Override
@@ -160,6 +170,8 @@ public class GameScreen implements Screen {
 
 
         // PLAYER INPUTS
+        controls.getInputs(this.game);
+
         if (gameState == State.READY){
             // press to start
             if(Gdx.input.justTouched()){
@@ -168,7 +180,7 @@ public class GameScreen implements Screen {
         }
         if (gameState == State.RUNNING) {
             // player movement (next frame)
-            patrick.move(delta, this.game);
+            patrick.move(delta, controls);
             patrick.jump(delta, floors);
         }
         if (gameState == State.OVER){

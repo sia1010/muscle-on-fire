@@ -64,20 +64,16 @@ public class Player extends GameObject{
         }
     }
 
-    void move(float delta, MuscleOnFire game){
-        // check if got touch screen (use for loop for multiple touches)
-
-
-
+    void move(float delta, Controls controls){
         // Keyboard controls for debugging
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.leftButton.isPressed) {
             goLeft(150 * delta);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || controls.rightButton.isPressed) {
             goRight(150 * delta);
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onFloor) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && onFloor) {
             isJumping = true; // set isJumping to true
             jumpTime = 0; // set jumpTime to 0
         }
