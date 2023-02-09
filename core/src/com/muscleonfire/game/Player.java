@@ -64,7 +64,7 @@ public class Player extends GameObject{
         }
     }
 
-    void move(float delta, MuscleOnFire game, Array<Floor> floors){
+    void move(float delta, MuscleOnFire game){
         // check if got touch screen (use for loop for multiple touches)
         for(int i =0; i < 10; i++){ //for many fingers touch together
             if (Gdx.input.isTouched(i)){
