@@ -19,7 +19,7 @@ public class Controls {
     controlMode mode;
 
     public Controls(controlMode setmode){ // initialise the position and size of the buttons
-        setMode(setmode);
+        mode = setmode;
         if (mode == controlMode.button) {
             leftButton = new Button(50, 30, 64, 64, new Texture(Gdx.files.internal("badlogic.jpg")), new Texture(Gdx.files.internal("badlogic.jpg")));
             rightButton = new Button(150, 30, 64, 64, new Texture(Gdx.files.internal("badlogic.jpg")), new Texture(Gdx.files.internal("badlogic.jpg")));
@@ -46,20 +46,22 @@ public class Controls {
                 game.camera.unproject(touchPos);
                 touchPoint = new Rectangle(touchPos.x, touchPos.y, 5,5);
 
-                if (mode != controlMode.follow){// if touch left of patrick, set leftButtonPressed to true, else it is false
+                if (mode != controlMode.follow){
+                    // if touch left button of patrick, set leftButtonPressed to true, else it is false
                     if ((leftButton.object.overlaps(touchPoint))) {
                         leftButton.isPressed = true;
                     }
-                    // if touch right of patrick, set rightButtonPressed to true, else it is false
+                    // if touch right button of patrick, set rightButtonPressed to true, else it is false
                     if ((rightButton.object.overlaps(touchPoint))) {
                         rightButton.isPressed = true;
                     }
-                    // if touch right of patrick, set rightButtonPressed to true, else it is false
+                    // if touch jump button of patrick, set jumpButtonPressed to true, else it is false
                     if ((jumpButton.object.overlaps(touchPoint))) {
                         jumpButton.isPressed = true;
                     }
                 }
                 if (mode == controlMode.follow) {
+                    // if touch left of patrick, set leftButtonPressed to true, else it is false
                     if (touchPos.x < pat.getX() + 30) {
                         leftButton.isPressed = true;
                     }
@@ -67,13 +69,14 @@ public class Controls {
                     if (touchPos.x > pat.getX() + 34) {
                         rightButton.isPressed = true;
                     }
-                    // if touch right of patrick, set rightButtonPressed to true, else it is false
+                    // if touch jump of patrick, set jumpButtonPressed to true, else it is false
                     if ((jumpButton.object.overlaps(touchPoint))) {
                         jumpButton.isPressed = true;
                     }
                 }
             }
         }
+        // from button class, set the button image(either pressed or not pressed)
         leftButton.setTexture();
         rightButton.setTexture();
         leftButton.setTexture();
@@ -89,9 +92,5 @@ public class Controls {
         batch.draw(leftButton.image, leftButton.getX(), leftButton.getY());
         batch.draw(rightButton.image, rightButton.getX(), rightButton.getY());
         batch.draw(jumpButton.image, jumpButton.getX(), jumpButton.getY());
-    }
-
-    void setMode(controlMode setmode){
-        mode = setmode;
     }
 }
