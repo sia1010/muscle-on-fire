@@ -4,8 +4,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class Score {
-    int score = 0,highScore;
-    float timeSinceLastAddScore;
+    int score = 0, highScore;
+    float timeSinceLastAddScore = 0;
     FileHandle highScoreFile;
 
     void openHighScoreFile(){
@@ -21,7 +21,7 @@ public class Score {
     }
     void addScore(float delta){
         timeSinceLastAddScore += delta;
-        while (timeSinceLastAddScore > 0.1f){
+        while (timeSinceLastAddScore > 0.1f){ //0.1 second, it is a float, java cannot write floating value directly, need to add f behind
             score += 10;
             timeSinceLastAddScore -= 0.1f;
         }
