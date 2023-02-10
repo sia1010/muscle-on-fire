@@ -85,8 +85,10 @@ public class Controls {
     }
 
     void drawButtons(SpriteBatch batch) {
-        batch.draw(leftButton.image, leftButton.getX(), leftButton.getY());
-        batch.draw(rightButton.image, rightButton.getX(), rightButton.getY());
+        if (mode != controlMode.follow){
+            batch.draw(leftButton.image, leftButton.getX(), leftButton.getY());
+            batch.draw(rightButton.image, rightButton.getX(), rightButton.getY());
+        }
         batch.draw(jumpButton.image, jumpButton.getX(), jumpButton.getY());
     }
 
