@@ -38,11 +38,11 @@ public class Controls {
     void getInputs(MuscleOnFire game, Player pat){
         resetButtons();
         // check if got touch screen (use for loop for multiple touches)
-        for(int i =0; i < 10; i++){ //for many fingers touch together
+        for(int i = 0; i < 10; i++){ //for many fingers touch together
             if (Gdx.input.isTouched(i)){
                 // if got touch, get the position of the touch
                 Vector3 touchPos = new Vector3();
-                touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+                touchPos.set(Gdx.input.getX(i), Gdx.input.getY(i), 0);
                 game.camera.unproject(touchPos);
                 touchPoint = new Rectangle(touchPos.x, touchPos.y, 5,5);
 
@@ -60,11 +60,11 @@ public class Controls {
                     }
                 }
                 if (mode == controlMode.follow) {
-                    if (touchPos.x < pat.getX()) {
+                    if (touchPos.x < pat.getX() + 30) {
                         leftButton.isPressed = true;
                     }
                     // if touch right of patrick, set rightButtonPressed to true, else it is false
-                    if (touchPos.x > pat.getX() + 64) {
+                    if (touchPos.x > pat.getX() + 34) {
                         rightButton.isPressed = true;
                     }
                     // if touch right of patrick, set rightButtonPressed to true, else it is false
