@@ -58,12 +58,13 @@ public class Controls {
                     if ((jumpButton.object.overlaps(touchPoint))) {
                         jumpButton.isPressed = true;
                     }
-                } else if (mode == controlMode.follow) {
-                    if ((touchPos.x < pat.getX())) {
+                }
+                if (mode == controlMode.follow) {
+                    if (touchPos.x < pat.getX()) {
                         leftButton.isPressed = true;
                     }
                     // if touch right of patrick, set rightButtonPressed to true, else it is false
-                    if ((touchPos.x > pat.getX())) {
+                    if (touchPos.x > pat.getX() + 64) {
                         rightButton.isPressed = true;
                     }
                     // if touch right of patrick, set rightButtonPressed to true, else it is false
@@ -85,10 +86,8 @@ public class Controls {
     }
 
     void drawButtons(SpriteBatch batch) {
-        if (mode != controlMode.follow){
-            batch.draw(leftButton.image, leftButton.getX(), leftButton.getY());
-            batch.draw(rightButton.image, rightButton.getX(), rightButton.getY());
-        }
+        batch.draw(leftButton.image, leftButton.getX(), leftButton.getY());
+        batch.draw(rightButton.image, rightButton.getX(), rightButton.getY());
         batch.draw(jumpButton.image, jumpButton.getX(), jumpButton.getY());
     }
 
