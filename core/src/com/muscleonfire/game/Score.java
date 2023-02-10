@@ -1,9 +1,11 @@
 package com.muscleonfire.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class Score {
     int score = 0,highScore;
+    float timeSinceLastAddScore;
     FileHandle highScoreFile;
 
     void openHighScoreFile(){
@@ -18,7 +20,11 @@ public class Score {
         }
     }
     void addScore(float delta){
-        score += (delta*100);
+        timeSinceLastAddScore += delta;
+        while (timeSinceLastAddScore > 0.1f){
+            score += 10;
+            timeSinceLastAddScore -= 0.1f;
+        }
     }
 
     String displayScore(){
