@@ -103,7 +103,7 @@ public class GameScreen implements Screen {
         score.openHighScoreFile();
 
         // initialise Controls
-        controls = new Controls();
+        controls = new Controls(Controls.controlMode.follow);
         controls.jumpButton.setTexture();
         controls.leftButton.setTexture();
         controls.rightButton.setTexture();
@@ -170,7 +170,7 @@ public class GameScreen implements Screen {
 
 
         // PLAYER INPUTS
-        controls.getInputs(this.game);
+        controls.getInputs(this.game, patrick);
 
         if (gameState == State.READY){
             // press to start
