@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -17,8 +18,10 @@ public class GameScreen implements Screen {
     Building background;
     Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
+    Array<Obstacles_savePeople> obstacles_ppl = new Array<Obstacles_savePeople>();
     Controls controls;
     float time_passed;
+    float randomizer_obstacle;
     enum State{
         READY,
         RUNNING,
@@ -37,6 +40,14 @@ public class GameScreen implements Screen {
         floors.add(floor);
     }
 
+    void addObstacles(){
+        // add a new obstacles
+        Obstacles_savePeople o = new Obstacles_savePeople();
+        o.spawn(floors);
+
+        // add the o into the obstacles_ppl array
+        obstacles_ppl.add(o);
+    }
     Animation<TextureRegion> loadAnimation(String imgLocation, int imgColumns, int imgRows, float durationPerFrame){
         // takes in (sprite sheet file location, sprite column, sprite rows, duration per frame)
         // returns animation texture array
@@ -73,6 +84,11 @@ public class GameScreen implements Screen {
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
         }
 
+        // draw all the obstacles
+        for (Obstacles_savePeople obs : obstacles_ppl) {
+            game.batch.draw(obs.getTexture(), obs.getX(), obs.getY());
+        }
+
         // draw all the buttons
         controls.drawButtons(this.game.batch);
     }
@@ -92,6 +108,9 @@ public class GameScreen implements Screen {
 
         // add first floor
         addFloor();
+
+        // set randomizer obstacle
+        randomizer_obstacle = MathUtils.random(15, 20);
 
         // set game state as READY
         gameState = State.READY;
@@ -202,13 +221,27 @@ public class GameScreen implements Screen {
             floor.transpose(delta);
         }
 
+        for (Obstacles_savePeople obstacle : obstacles_ppl) {
+            obstacle.transpose(delta);
+        }
+
         // make patrick fall
         patrick.fall(delta, floors);
 
 
         // ADD / DELETE GAME OBJECTS
         // add new floors
-        if(floors.peek().getY() > 100){addFloor();}
+        if(floors.peek().getY() > - 80){
+            addFloor();
+        }
+
+        // the obstacle will be added in the range of (15, 20) of the time passed
+        // every 15-20 s will add one obstacle/ppl
+        if (time_passed > randomizer_obstacle) {
+            addObstacles();
+            randomizer_obstacle += MathUtils.random(15, 20); // add the obstacles time
+        }
+
         // delete floors which are out of screen
         for (Floor floor: floors){
             if(floor.getY() > 1000){
