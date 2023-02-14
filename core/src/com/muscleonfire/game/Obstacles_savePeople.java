@@ -15,4 +15,7 @@ public class Obstacles_savePeople extends GameObject{
         object.y = floors.peek().getY()+8;
         image = new Texture(Gdx.files.internal("people(to be save).png"));
     }
+    Boolean playerTouchedPpl(Player pat){
+        return pat.object.overlaps(object);
+    }
 }

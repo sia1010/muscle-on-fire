@@ -174,7 +174,7 @@ public class GameScreen implements Screen {
             drawAllObjects();
         }
 
-        // if game is in READY state give everything red overlay and display text
+        // if game is in OVER state give everything red overlay and display text
         if (gameState == State.OVER){
             game.batch.setColor(0.8f,0,0,0.8f);
             drawAllObjects();
