@@ -25,7 +25,7 @@ public class FallingObjects extends GameObject{
         object = new Rectangle();
         object.height = 64;
         object.width = 64;
-        object.x = MathUtils.random(20, 480 - 20); // randomly at the floor, can be at left or right
+        object.x = MathUtils.random(30, 480 - 30); // randomly at the floor, can be at left or right
         object.y = 700;
         image = new Texture(Gdx.files.internal("falling object(glass).png"));
     }
@@ -35,14 +35,17 @@ public class FallingObjects extends GameObject{
         object = new Rectangle();
         object.height = 64;
         object.width = 64;
-        object.x = MathUtils.random(20, 480 - 20); // randomly at the floor, can be at left or right
+        object.x = MathUtils.random(30, 480 - 30); // randomly at the floor, can be at left or right
         object.y = 700;
         image = new Texture(Gdx.files.internal("falling object (stone).png"));
     }
 
+    void playerTouched(){
+
+    }
     @Override
     void transpose(float delta){
         super.transpose(delta);
-        object.y-=300*delta;
+        object.y-=250*delta;
     }
 }

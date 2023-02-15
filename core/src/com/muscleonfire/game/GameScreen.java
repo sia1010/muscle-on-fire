@@ -335,7 +335,7 @@ public class GameScreen implements Screen {
             } else {
                 addStone();
             }
-            randomizer_objects += MathUtils.random(2,5); // add the object time
+            randomizer_objects += MathUtils.random(10,15); // add the object time
         }
 
         // the obstacle will be added in the range of (15, 20) of the time passed
