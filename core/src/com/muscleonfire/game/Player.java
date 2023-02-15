@@ -115,7 +115,7 @@ public class Player extends GameObject{
     }
 
     boolean updateGameOver(){
-        return (object.y < -64 || object.y > 800 - 64);
+        return (object.y < -64 || object.y > 800 - 64-50);
     }
 
     @Override // overlap the old thing which u inherit
