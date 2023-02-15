@@ -15,6 +15,6 @@ public class SpecialFloor extends GameObject{
         object.width = 128;
         object.x = MathUtils.random(32, 480 - 128 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
         object.y = -200; // below screen
-        image = new Texture(Gdx.files.internal("SpecialFloor.png"));
+        image = new Texture(Gdx.files.internal("trampoline.png"));
     }
 }
