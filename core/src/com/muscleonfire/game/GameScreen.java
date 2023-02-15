@@ -16,6 +16,8 @@ public class GameScreen implements Screen {
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
     Building background;
+
+    FallingObjects fallingObjects;
     Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     Array<Rescue> rescues = new Array<Rescue>();
@@ -120,6 +122,10 @@ public class GameScreen implements Screen {
             game.batch.draw(obs.getTexture(), obs.getX(), obs.getY());
         }
 
+        //draw falling building
+        game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
+
+
         // draw all the buttons
         controls.drawButtons(this.game.batch);
     }
@@ -136,6 +142,11 @@ public class GameScreen implements Screen {
         // initialising the background
         background= new Building();
         background.spawn();
+
+        //initialising the falling building
+
+        fallingObjects=new FallingObjects();
+        fallingObjects.spawn();
 
         // add first floor
         addFloor();
