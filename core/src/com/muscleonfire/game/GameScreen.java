@@ -24,6 +24,8 @@ public class GameScreen implements Screen {
     Array<FallingObjects> falling_glass =new Array<FallingObjects>();
     Array<FallingObjects> falling_stone =new Array<FallingObjects>();
     Array<SpecialFloor> sfloors = new Array<SpecialFloor>();
+
+    Array<Enemies> ebat = new Array<Enemies>();
     Controls controls;
 
     boolean touch_glass=false;
@@ -58,7 +60,14 @@ public class GameScreen implements Screen {
         // add the floor into the floors array
         sfloors.add(sfloor);
     }
+    void addEnemies(){
 
+        Enemies enemy = new Enemies();
+        enemy.spawn();
+
+        // add the floor into the floors array
+        ebat.add(enemy);
+    }
     void addObstacles(){
         // add a new obstacles
         Obstacles o = new Obstacles();
@@ -128,6 +137,11 @@ public class GameScreen implements Screen {
 
         for (SpecialFloor sfloor : sfloors) {
             game.batch.draw(sfloor.getTexture(), sfloor.getX(), sfloor.getY());
+        }
+
+        // draw bat_enemy
+        for (Enemies enemy : ebat) {
+            game.batch.draw(enemy.getTexture(), enemy.getX(), enemy.getY());
         }
 
         // draw all the rescue
@@ -307,6 +321,15 @@ public class GameScreen implements Screen {
             sfloor.transpose(delta);
         }
 
+        for (Enemies enemy : ebat) {
+
+            enemy.checkDirection();
+            enemy.move(delta);
+            if (enemy.playerTouched(patrick,delta)){
+                ebat.removeValue(enemy, true);
+            };
+        }
+
         for (FallingObjects gls : falling_glass) {
 
             gls.transpose(delta);
@@ -360,6 +383,7 @@ public class GameScreen implements Screen {
             } else {
                 addObstacles();
             }
+            addEnemies();
             randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
         }
 
