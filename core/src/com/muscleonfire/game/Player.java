@@ -2,6 +2,7 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
@@ -12,6 +13,7 @@ public class Player extends GameObject{
     Rectangle feet, head;
     float jumpTime = 0;
     boolean isJumping;
+    Health healthPoint = new Health();
 
     void spawn(){ // spawn patrick
         // this is the main body
@@ -112,6 +114,17 @@ public class Player extends GameObject{
             }
         }
         return false;
+    }
+
+    void takeDamage(int damage){
+        healthPoint.currHealth -= damage;
+    }
+
+    void drawHearts(SpriteBatch batch){
+        for (int i = 0; i < healthPoint.maxHealth; i++) {
+            if(i < healthPoint.currHealth){batch.draw(healthPoint.filledHeart, 36 + 40 * i, 760);}
+            else{batch.draw(healthPoint.filledHeart, 36 + 40 * i, 760);}
+        }
     }
 
     boolean updateGameOver(){

@@ -62,6 +62,7 @@ public class GameScreen implements Screen {
         // add the o into the obstacles_ppl array
         obstacle.add(o);
     }
+
     void addRescue(){
         // add a new obstacles
         Rescue r = new Rescue();
@@ -70,6 +71,7 @@ public class GameScreen implements Screen {
         // add the o into the obstacles_ppl array
         rescues.add(r);
     }
+
     Animation<TextureRegion> loadAnimation(String imgLocation, int imgColumns, int imgRows, float durationPerFrame){
         // takes in (sprite sheet file location, sprite column, sprite rows, duration per frame)
         // returns animation texture array
@@ -119,6 +121,9 @@ public class GameScreen implements Screen {
         for (Obstacles obs : obstacle) {
             game.batch.draw(obs.getTexture(), obs.getX(), obs.getY());
         }
+
+        // draw hearts
+        patrick.drawHearts(this.game.batch);
 
         // draw all the buttons
         controls.drawButtons(this.game.batch);
@@ -258,52 +263,53 @@ public class GameScreen implements Screen {
 
         for (Obstacles obs : obstacle) {
             obs.transpose(delta);
-
-            for (SpecialFloor sfloor : sfloors) {
-                sfloor.transpose(delta);
-            }
-
-            for (Rescue rescue : rescues) {
-                rescue.transpose(delta);
-            }
-
-            // make patrick fall
-            patrick.fall(delta, floors);
-
-
-            // ADD / DELETE GAME OBJECTS
-            // add new floors
-            if (floors.peek().getY() > -80) {
-                if (time_passed > randomizer_sfloor) {
-                    addSFloor();
-                    randomizer_sfloor += MathUtils.random(5, 10); // add the obstacles time
-                }
-                if (sfloors.peek().getY() > -80) {
-
-                    addFloor();
-                }
-            }
-
-            // the obstacle will be added in the range of (15, 20) of the time passed
-            // every 15-20 s will add one rescue
-            if (time_passed > randomizer_obstacle) {
-                if (MathUtils.random(1, 5) <= 2) {
-                    addRescue();
-                } else {
-                    addObstacles();
-                }
-                randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
-            }
-
-            // delete floors which are out of screen
-            for (Floor floor : floors) {
-                if (floor.getY() > 1000) {
-                    floors.removeValue(floor, true);
-                }
-            }
-
         }
+
+        for (SpecialFloor sfloor : sfloors) {
+            sfloor.transpose(delta);
+        }
+
+        for (Rescue rescue : rescues) {
+            rescue.transpose(delta);
+        }
+
+        // make patrick fall
+        patrick.fall(delta, floors);
+
+
+        // ADD / DELETE GAME OBJECTS
+        // add new floors
+        if (floors.peek().getY() > -80) {
+            if (time_passed > randomizer_sfloor) {
+                addSFloor();
+                randomizer_sfloor += MathUtils.random(5, 10); // add the obstacles time
+            }
+            if (sfloors.peek().getY() > -80) {
+
+                addFloor();
+            }
+        }
+
+        // the obstacle will be added in the range of (15, 20) of the time passed
+        // every 15-20 s will add one rescue
+        if (time_passed > randomizer_obstacle) {
+            if (MathUtils.random(1, 5) <= 2) {
+                addRescue();
+            } else {
+                addObstacles();
+            }
+            randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
+        }
+
+        // delete floors which are out of screen
+        for (Floor floor : floors) {
+            if (floor.getY() > 1000) {
+                floors.removeValue(floor, true);
+            }
+        }
+
     }
+
 
     @Override
     public void resize(int width, int height) {
