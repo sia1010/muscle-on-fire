@@ -20,6 +20,7 @@ public class Rescue extends GameObject{
         object.x = floors.peek().getX() + MathUtils.random(0, 128 - 64); // randomly at the floor, can be at left or right
         object.y = floors.peek().getY()+8;
         image = new Texture(Gdx.files.internal("rescue_unsaved.png"));
+        rescueAni = new Ani().loadAnimation("rescue_unsaved(sheet).png", 2,1, 0.5f);
     }
     void playerTouched(Player pat, float delta, Score score){
         if (pat.object.overlaps(object)){
