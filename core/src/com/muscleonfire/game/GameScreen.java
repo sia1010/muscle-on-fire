@@ -22,7 +22,7 @@ public class GameScreen implements Screen {
     Array<Obstacles> obstacle = new Array<Obstacles>();
 
     Array<SpecialFloor> sfloors = new Array<SpecialFloor>();
-    Array<Obstacles_savePeople> obstacles_ppl = new Array<Obstacles_savePeople>();
+    Array<Rescue> obstacles_ppl = new Array<Rescue>();
     Controls controls;
     float time_passed;
     float randomizer_obstacle;
@@ -61,6 +61,14 @@ public class GameScreen implements Screen {
 
         // add the o into the obstacles_ppl array
         obstacle.add(o);
+    }
+    void addRescue(){
+        // add a new obstacles
+        Rescue r = new Rescue();
+        r.spawn(floors);
+
+        // add the o into the obstacles_ppl array
+        rescues.add(r);
     }
     Animation<TextureRegion> loadAnimation(String imgLocation, int imgColumns, int imgRows, float durationPerFrame){
         // takes in (sprite sheet file location, sprite column, sprite rows, duration per frame)
@@ -162,7 +170,7 @@ public class GameScreen implements Screen {
         // delta is the time that has passed/elapsed since the last frame.
 
         // STOP TIME (if the game is not running)
-        if (gameState != State.RUNNING){
+        if (gameState != State.RUNNING) {
             delta = 0;
         }
 
@@ -175,7 +183,7 @@ public class GameScreen implements Screen {
 
         // DISPLAY THE SCREEN
         // clear the screen(but not rectangle)
-        ScreenUtils.clear(1,1,1,1);
+        ScreenUtils.clear(1, 1, 1, 1);
         // update camera
         game.camera.update();
         // set the projection area
@@ -185,25 +193,25 @@ public class GameScreen implements Screen {
         game.batch.begin();
 
         // if game is in READY state give everything less opacity and display text
-        if (gameState == State.READY){
-            game.batch.setColor(1,1,1,0.5f);
+        if (gameState == State.READY) {
+            game.batch.setColor(1, 1, 1, 0.5f);
             drawAllObjects();
-            game.batch.setColor(1,1,1,1);
+            game.batch.setColor(1, 1, 1, 1);
             game.font.draw(game.batch, "TAP TO START", 135, 400);
         }
 
         // if game is RUNNING, just draw everything normally.
-        if (gameState == State.RUNNING){
+        if (gameState == State.RUNNING) {
             drawAllObjects();
         }
 
         // if game is in OVER state give everything red overlay and display text
-        if (gameState == State.OVER){
-            game.batch.setColor(0.8f,0,0,0.8f);
+        if (gameState == State.OVER) {
+            game.batch.setColor(0.8f, 0, 0, 0.8f);
             drawAllObjects();
             game.font.draw(game.batch, "GAME OVER", 160, 420);
             game.font.draw(game.batch, "TAP TO CONTINUE", 110, 380);
-            game.batch.setColor(1,1,1,1);
+            game.batch.setColor(1, 1, 1, 1);
             score.saveScore();
         }
 
@@ -214,9 +222,9 @@ public class GameScreen implements Screen {
         // PLAYER INPUTS
         controls.getInputs(this.game, patrick);
 
-        if (gameState == State.READY){
+        if (gameState == State.READY) {
             // press to start
-            if(Gdx.input.justTouched()){
+            if (Gdx.input.justTouched()) {
                 gameState = State.RUNNING;
             }
         }
@@ -225,16 +233,16 @@ public class GameScreen implements Screen {
             patrick.move(delta, controls);
             patrick.jump(delta, floors);
         }
-        if (gameState == State.OVER){
+        if (gameState == State.OVER) {
             // press to continue to game over screen
-            if(Gdx.input.justTouched()){
+            if (Gdx.input.justTouched()) {
                 this.game.setScreen(new GameOver(this.game));
             }
         }
 
         // UPDATE GAME OBJECTS
         // check if patrick fall beyond the screen,if yes then game over
-        if (patrick.updateGameOver()){
+        if (patrick.updateGameOver()) {
             gameState = State.OVER;
         }
 
@@ -251,50 +259,50 @@ public class GameScreen implements Screen {
         for (Obstacles obs : obstacle) {
             obs.transpose(delta);
 
-        for (SpecialFloor sfloor : sfloors) {
-            sfloor.transpose(delta);
-        }
-
-        for (Obstacles_savePeople obstacle : obstacles_ppl) {
-            obstacle.transpose(delta);
-        }
-
-        // make patrick fall
-        patrick.fall(delta, floors);
-
-
-        // ADD / DELETE GAME OBJECTS
-        // add new floors
-        if(floors.peek().getY() > - 80){
-            if (time_passed > randomizer_sfloor) {
-                addSFloor();
-                randomizer_sfloor += MathUtils.random(5, 10); // add the obstacles time
+            for (SpecialFloor sfloor : sfloors) {
+                sfloor.transpose(delta);
             }
-            if(sfloors.peek().getY() > -80) {
 
-                addFloor();
+            for (Rescue rescue : rescues) {
+                rescue.transpose(delta);
             }
+
+            // make patrick fall
+            patrick.fall(delta, floors);
+
+
+            // ADD / DELETE GAME OBJECTS
+            // add new floors
+            if (floors.peek().getY() > -80) {
+                if (time_passed > randomizer_sfloor) {
+                    addSFloor();
+                    randomizer_sfloor += MathUtils.random(5, 10); // add the obstacles time
+                }
+                if (sfloors.peek().getY() > -80) {
+
+                    addFloor();
+                }
+            }
+
+            // the obstacle will be added in the range of (15, 20) of the time passed
+            // every 15-20 s will add one rescue
+            if (time_passed > randomizer_obstacle) {
+                if (MathUtils.random(1, 5) <= 2) {
+                    addRescue();
+                } else {
+                    addObstacles();
+                }
+                randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
+            }
+
+            // delete floors which are out of screen
+            for (Floor floor : floors) {
+                if (floor.getY() > 1000) {
+                    floors.removeValue(floor, true);
+                }
+            }
+
         }
-
-        // the obstacle will be added in the range of (15, 20) of the time passed
-        // every 15-20 s will add one rescue
-        if (time_passed > randomizer_obstacle) {
-            if(MathUtils.random(1,5)<=2){
-                addRescue();
-            }
-            else{
-                addObstacles();
-            }
-            randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
-        }
-
-        // delete floors which are out of screen
-        for (Floor floor: floors){
-            if(floor.getY() > 1000){
-                floors.removeValue(floor, true);
-            }
-        }
-
     }
 
     @Override
