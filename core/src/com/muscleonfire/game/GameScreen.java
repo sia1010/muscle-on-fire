@@ -18,7 +18,8 @@ public class GameScreen implements Screen {
     Building background;
     Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
-    Array<Obstacles_savePeople> obstacles_ppl = new Array<Obstacles_savePeople>();
+    Array<Rescue> rescues = new Array<Rescue>();
+    Array<Obstacles> obstacle = new Array<Obstacles>();
     Controls controls;
     float time_passed;
     float randomizer_obstacle;
@@ -40,13 +41,22 @@ public class GameScreen implements Screen {
         floors.add(floor);
     }
 
+    void addRescue(){
+        // add a new obstacles
+        Rescue r = new Rescue();
+        r.spawn(floors);
+
+        // add the o into the obstacles_ppl array
+        rescues.add(r);
+    }
+
     void addObstacles(){
         // add a new obstacles
-        Obstacles_savePeople o = new Obstacles_savePeople();
+        Obstacles o = new Obstacles();
         o.spawn(floors);
 
         // add the o into the obstacles_ppl array
-        obstacles_ppl.add(o);
+        obstacle.add(o);
     }
     Animation<TextureRegion> loadAnimation(String imgLocation, int imgColumns, int imgRows, float durationPerFrame){
         // takes in (sprite sheet file location, sprite column, sprite rows, duration per frame)
@@ -84,8 +94,13 @@ public class GameScreen implements Screen {
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
         }
 
+        // draw all the rescue
+        for (Rescue res : rescues) {
+            game.batch.draw(res.getTexture(), res.getX(), res.getY());
+        }
+
         // draw all the obstacles
-        for (Obstacles_savePeople obs : obstacles_ppl) {
+        for (Obstacles obs : obstacle) {
             game.batch.draw(obs.getTexture(), obs.getX(), obs.getY());
         }
 
@@ -221,8 +236,12 @@ public class GameScreen implements Screen {
             floor.transpose(delta);
         }
 
-        for (Obstacles_savePeople obstacle : obstacles_ppl) {
-            obstacle.transpose(delta);
+        for (Rescue res : rescues) {
+            res.transpose(delta);
+        }
+
+        for (Obstacles obs : obstacle) {
+            obs.transpose(delta);
         }
 
         // make patrick fall
@@ -236,10 +255,15 @@ public class GameScreen implements Screen {
         }
 
         // the obstacle will be added in the range of (15, 20) of the time passed
-        // every 15-20 s will add one obstacle/ppl
+        // every 15-20 s will add one rescue
         if (time_passed > randomizer_obstacle) {
-            addObstacles();
-            randomizer_obstacle += MathUtils.random(15, 20); // add the obstacles time
+            if(MathUtils.random(1,5)<=2){
+                addRescue();
+            }
+            else{
+                addObstacles();
+            }
+            randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
         }
 
         // delete floors which are out of screen
