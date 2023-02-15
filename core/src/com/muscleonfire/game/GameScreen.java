@@ -21,7 +21,8 @@ public class GameScreen implements Screen {
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     Array<Rescue> rescues = new Array<Rescue>();
     Array<Obstacles> obstacle = new Array<Obstacles>();
-
+    Array<FallingObjects> falling_glass =new Array<FallingObjects>();
+    Array<FallingObjects> falling_stone =new Array<FallingObjects>();
     Array<SpecialFloor> sfloors = new Array<SpecialFloor>();
 
     Array<Enemies> ebat = new Array<Enemies>();
@@ -29,6 +30,7 @@ public class GameScreen implements Screen {
     float time_passed;
     float randomizer_obstacle;
     float randomizer_sfloor;
+    float randomizer_objects;
     enum State{
         READY,
         RUNNING,
@@ -81,6 +83,19 @@ public class GameScreen implements Screen {
         rescues.add(r);
     }
 
+    void addGlass(){
+        FallingObjects glass=new FallingObjects();
+        glass.falling_glass_spawn();
+
+        falling_glass.add(glass);
+    }
+
+    void addStone(){
+        FallingObjects stone=new FallingObjects();
+        stone.falling_stone_spawn();
+
+        falling_stone.add(stone);
+    }
     Animation<TextureRegion> loadAnimation(String imgLocation, int imgColumns, int imgRows, float durationPerFrame){
         // takes in (sprite sheet file location, sprite column, sprite rows, duration per frame)
         // returns animation texture array
@@ -136,6 +151,13 @@ public class GameScreen implements Screen {
             game.batch.draw(obs.getTexture(), obs.getX(), obs.getY());
         }
 
+        for(FallingObjects gls : falling_glass ){
+            game.batch.draw(gls.getTexture(), gls.getX(), gls.getY());
+        }
+
+        for(FallingObjects stn : falling_stone ){
+            game.batch.draw(stn.getTexture(), stn.getX(),stn.getY());
+        }
         //draw falling building
         game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
 
@@ -162,13 +184,16 @@ public class GameScreen implements Screen {
         //initialising the falling building
 
         fallingObjects=new FallingObjects();
-        fallingObjects.spawn();
+        fallingObjects.falling_building_spawn();
 
         // add first floor
         addFloor();
 
         // set randomizer obstacle
         randomizer_obstacle = MathUtils.random(15, 20);
+
+        // set randomizer falling_objects
+        randomizer_objects=MathUtils.random(8,13);
 
         // set game state as READY
         gameState = State.READY;
@@ -285,6 +310,7 @@ public class GameScreen implements Screen {
         }
 
         for (Obstacles obs : obstacle) {
+            obs.playerTouched(patrick,delta);
             obs.transpose(delta);
         }
 
@@ -296,6 +322,14 @@ public class GameScreen implements Screen {
 
             enemy.checkDirection();
             enemy.move(delta);
+        }
+
+        for (FallingObjects gls : falling_glass) {
+            gls.transpose(delta);
+        }
+
+        for (FallingObjects stn : falling_stone) {
+            stn.transpose(delta);
         }
 
         // make patrick fall
@@ -313,6 +347,15 @@ public class GameScreen implements Screen {
 
                 addFloor();
             }
+        }
+
+        if (time_passed > randomizer_objects) {
+            if (MathUtils.random(1, 5) <= 2) {
+                addGlass();
+            } else {
+                addStone();
+            }
+            randomizer_objects += MathUtils.random(10,15); // add the object time
         }
 
         // the obstacle will be added in the range of (15, 20) of the time passed
