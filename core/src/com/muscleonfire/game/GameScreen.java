@@ -21,7 +21,6 @@ public class GameScreen implements Screen {
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     Array<Rescue> rescues = new Array<Rescue>();
     Array<Obstacles> obstacle = new Array<Obstacles>();
-
     Array<SpecialFloor> sfloors = new Array<SpecialFloor>();
     Controls controls;
     float time_passed;
@@ -271,6 +270,7 @@ public class GameScreen implements Screen {
         }
 
         for (Obstacles obs : obstacle) {
+            obs.playerTouched(patrick,delta);
             obs.transpose(delta);
         }
 

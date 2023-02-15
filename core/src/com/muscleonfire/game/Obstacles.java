@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Obstacles extends GameObject{
+    float dmg_timer = 0;
+    int dmg =0;
     void spawn(Array<Floor> floors){
         object = new Rectangle();
         object.height = 32;
@@ -15,7 +17,14 @@ public class Obstacles extends GameObject{
         object.y = floors.peek().getY()+8;
         image = new Texture(Gdx.files.internal("Fire.png"));
     }
-    Boolean playerTouchedPpl(Player pat){
-        return pat.object.overlaps(object);
+    void playerTouched(Player pat, float delta){
+        if (pat.object.overlaps(object)){
+            dmg_timer += delta;
+            while(dmg_timer>1){
+                dmg_timer-=1;
+                pat.takeDamage(1);
+            }
+
+        }
     }
 }
