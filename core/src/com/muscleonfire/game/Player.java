@@ -2,7 +2,9 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
@@ -14,6 +16,7 @@ public class Player extends GameObject{
     float jumpTime = 0;
     boolean isJumping;
     Health healthPoint = new Health();
+    Animation<TextureRegion> playerAnim;
 
     void spawn(){ // spawn patrick
         // this is the main body
@@ -36,6 +39,7 @@ public class Player extends GameObject{
 
         // initialise the picture of patrick
         image = new Texture(Gdx.files.internal("patrick_original.png"));
+        playerAnim = new Ani().loadAnimation("player.png", 4,1, 0.5f);
     }
 
     void updateFeetAndHeadPosition(){

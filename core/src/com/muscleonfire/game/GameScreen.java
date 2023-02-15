@@ -112,7 +112,7 @@ public class GameScreen implements Screen {
         game.batch.draw(background.getTexture(),background.getX(),background.getY());
 
         // draw patrick
-        game.batch.draw(patrick.getTexture(), patrick.getX(), patrick.getY());
+        game.batch.draw(patrick.playerAnim.getKeyFrame(time_passed, true), patrick.getX(), patrick.getY());
 
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
