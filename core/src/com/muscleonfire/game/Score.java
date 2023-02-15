@@ -27,6 +27,10 @@ public class Score {
         }
     }
 
+    void upScore(int up_amt){
+        score += up_amt;
+    }
+
     String displayScore(){
         return String.valueOf(score);
     }

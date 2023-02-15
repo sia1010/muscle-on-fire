@@ -257,13 +257,14 @@ public class GameScreen implements Screen {
             gameState = State.OVER;
         }
 
-        // move everything up
+        // update everything
         patrick.transpose(delta);
         for (Floor floor : floors) {
             floor.transpose(delta);
         }
 
         for (Rescue res : rescues) {
+            res.playerTouched(patrick, delta, score);
             res.transpose(delta);
         }
 
