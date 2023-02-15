@@ -23,6 +23,7 @@ public class GameScreen implements Screen {
     Array<Obstacles> obstacle = new Array<Obstacles>();
     Array<FallingObjects> falling_glass =new Array<FallingObjects>();
     Array<FallingObjects> falling_stone =new Array<FallingObjects>();
+    Array<FallingObjects> falling_life =new Array<FallingObjects>();
     Array<SpecialFloor> sfloors = new Array<SpecialFloor>();
 
     Array<Enemies> ebat = new Array<Enemies>();
@@ -30,6 +31,8 @@ public class GameScreen implements Screen {
 
     boolean touch_glass=false;
     boolean touch_stone=false;
+
+    boolean touch_life=false;
     float time_passed;
     float randomizer_obstacle;
     float randomizer_sfloor;
@@ -100,6 +103,13 @@ public class GameScreen implements Screen {
         falling_stone.add(stone);
     }
 
+    void addLife(){
+        FallingObjects life=new FallingObjects();
+        life.falling_life_spawn();
+
+        falling_life.add(life);
+    }
+
 
     void drawAllObjects(){
         // draw score
@@ -144,6 +154,10 @@ public class GameScreen implements Screen {
 
         for(FallingObjects stn : falling_stone ){
             game.batch.draw(stn.getTexture(), stn.getX(),stn.getY());
+        }
+
+        for(FallingObjects life : falling_life ){
+            game.batch.draw(life.getTexture(), life.getX(),life.getY());
         }
         //draw falling building
         game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
@@ -333,6 +347,14 @@ public class GameScreen implements Screen {
             }
         }
 
+        for (FallingObjects life : falling_life) {
+            life.transpose(delta);
+
+            if (life.playerTouchedLife(patrick)){
+                falling_life.removeValue(life,true);
+            }
+        }
+
         // make patrick fall
         patrick.fall(delta, floors);
 
@@ -351,10 +373,13 @@ public class GameScreen implements Screen {
         }
 
         if (time_passed > randomizer_objects) {
-            if (MathUtils.random(1, 5) <= 2) {
+            if (MathUtils.random(1, 10) <= 4) {
                 addGlass();
-            } else {
+            } else if(MathUtils.random(1, 10) <= 8) {
                 addStone();
+            }
+            else {
+                addLife();
             }
             randomizer_objects += MathUtils.random(10,15); // add the object time
         }

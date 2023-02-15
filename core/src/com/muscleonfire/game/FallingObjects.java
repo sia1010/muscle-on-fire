@@ -25,7 +25,7 @@ public class FallingObjects extends GameObject{
         object = new Rectangle();
         object.height = 64;
         object.width = 64;
-        object.x = MathUtils.random(30, 480 - 30); // randomly at the floor, can be at left or right
+        object.x = MathUtils.random(30, 480 - 60);
         object.y = 700;
         image = new Texture(Gdx.files.internal("falling object(glass).png"));
     }
@@ -35,10 +35,22 @@ public class FallingObjects extends GameObject{
         object = new Rectangle();
         object.height = 64;
         object.width = 64;
-        object.x = MathUtils.random(30, 480 - 30); // randomly at the floor, can be at left or right
+        object.x = MathUtils.random(30, 480 - 60); // randomly at the floor, can be at left or right
         object.y = 700;
         image = new Texture(Gdx.files.internal("falling object (stone).png"));
     }
+
+    void falling_life_spawn(){
+
+        object = new Rectangle();
+        object.height = 64;
+        object.width = 64;
+        object.x = MathUtils.random(30, 480 - 60);
+        object.y = 700;
+        image = new Texture(Gdx.files.internal("falling_life.png"));
+    }
+
+
 
 
     @Override
@@ -55,4 +67,15 @@ public class FallingObjects extends GameObject{
         }
         return touched;
     }
+
+    boolean playerTouchedLife(Player pat){
+        boolean touched=false;
+        if (pat.object.overlaps(object)){
+            pat.healDamage(1);
+            touched=true;
+        }
+        return touched;
+    }
+
+
 }
