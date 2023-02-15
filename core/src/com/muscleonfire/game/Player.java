@@ -120,15 +120,21 @@ public class Player extends GameObject{
         healthPoint.currHealth -= damage;
     }
 
+    void healDamage(int heal){
+        if (healthPoint.currHealth < healthPoint.maxHealth){
+            healthPoint.currHealth += heal;
+        }
+    }
+
     void drawHearts(SpriteBatch batch){
         for (int i = 0; i < healthPoint.maxHealth; i++) {
-            if(i < healthPoint.currHealth){batch.draw(healthPoint.filledHeart, 36 + 40 * i, 760);}
-            else{batch.draw(healthPoint.filledHeart, 36 + 40 * i, 760);}
+            if(i < healthPoint.currHealth){batch.draw(healthPoint.filledHeart, 300 + 40 * i, 50);}
+            else{batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 50);}
         }
     }
 
     boolean updateGameOver(){
-        return (object.y < -64 || object.y > 800 - 64-50);
+        return (object.y < -64 || object.y > 800 - 64-50 && healthPoint.currHealth > 0);
     }
 
     @Override // overlap the old thing which u inherit

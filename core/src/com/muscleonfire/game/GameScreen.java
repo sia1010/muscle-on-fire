@@ -122,11 +122,11 @@ public class GameScreen implements Screen {
             game.batch.draw(obs.getTexture(), obs.getX(), obs.getY());
         }
 
-        // draw hearts
-        patrick.drawHearts(this.game.batch);
-
         //draw falling building
         game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
+
+        // draw hearts
+        patrick.drawHearts(this.game.batch);
 
         // draw all the buttons
         controls.drawButtons(this.game.batch);
