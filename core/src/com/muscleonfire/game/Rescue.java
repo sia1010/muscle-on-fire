@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Rescue extends GameObject{
+    float save_timer;
+    boolean saved = false;
     void spawn(Array<Floor> floors){
         object = new Rectangle();
         object.height = 64;
@@ -15,7 +17,21 @@ public class Rescue extends GameObject{
         object.y = floors.peek().getY()+8;
         image = new Texture(Gdx.files.internal("people(to be save).png"));
     }
-    Boolean playerTouchedPpl(Player pat){
-        return pat.object.overlaps(object);
+    void playerTouched(Player pat, float delta){
+        if (pat.object.overlaps(object)){
+            save_timer += delta;
+        }
+        if (save_timer > 2){
+            saved = true;
+            image = new Texture(Gdx.files.internal("people(to be save).png"));
+        }
+    }
+
+    @Override
+    void transpose(float delta){
+        super.transpose(delta);
+        if (saved){
+            object.y += 300 * delta;
+        }
     }
 }
