@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 public class Enemies extends GameObject {
 
     float time = 0;
-
+    int dmg =0;
     void spawn(){ // spawn a floor
         object = new Rectangle(); // from GameObject
         object.height = 40;
@@ -21,6 +21,8 @@ public class Enemies extends GameObject {
 
     boolean move_right = false;
     boolean move_down = false;
+
+
 
     void checkDirection(){
         if (object.x <= 32) { // floor.object = the rectangle
@@ -50,6 +52,14 @@ public class Enemies extends GameObject {
             object.y += MathUtils.random(100,200) * delta;
         }
         time += delta;
+    }
+
+    boolean playerTouched(Player pat, float delta) {
+        if (pat.object.overlaps(object)) {
+            pat.takeDamage(1);
+            return  true;
+        }
+        return  false;
     }
 
 

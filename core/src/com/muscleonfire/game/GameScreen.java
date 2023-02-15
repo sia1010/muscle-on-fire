@@ -322,6 +322,9 @@ public class GameScreen implements Screen {
 
             enemy.checkDirection();
             enemy.move(delta);
+            if (enemy.playerTouched(patrick,delta)){
+                ebat.removeValue(enemy, true);
+            };
         }
 
         for (FallingObjects gls : falling_glass) {
