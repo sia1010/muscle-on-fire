@@ -16,6 +16,7 @@ public class GameScreen implements Screen {
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
     Building background;
+    FallingObjects fallingObjects;
     Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     Array<Rescue> rescues = new Array<Rescue>();
@@ -125,6 +126,9 @@ public class GameScreen implements Screen {
         // draw hearts
         patrick.drawHearts(this.game.batch);
 
+        //draw falling building
+        game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
+
         // draw all the buttons
         controls.drawButtons(this.game.batch);
     }
@@ -141,6 +145,11 @@ public class GameScreen implements Screen {
         // initialising the background
         background= new Building();
         background.spawn();
+
+        //initialising the falling building
+
+        fallingObjects=new FallingObjects();
+        fallingObjects.spawn();
 
         // add first floor
         addFloor();
@@ -251,13 +260,14 @@ public class GameScreen implements Screen {
             gameState = State.OVER;
         }
 
-        // move everything up
+        // update everything
         patrick.transpose(delta);
         for (Floor floor : floors) {
             floor.transpose(delta);
         }
 
         for (Rescue res : rescues) {
+            res.playerTouched(patrick, delta, score);
             res.transpose(delta);
         }
 
@@ -267,10 +277,6 @@ public class GameScreen implements Screen {
 
         for (SpecialFloor sfloor : sfloors) {
             sfloor.transpose(delta);
-        }
-
-        for (Rescue rescue : rescues) {
-            rescue.transpose(delta);
         }
 
         // make patrick fall
@@ -307,7 +313,6 @@ public class GameScreen implements Screen {
                 floors.removeValue(floor, true);
             }
         }
-
     }
 
 
