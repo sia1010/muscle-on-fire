@@ -130,7 +130,7 @@ public class GameScreen implements Screen {
 
         // draw all the rescue
         for (Rescue res : rescues) {
-            game.batch.draw(res.getTexture(), res.getX(), res.getY());
+            game.batch.draw(res.rescueAni.getKeyFrame(time_passed, true), res.getX(), res.getY());
         }
 
         // draw all the obstacles
