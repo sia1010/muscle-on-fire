@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Array;
 
 public class Obstacles extends GameObject{
     float dmg_timer = 0;
-    int dmg =0;
     void spawn(Array<Floor> floors){
         object = new Rectangle();
         object.height = 32;

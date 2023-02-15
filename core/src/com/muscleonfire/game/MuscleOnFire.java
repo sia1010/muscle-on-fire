@@ -14,6 +14,8 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 	BitmapFont font;
 	OrthographicCamera camera;
 
+	Coins coin;
+
 	public void create() {
 		// initialise a SpriteBatch to be assigned to 'batch'
 		batch = new SpriteBatch();
@@ -36,6 +38,10 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 
 		// set the Screen to the Menu
 		this.setScreen(new Menu(this)); //this = me (vb), setscreen=open
+
+		// open Coin File
+		coin = new Coins();
+		coin.openCoinFile();
 	}
 
 	public void render() {

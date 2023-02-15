@@ -113,7 +113,7 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 700);
 
         //draw high score
-        game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 90, 750);
+        game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 70, 750);
 
         // draw background
         game.batch.draw(background.getTexture(),background.getX(),background.getY());
@@ -277,7 +277,7 @@ public class GameScreen implements Screen {
         if (gameState == State.OVER) {
             // press to continue to game over screen
             if (Gdx.input.justTouched()) {
-                this.game.setScreen(new GameOver(this.game));
+                this.game.setScreen(new GameOver(this.game,score));
             }
         }
 

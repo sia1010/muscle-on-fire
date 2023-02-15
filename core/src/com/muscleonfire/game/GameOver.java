@@ -13,8 +13,10 @@ public class GameOver implements Screen {
 
     }
 
-    public GameOver(final MuscleOnFire game){
+    public GameOver(final MuscleOnFire game,Score score){
         this.game = game;
+        this.game.coin.addCoin(score);
+        this.game.coin.saveCoin();
     }
 
     @Override

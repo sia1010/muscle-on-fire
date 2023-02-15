@@ -26,6 +26,7 @@ public class Rescue extends GameObject{
             saved = true;
             image = new Texture(Gdx.files.internal("rescue_saved.png"));
             score.upScore(1000);
+            pat.healDamage(1);
         }
     }
 
@@ -33,7 +34,7 @@ public class Rescue extends GameObject{
     void transpose(float delta){
         super.transpose(delta);
         if (saved){
-            object.y += 300 * delta;
+            object.y += 200 * delta;
         }
     }
 }
