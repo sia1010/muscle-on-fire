@@ -24,7 +24,6 @@ public class GameScreen implements Screen {
     Array<Obstacles> obstacle = new Array<Obstacles>();
 
     Array<SpecialFloor> sfloors = new Array<SpecialFloor>();
-    Array<Rescue> obstacles_ppl = new Array<Rescue>();
     Controls controls;
     float time_passed;
     float randomizer_obstacle;
