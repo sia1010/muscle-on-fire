@@ -27,6 +27,9 @@ public class GameScreen implements Screen {
 
     Array<Enemies> ebat = new Array<Enemies>();
     Controls controls;
+
+    boolean touch_glass=false;
+    boolean touch_stone=false;
     float time_passed;
     float randomizer_obstacle;
     float randomizer_sfloor;
@@ -328,11 +331,22 @@ public class GameScreen implements Screen {
         }
 
         for (FallingObjects gls : falling_glass) {
+
             gls.transpose(delta);
+
+
+            if (gls.playerTouched(patrick)){
+                falling_glass.removeValue(gls,true);
+            }
+
         }
 
         for (FallingObjects stn : falling_stone) {
             stn.transpose(delta);
+
+            if (stn.playerTouched(patrick)){
+                falling_stone.removeValue(stn,true);
+            }
         }
 
         // make patrick fall

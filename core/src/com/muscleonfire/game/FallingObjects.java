@@ -40,12 +40,19 @@ public class FallingObjects extends GameObject{
         image = new Texture(Gdx.files.internal("falling object (stone).png"));
     }
 
-    void playerTouched(){
 
-    }
     @Override
     void transpose(float delta){
         super.transpose(delta);
         object.y-=250*delta;
+    }
+
+    boolean playerTouched(Player pat){
+        boolean touched=false;
+        if (pat.object.overlaps(object)){
+            pat.takeDamage(1);
+            touched=true;
+        }
+        return touched;
     }
 }
