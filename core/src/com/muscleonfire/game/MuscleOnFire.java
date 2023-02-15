@@ -30,7 +30,7 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 
 		// create a freetype font parameter to set the properties of the font we want to use
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.size = 30; // size = 30
+		parameter.size = 30	; // size = 30
 		parameter.color = new Color(0,0,0,1); // color = black
 
 		// generate the font needed and assign it to the BitmapFont

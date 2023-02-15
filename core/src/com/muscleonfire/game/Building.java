@@ -12,8 +12,8 @@ public class Building extends GameObject{
 
         object.x=0;
         object.y=0;
-        image=new Texture(Gdx.files.internal("background1.png"));
-
-
+        image=new Texture(Gdx.files.internal("Walls.png"));
     }
+
+
 }
