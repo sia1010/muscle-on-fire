@@ -23,6 +23,8 @@ public class GameScreen implements Screen {
     Array<Obstacles> obstacle = new Array<Obstacles>();
 
     Array<SpecialFloor> sfloors = new Array<SpecialFloor>();
+
+    Array<Enemies> ebat = new Array<Enemies>();
     Controls controls;
     float time_passed;
     float randomizer_obstacle;
@@ -53,7 +55,14 @@ public class GameScreen implements Screen {
         // add the floor into the floors array
         sfloors.add(sfloor);
     }
+    void addEnemies(){
 
+        Enemies enemy = new Enemies();
+        enemy.spawn();
+
+        // add the floor into the floors array
+        ebat.add(enemy);
+    }
     void addObstacles(){
         // add a new obstacles
         Obstacles o = new Obstacles();
@@ -110,6 +119,11 @@ public class GameScreen implements Screen {
 
         for (SpecialFloor sfloor : sfloors) {
             game.batch.draw(sfloor.getTexture(), sfloor.getX(), sfloor.getY());
+        }
+
+        // draw bat_enemy
+        for (Enemies enemy : ebat) {
+            game.batch.draw(enemy.getTexture(), enemy.getX(), enemy.getY());
         }
 
         // draw all the rescue
@@ -278,6 +292,12 @@ public class GameScreen implements Screen {
             sfloor.transpose(delta);
         }
 
+        for (Enemies enemy : ebat) {
+
+            enemy.checkDirection();
+            enemy.move(delta);
+        }
+
         // make patrick fall
         patrick.fall(delta, floors);
 
@@ -303,6 +323,7 @@ public class GameScreen implements Screen {
             } else {
                 addObstacles();
             }
+            addEnemies();
             randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
         }
 
