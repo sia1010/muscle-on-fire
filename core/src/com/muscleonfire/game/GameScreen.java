@@ -20,9 +20,13 @@ public class GameScreen implements Screen {
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     Array<Rescue> rescues = new Array<Rescue>();
     Array<Obstacles> obstacle = new Array<Obstacles>();
+
+    Array<SpecialFloor> sfloors = new Array<SpecialFloor>();
+    Array<Obstacles_savePeople> obstacles_ppl = new Array<Obstacles_savePeople>();
     Controls controls;
     float time_passed;
     float randomizer_obstacle;
+    float randomizer_sfloor;
     enum State{
         READY,
         RUNNING,
@@ -41,13 +45,13 @@ public class GameScreen implements Screen {
         floors.add(floor);
     }
 
-    void addRescue(){
-        // add a new obstacles
-        Rescue r = new Rescue();
-        r.spawn(floors);
+    void addSFloor(){
 
-        // add the o into the obstacles_ppl array
-        rescues.add(r);
+        SpecialFloor sfloor = new SpecialFloor();
+        sfloor.spawn();
+
+        // add the floor into the floors array
+        sfloors.add(sfloor);
     }
 
     void addObstacles(){
@@ -92,6 +96,10 @@ public class GameScreen implements Screen {
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
+        }
+
+        for (SpecialFloor sfloor : sfloors) {
+            game.batch.draw(sfloor.getTexture(), sfloor.getX(), sfloor.getY());
         }
 
         // draw all the rescue
@@ -242,6 +250,13 @@ public class GameScreen implements Screen {
 
         for (Obstacles obs : obstacle) {
             obs.transpose(delta);
+
+        for (SpecialFloor sfloor : sfloors) {
+            sfloor.transpose(delta);
+        }
+
+        for (Obstacles_savePeople obstacle : obstacles_ppl) {
+            obstacle.transpose(delta);
         }
 
         // make patrick fall
@@ -251,7 +266,14 @@ public class GameScreen implements Screen {
         // ADD / DELETE GAME OBJECTS
         // add new floors
         if(floors.peek().getY() > - 80){
-            addFloor();
+            if (time_passed > randomizer_sfloor) {
+                addSFloor();
+                randomizer_sfloor += MathUtils.random(5, 10); // add the obstacles time
+            }
+            if(sfloors.peek().getY() > -80) {
+
+                addFloor();
+            }
         }
 
         // the obstacle will be added in the range of (15, 20) of the time passed
