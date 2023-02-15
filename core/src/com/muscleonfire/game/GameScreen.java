@@ -99,23 +99,7 @@ public class GameScreen implements Screen {
 
         falling_stone.add(stone);
     }
-    Animation<TextureRegion> loadAnimation(String imgLocation, int imgColumns, int imgRows, float durationPerFrame){
-        // takes in (sprite sheet file location, sprite column, sprite rows, duration per frame)
-        // returns animation texture array
-        Texture Sheet = new Texture(Gdx.files.internal(imgLocation));
-        TextureRegion[][] tmp = TextureRegion.split(Sheet,
-                Sheet.getWidth() / imgColumns,
-                Sheet.getHeight() / imgRows);
 
-        TextureRegion[] Frames = new TextureRegion[imgColumns * imgRows];
-        int index = 0;
-        for (int i = 0; i < imgRows; i++) {
-            for (int j = 0; j < imgColumns; j++) {
-                Frames[index++] = tmp[i][j];
-            }
-        }
-        return new Animation<TextureRegion>(durationPerFrame, Frames);
-    }
 
     void drawAllObjects(){
         // draw score
@@ -151,7 +135,7 @@ public class GameScreen implements Screen {
 
         // draw all the obstacles
         for (Obstacles obs : obstacle) {
-            game.batch.draw(obs.getTexture(), obs.getX(), obs.getY());
+            game.batch.draw(obs.fireAnim.getKeyFrame(time_passed, true), obs.getX(), obs.getY());
         }
 
         for(FallingObjects gls : falling_glass ){

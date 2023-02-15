@@ -2,12 +2,15 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.particles.ResourceData;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Rescue extends GameObject{
+    Animation<TextureRegion> rescueAni;
     float save_timer = 0;
     boolean saved = false;
     void spawn(Array<Floor> floors){
