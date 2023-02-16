@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class FallingObjects extends GameObject{
 
+    float timetoAddDifficulty=0;
     void falling_building_spawn(){
         object=new Rectangle();
         object.x=5;
@@ -54,9 +55,11 @@ public class FallingObjects extends GameObject{
 
 
     @Override
-    void transpose(float delta){
-        super.transpose(delta);
-        object.y-=250*delta;
+    void transpose(float delta, float time_passed){
+        super.transpose(delta, time_passed);
+        object.y -= 200 * delta;
+        object.y -= ((500 + time_passed) / 5) * delta;
+        //object.y-=250*delta;
     }
 
     boolean playerTouched(Player pat){

@@ -59,8 +59,8 @@ public class Rescue extends GameObject{
         return help_box.y;
     }
     @Override
-    void transpose(float delta){
-        super.transpose(delta);
+    void transpose(float delta, float time_passed){
+        super.transpose(delta, time_passed);
         if (saved){
             object.y += 200 * delta;
         }

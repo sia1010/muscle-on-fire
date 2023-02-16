@@ -12,8 +12,10 @@ import com.badlogic.gdx.utils.Array;
 public class Player extends GameObject{
 
     Rectangle feet, head, sword;
+    float timeToAddDifficulty=0;
     float jumpTime = 0;
     float flashTime = 0;
+    int jumpPower = 1400;
     boolean isJumping = false;
     boolean isFlashing;
     boolean onFloor;
@@ -71,7 +73,7 @@ public class Player extends GameObject{
         feet.y = object.y;
     }
 
-    void fall(float delta, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
+    void fall(float delta, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, float time_passed){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
@@ -89,19 +91,17 @@ public class Player extends GameObject{
         for (SpecialFloor tramfloor: tramfloors){
             if (feet.overlaps(tramfloor.object)) { // floor.object = the rectangle
                 onFloor = true;
-                //jump on the trampoline
                 isJumping = true;
-                jumpTime=0;
-                if(isJumping) {
-                    object.y += 1000 * Math.pow(0.01, jumpTime) * delta;
-                    jumpTime += delta;
-                }
+                jumpTime = 0;
+                jumpPower = 600;
             }
         }
 
         // if not on floor, fall down
         if (!onFloor){
-            object.y -= 300 * delta;
+            //object.y-=300*delta;
+            object.y -= 200 * delta;
+            object.y -= ((500 + time_passed) / 5) * delta;
             updateFeetAndHeadPosition();
         }
     }
@@ -149,15 +149,16 @@ public class Player extends GameObject{
         }
     }
 
-    public void jump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
+    public void jump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors){
         // check if standing on floor){ // check for isJumping, if isJumping, then jump
         if (isJumping && !headIsTouching(floors,spikefloors,tramfloors)) { // check for jumping and not hitting head
-            object.y += 1400 * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
+            object.y += jumpPower * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
             jumpTime += delta;
             if (jumpTime > 0.6f) { // after 0.6 seconds, stop jumping
                 isJumping = false;
             }
         }else{
+            jumpPower = 1400;
             isJumping = false;
         }
     }
@@ -257,8 +258,8 @@ public class Player extends GameObject{
     }
 
     @Override // overlap the old thing which u inherit
-    void transpose(float delta) {
-        super.transpose(delta); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
+    void transpose(float delta, float time_passed) {
+        super.transpose(delta, time_passed); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
         updateFeetAndHeadPosition();
     }
 }
