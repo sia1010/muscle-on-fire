@@ -21,8 +21,8 @@ public class GameScreen implements Screen {
     Array<FallingObjects> falling_glass =new Array<FallingObjects>();
     Array<FallingObjects> falling_stone =new Array<FallingObjects>();
     Array<FallingObjects> falling_life =new Array<FallingObjects>();
-    Array<SpecialFloor> sfloors = new Array<SpecialFloor>();
-
+    Array<SpecialFloor> spikefloors = new Array<SpecialFloor>();
+    Array<SpecialFloor> tramfloors = new Array<SpecialFloor>();
     Array<Enemies> ebat = new Array<Enemies>();
     Controls controls;
 
@@ -32,7 +32,9 @@ public class GameScreen implements Screen {
     boolean touch_life=false;
     float time_passed;
     float randomizer_obstacle;
-    float randomizer_sfloor;
+    float randomizer_spikefloor;
+
+    float randomizer_tramfloor;
     float randomizer_objects;
     enum State{
         READY,
@@ -52,13 +54,21 @@ public class GameScreen implements Screen {
         floors.add(floor);
     }
 
-    void addSFloor(){
+    void addSpikeFloor(){
 
-        SpecialFloor sfloor = new SpecialFloor();
-        sfloor.spawn();
+        SpecialFloor spikefloor = new SpecialFloor();
+        spikefloor.spike_spawn();
 
         // add the floor into the floors array
-        sfloors.add(sfloor);
+        spikefloors.add(spikefloor);
+    }
+    void addTramFloor(){
+
+        SpecialFloor tramfloor = new SpecialFloor();
+        tramfloor.trampoline_spawn();
+
+        // add the floor into the floors array
+        tramfloors.add(tramfloor);
     }
     void addEnemies(){
 
@@ -124,10 +134,13 @@ public class GameScreen implements Screen {
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
         }
 
-        for (SpecialFloor sfloor : sfloors) {
-            game.batch.draw(sfloor.getTexture(), sfloor.getX(), sfloor.getY());
+        for (SpecialFloor spikefloor : spikefloors) {
+            game.batch.draw(spikefloor.getTexture(), spikefloor.getX(), spikefloor.getY());
         }
 
+        for (SpecialFloor tramfloor : tramfloors) {
+            game.batch.draw(tramfloor.getTexture(), tramfloor.getX(), tramfloor.getY());
+        }
         // draw bat_enemy
         for (Enemies enemy : ebat) {
             game.batch.draw(enemy.getTexture(), enemy.getX(), enemy.getY());
@@ -283,7 +296,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta, controls);
-            patrick.jump(delta, floors);
+            patrick.jump(delta, floors,spikefloors,tramfloors);
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
@@ -304,6 +317,8 @@ public class GameScreen implements Screen {
             floor.transpose(delta);
         }
 
+
+
         for (Rescue res : rescues) {
             res.playerTouched(patrick, delta, score);
             res.transpose(delta);
@@ -314,8 +329,23 @@ public class GameScreen implements Screen {
             obs.transpose(delta);
         }
 
-        for (SpecialFloor sfloor : sfloors) {
-            sfloor.transpose(delta);
+        for (SpecialFloor spikefloor : spikefloors) {
+
+            spikefloor.transpose(delta);
+
+            spikefloor.touchedSpike(patrick,delta);
+
+
+
+
+
+        }
+//        for (SpecialFloor sfloor : spikefloors) {
+//            sfloor.transpose(delta);
+//        }
+
+        for (SpecialFloor tramfloor : tramfloors) {
+            tramfloor.transpose(delta);
         }
 
         for (Enemies enemy : ebat) {
@@ -355,20 +385,30 @@ public class GameScreen implements Screen {
         }
 
         // make patrick fall
-        patrick.fall(delta, floors);
+        patrick.fall(delta, floors,spikefloors,tramfloors);
 
 
         // ADD / DELETE GAME OBJECTS
         // add new floors
-        if (floors.peek().getY() > -80) {
-            if (time_passed > randomizer_sfloor) {
-                addSFloor();
-                randomizer_sfloor += MathUtils.random(5, 10); // add the obstacles time
-            }
-            if (sfloors.peek().getY() > -80) {
 
-                addFloor();
+        //no idea what i wrote but somehow working
+        if (floors.peek().getY() > -80) {
+            if (time_passed > randomizer_tramfloor ) {
+                addTramFloor();
+                randomizer_tramfloor += MathUtils.random(3, 5); // add the obstacles time
             }
+
+            if ((time_passed > randomizer_spikefloor) && (tramfloors.peek().getY() > -80) ) {
+                addSpikeFloor();
+                randomizer_spikefloor += MathUtils.random(20,24);
+            }
+            if ((tramfloors.peek().getY() > -80 ) && (spikefloors.peek().getY() > -80 )) {
+
+                addFloor();}
+
+
+
+
         }
 
         if (time_passed > randomizer_objects) {

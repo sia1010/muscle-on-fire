@@ -69,11 +69,23 @@ public class Player extends GameObject{
         feet.y = object.y;
     }
 
-    void fall(float delta, Array<Floor> floors){
+    void fall(float delta, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
             if (feet.overlaps(floor.object)) { // floor.object = the rectangle
+                onFloor = true;
+            }
+        }
+
+        for (SpecialFloor spikefloor: spikefloors){
+            if (feet.overlaps(spikefloor.object)) { // floor.object = the rectangle
+                onFloor = true;
+            }
+        }
+
+        for (SpecialFloor tramfloor: tramfloors){
+            if (feet.overlaps(tramfloor.object)) { // floor.object = the rectangle
                 onFloor = true;
             }
         }
@@ -128,8 +140,9 @@ public class Player extends GameObject{
         }
     }
 
-    void jump(float delta, Array<Floor> floors){ // check for isJumping, if isJumping, then jump
-        if (isJumping && !headIsTouching(floors)) { // check for jumping and not hitting head
+    void jump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
+        // check if standing on floor){ // check for isJumping, if isJumping, then jump
+        if (isJumping && !headIsTouching(floors,spikefloors,tramfloors)) { // check for jumping and not hitting head
             object.y += 1400 * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
             jumpTime += delta;
             if (jumpTime > 0.6f) { // after 0.6 seconds, stop jumping
@@ -140,9 +153,28 @@ public class Player extends GameObject{
         }
     }
 
-    boolean headIsTouching(Array<Floor> floors){ // check if head is touching
+    //i duno what i wrote(still working)
+//    void tramjump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors){
+//        for(SpecialFloor tramfloor:tramfloors){
+//            if ((feet.overlaps(tramfloor.object) && onFloor && (isJumping == true) && (jumpTime == 0) )) {
+//                jump(delta, floors, spikefloors, tramfloors);
+//            }
+//        }
+//    }
+    boolean headIsTouching(Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
+        // check if standing on floor){ // check if head is touching
         for (Floor floor: floors){
             if (head.overlaps(floor.object)) { // floor.object = the rectangle
+                return true;
+            }
+        }
+        for (SpecialFloor spikefloor: spikefloors){
+            if (head.overlaps(spikefloor.object)) { // floor.object = the rectangle
+                return true;
+            }
+        }
+        for (SpecialFloor tramfloor: tramfloors){
+            if (head.overlaps(tramfloor.object)) { // floor.object = the rectangle
                 return true;
             }
         }
