@@ -11,12 +11,13 @@ import com.badlogic.gdx.utils.Array;
 
 public class Player extends GameObject{
 
-    boolean onFloor;
     Rectangle feet, head;
     float jumpTime = 0;
     float flashTime = 0;
     boolean isJumping;
     boolean isFlashing;
+    boolean onFloor;
+    boolean isFront;
     Health healthPoint = new Health();
     Animation<TextureRegion> front, left, right, playerAnim;
 
@@ -31,11 +32,11 @@ public class Player extends GameObject{
         // this is the feet (for collision detection or floor detection)
         feet = new Rectangle();
         feet.height = 4;
-        feet.width = 28; // smaller than the object, if the body touch the floor but the feet not, then will drop
+        feet.width = 32; // smaller than the object, if the body touch the floor but the feet not, then will drop
 
         head = new Rectangle();
         head.height = 4;
-        head.width = 36; // if head hit floor, then will stop jump
+        head.width = 32; // if head hit floor, then will stop jump
 
         updateFeetAndHeadPosition();
 
@@ -48,11 +49,23 @@ public class Player extends GameObject{
 
     void updateFeetAndHeadPosition(){
         // make the head Rectangle above the body
-        head.x = object.x + 14; // from left + 14 pixel (left 14, center 36 - feet, right 14 = 64 pixel)
+        if(isFront){
+            head.x = object.x + 16;// from left + 14 pixel (left 14, center 36 - feet, right 14 = 64 pixel)
+            head.width = 36;
+        }else{
+            head.x = object.x;
+            head.width = 32;
+        }
         head.y = object.y + 64;
 
         // make the feet Rectangle() located beneath the body
-        feet.x = object.x + 18; // from left + 18 pixel (left 18, center 28 - feet, right 18 = 64 pixel)
+        if(isFront){
+            feet.x = object.x + 16; // from left + 18 pixel (left 18, center 28 - feet, right 18 = 64 pixel)
+            feet.width = 32;
+        }else{
+            feet.x = object.x;
+            feet.width = 28;
+        }
         feet.y = object.y;
     }
 
@@ -101,7 +114,7 @@ public class Player extends GameObject{
     }
 
     void goLeft(float px){ // move patrick left
-        if(object.x>32){
+        if(object.x > 16){
             object.x -= px;
             updateFeetAndHeadPosition();
         }
@@ -109,7 +122,7 @@ public class Player extends GameObject{
     }
 
     void goRight(float px){ // move patrick right
-        if(object.x<(480 - 64 - 32)) {
+        if(object.x<(480 - 32 - 16)) {
             object.x += px;
             updateFeetAndHeadPosition();
         }
@@ -176,6 +189,34 @@ public class Player extends GameObject{
                 flashTime += delta;
             }
         }
+    }
+
+    void drawPatrick(SpriteBatch batch, float time_passed){
+        if (playerAnim == left){
+            if(isFront){
+                object.width = 32;
+                object.x += 16;
+                isFront = false;
+            }
+            batch.draw(playerAnim.getKeyFrame(time_passed, true), object.x - 16, object.y);
+        }
+        if (playerAnim == right){
+            if(isFront){
+                object.width = 32;
+                object.x += 16;
+                isFront = false;
+            }
+            batch.draw(playerAnim.getKeyFrame(time_passed, true), object.x - 16, object.y);
+        }
+        if (playerAnim == front){
+            if(!isFront){
+                object.width = 64;
+                object.x -= 16;
+                isFront = true;
+            }
+            batch.draw(playerAnim.getKeyFrame(time_passed, true), object.x, object.y);
+        }
+
     }
 
     boolean updateGameOver(){

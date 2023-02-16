@@ -119,9 +119,6 @@ public class GameScreen implements Screen {
         //draw high score
         game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 70, 750);
 
-        // draw patrick
-        game.batch.draw(patrick.playerAnim.getKeyFrame(time_passed, true), patrick.getX(), patrick.getY());
-
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
@@ -157,6 +154,10 @@ public class GameScreen implements Screen {
         for(FallingObjects life : falling_life ){
             game.batch.draw(life.getTexture(), life.getX(),life.getY());
         }
+
+        // draw patrick
+        patrick.drawPatrick(this.game.batch, time_passed);
+
         //draw falling building
         game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
 

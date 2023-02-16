@@ -62,12 +62,22 @@ public class Controls {
                 }
                 if (mode == controlMode.follow) {
                     // if touch left of patrick, set leftButtonPressed to true, else it is false
-                    if (touchPos.x < pat.getX() + 30) {
-                        leftButton.isPressed = true;
-                    }
-                    // if touch right of patrick, set rightButtonPressed to true, else it is false
-                    if (touchPos.x > pat.getX() + 34) {
-                        rightButton.isPressed = true;
+                    if (pat.isFront){
+                        if (touchPos.x < pat.getX() + 30) {
+                            leftButton.isPressed = true;
+                        }
+                        // if touch right of patrick, set rightButtonPressed to true, else it is false
+                        if (touchPos.x > pat.getX() + 34) {
+                            rightButton.isPressed = true;
+                        }
+                    }else{
+                        if (touchPos.x < pat.getX() + 30 - 16) {
+                            leftButton.isPressed = true;
+                        }
+                        // if touch right of patrick, set rightButtonPressed to true, else it is false
+                        if (touchPos.x > pat.getX() + 34 - 16) {
+                            rightButton.isPressed = true;
+                        }
                     }
                     // if touch jump of patrick, set jumpButtonPressed to true, else it is false
                     if ((jumpButton.object.overlaps(touchPoint))) {
