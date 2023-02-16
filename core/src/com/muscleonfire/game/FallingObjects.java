@@ -23,8 +23,8 @@ public class FallingObjects extends GameObject{
     void falling_glass_spawn(){
 
         object = new Rectangle();
-        object.height = 64;
-        object.width = 64;
+        object.height = 32;
+        object.width = 32;
         object.x = MathUtils.random(30, 480 - 60);
         object.y = 700;
         image = new Texture(Gdx.files.internal("falling object(glass).png"));
@@ -33,8 +33,8 @@ public class FallingObjects extends GameObject{
     void falling_stone_spawn(){
 
         object = new Rectangle();
-        object.height = 64;
-        object.width = 64;
+        object.height = 32;
+        object.width = 32;
         object.x = MathUtils.random(30, 480 - 60); // randomly at the floor, can be at left or right
         object.y = 700;
         image = new Texture(Gdx.files.internal("falling object (stone).png"));
