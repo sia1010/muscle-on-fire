@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Player extends GameObject{
 
-    Rectangle feet, head;
+    Rectangle feet, head, sword;
     float jumpTime = 0;
     float flashTime = 0;
     boolean isJumping;
@@ -37,6 +37,8 @@ public class Player extends GameObject{
         head = new Rectangle();
         head.height = 4;
         head.width = 32; // if head hit floor, then will stop jump
+
+        sword = new Rectangle();
 
         updateFeetAndHeadPosition();
 

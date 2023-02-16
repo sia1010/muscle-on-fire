@@ -22,12 +22,11 @@ public class Obstacles extends GameObject{
     }
     void playerTouched(Player pat, float delta){
         if (pat.object.overlaps(object)){
-            dmg_timer += delta;
-            while(dmg_timer>1){
-                dmg_timer-=1;
+            while(dmg_timer <= 0){
+                dmg_timer += 1;
                 pat.takeDamage(1);
             }
-
+            dmg_timer -= delta;
         }
     }
 }
