@@ -14,7 +14,9 @@ public class Player extends GameObject{
     boolean onFloor;
     Rectangle feet, head;
     float jumpTime = 0;
+    float flashTime = 0;
     boolean isJumping;
+    boolean isFlashing;
     Health healthPoint = new Health();
     Animation<TextureRegion> playerAnim;
 
@@ -120,8 +122,9 @@ public class Player extends GameObject{
         return false;
     }
 
-    void takeDamage(int damage){
+    void takeDamage(int damage){ // minus health equals to passed damage
         healthPoint.currHealth -= damage;
+        isFlashing = true;
     }
 
     void healDamage(int heal){
@@ -130,10 +133,34 @@ public class Player extends GameObject{
         }
     }
 
-    void drawHearts(SpriteBatch batch){
-        for (int i = 0; i < healthPoint.maxHealth; i++) {
-            if(i < healthPoint.currHealth){batch.draw(healthPoint.filledHeart, 300 + 40 * i, 50);}
-            else{batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 50);}
+    void drawHearts(SpriteBatch batch, float delta) {
+        if (flashTime > 3){
+            flashTime = 0;
+            isFlashing = false;
+        }
+
+        if (!isFlashing) {
+            for (int i = 0; i < healthPoint.maxHealth; i++) {
+                if (i < healthPoint.currHealth) {
+                    batch.draw(healthPoint.filledHeart, 300 + 40 * i, 50);
+                } else {
+                    batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 50);
+                }
+            }
+        } else {
+            for (int i = 0; i < healthPoint.maxHealth; i++) {
+                if (i < healthPoint.currHealth) {
+                    batch.draw(healthPoint.filledHeart, 300 + 40 * i, 50);
+                } else {
+                    if ((int) (flashTime * 5) % 2 == 0) {
+                        batch.draw(healthPoint.flashHeart, 300 + 40 * i, 50);
+                    } else if ((int) (flashTime * 5) % 2 == 1) {
+                        batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 50);
+                    }
+                }
+
+                flashTime += delta;
+            }
         }
     }
 

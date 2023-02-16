@@ -2,9 +2,6 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -111,15 +108,16 @@ public class GameScreen implements Screen {
     }
 
 
-    void drawAllObjects(){
+    void drawAllObjects(float delta){
+
+        // draw background
+        game.batch.draw(background.getTexture(),background.getX(),background.getY());
+
         // draw score
         game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 700);
 
         //draw high score
         game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 70, 750);
-
-        // draw background
-        game.batch.draw(background.getTexture(),background.getX(),background.getY());
 
         // draw patrick
         game.batch.draw(patrick.playerAnim.getKeyFrame(time_passed, true), patrick.getX(), patrick.getY());
@@ -163,7 +161,7 @@ public class GameScreen implements Screen {
         game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
 
         // draw hearts
-        patrick.drawHearts(this.game.batch);
+        patrick.drawHearts(this.game.batch, delta);
 
         // draw all the buttons
         controls.drawButtons(this.game.batch);
@@ -248,20 +246,20 @@ public class GameScreen implements Screen {
         // if game is in READY state give everything less opacity and display text
         if (gameState == State.READY) {
             game.batch.setColor(1, 1, 1, 0.5f);
-            drawAllObjects();
+            drawAllObjects(delta);
             game.batch.setColor(1, 1, 1, 1);
             game.font.draw(game.batch, "TAP TO START", 135, 400);
         }
 
         // if game is RUNNING, just draw everything normally.
         if (gameState == State.RUNNING) {
-            drawAllObjects();
+            drawAllObjects(delta);
         }
 
         // if game is in OVER state give everything red overlay and display text
         if (gameState == State.OVER) {
             game.batch.setColor(0.8f, 0, 0, 0.8f);
-            drawAllObjects();
+            drawAllObjects(delta);
             game.font.draw(game.batch, "GAME OVER", 160, 420);
             game.font.draw(game.batch, "TAP TO CONTINUE", 110, 380);
             game.batch.setColor(1, 1, 1, 1);

@@ -10,8 +10,11 @@ public class Health {
 
     Texture filledHeart;
     Texture emptyHeart;
+    Texture flashHeart;
+
     public Health(){
         filledHeart = new Texture(Gdx.files.internal("heart_filled.png"));
         emptyHeart = new Texture(Gdx.files.internal("heart_empty.png"));
+        flashHeart = new Texture(Gdx.files.internal("heart_flash.png"));
     }
 }
