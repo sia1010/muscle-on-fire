@@ -10,8 +10,13 @@ public class GameObject{
     protected Rectangle object;
     protected Texture image;
 
-    void transpose(float delta){
-        object.y += 100 * delta;
+    void transpose(float delta, float time_passed){
+        object.y += ((500 + time_passed) / 5) * delta;
+        //object.y+=100*delta;
+
+
+
+
     }
 
     float getX(){

@@ -34,8 +34,9 @@ public class GameScreen implements Screen {
     boolean touch_life=false;
     float time_passed;
     float randomizer_obstacle;
+    boolean rescue_backlog = false;
+    boolean obstacle_backlog = false;
     float randomizer_spikefloor;
-
     float randomizer_tramfloor;
     float randomizer_objects;
     enum State{
@@ -315,12 +316,12 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta, controls);
-            patrick.jump(delta, floors,spikefloors,tramfloors);
+            patrick.jump(delta, floors, spikefloors, tramfloors);
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
             if (Gdx.input.justTouched()) {
-                this.game.setScreen(new GameOver(this.game,score));
+                this.game.setScreen(new GameOver(this.game, score));
             }
         }
 
@@ -331,79 +332,88 @@ public class GameScreen implements Screen {
         }
 
         // update everything
-        patrick.transpose(delta);
+        patrick.transpose(delta, time_passed);
         for (Floor floor : floors) {
-            floor.transpose(delta);
+            floor.transpose(delta, time_passed);
         }
 
         for (Rescue res : rescues) {
             res.playerTouched(patrick, delta, score);
-            res.transpose(delta);
+            res.transpose(delta, time_passed);
         }
 
         for (Medicine med : medicines) {
             med.playerTouched(patrick);
-            med.transpose(delta);
-            if (med.playerTouched(patrick)){
+            med.transpose(delta, time_passed);
+            if (med.playerTouched(patrick)) {
                 medicines.removeValue(med, true);
-            };
+            }
+            ;
         }
 
         for (Obstacles obs : obstacle) {
-            obs.playerTouched(patrick,delta);
-            obs.transpose(delta);
+            obs.playerTouched(patrick, delta);
+            obs.transpose(delta, time_passed);
         }
 
         for (SpecialFloor spikefloor : spikefloors) {
-            spikefloor.transpose(delta);
-            spikefloor.touchedSpike(patrick,delta);
+
+            spikefloor.transpose(delta, time_passed);
+
+
+            spikefloor.touchedSpike(patrick, delta);
         }
 //        for (SpecialFloor sfloor : spikefloors) {
 //            sfloor.transpose(delta);
 //        }
 
         for (SpecialFloor tramfloor : tramfloors) {
-            tramfloor.transpose(delta);
+            tramfloor.transpose(delta, time_passed);
         }
 
         for (Enemies enemy : ebat) {
             enemy.checkDirection();
             enemy.move(delta);
-            if (enemy.playerTouched(patrick,delta)){
+            if (enemy.playerTouched(patrick, delta)) {
                 ebat.removeValue(enemy, true);
-            };
+            }
+            ;
         }
 
         for (FallingObjects gls : falling_glass) {
-            gls.transpose(delta);
-            if (gls.playerTouched(patrick)){
-                falling_glass.removeValue(gls,true);
+
+            gls.transpose(delta, time_passed);
+            if (gls.playerTouched(patrick)) {
+                falling_glass.removeValue(gls, true);
             }
         }
 
         for (FallingObjects stn : falling_stone) {
-            stn.transpose(delta);
-            if (stn.playerTouched(patrick)){
-                falling_stone.removeValue(stn,true);
+
+            stn.transpose(delta, time_passed);
+
+            if (stn.playerTouched(patrick)) {
+                falling_stone.removeValue(stn, true);
             }
         }
 
         for (FallingObjects life : falling_life) {
-            life.transpose(delta);
-            if (life.playerTouchedLife(patrick)){
-                falling_life.removeValue(life,true);
+            life.transpose(delta, time_passed);
+
+            if (life.playerTouchedLife(patrick)) {
+                falling_life.removeValue(life, true);
             }
         }
 
         // make patrick fall
-        patrick.fall(delta, floors,spikefloors,tramfloors);
+        patrick.fall(delta, floors, spikefloors, tramfloors, time_passed);
 
 
         // ADD / DELETE GAME OBJECTS
         // add new floors
         // use time to control add floor
-        if( floor_time > 1 ){
-            if (time_passed > randomizer_tramfloor ) {
+        if (floor_time > (1000 / (850 + time_passed))) {
+            if (time_passed > randomizer_tramfloor) {
                 addTramFloor();
                 randomizer_tramfloor += MathUtils.random(3, 5); // add the obstacles time
                 floor_time = 0;
@@ -418,40 +428,60 @@ public class GameScreen implements Screen {
         }
 
         if (time_passed > randomizer_objects) {
-            if (MathUtils.random(1, 10) <= 4) {
+            int a = MathUtils.random(1, 10);
+            if (a <= 3) {
                 addGlass();
-            } else if(MathUtils.random(1, 10) <= 8) {
+            } else if (a <= 6) {
                 addStone();
-            }
-            else {
+            } else {
                 addLife();
             }
-            randomizer_objects += MathUtils.random(10,15); // add the object time
+            randomizer_objects += MathUtils.random(8, 15); // add the object time
         }
 
         // the obstacle will be added in the range of (15, 20) of the time passed
         // every 15-20 s will add one rescue
         if (time_passed > randomizer_obstacle) {
-            if (random <= 3) {
-                addRescue();
-            } else if (random<=7) {
-                addMedicine();
-            } else {
-                addObstacles();
+            if (MathUtils.random(1, 5) <= 2) {
+                rescue_backlog = true;
+                if (random <= 3) {
+                    addRescue();
+                } else if (random <= 7) {
+                    addMedicine();
+                } else {
+                    obstacle_backlog = true;
+                }
+                addEnemies();
+                randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
+                random = MathUtils.random(1, 10);
             }
-            addEnemies();
-            randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
-            random = MathUtils.random(1, 10);
-        }
 
-        // delete floors which are out of screen
-        for (Floor floor : floors) {
-            if (floor.getY() > 1000) {
-                floors.removeValue(floor, true);
+            if (rescue_backlog) {
+                for (Floor floor : floors) {
+                    if (floor.getY() < 0) {
+                        rescue_backlog = false;
+                        addRescue();
+                        break;
+                    }
+                }
+            } else if (obstacle_backlog) {
+                for (Floor floor : floors) {
+                    if (floor.getY() < 0) {
+                        obstacle_backlog = false;
+                        addObstacles();
+                        break;
+                    }
+                }
+            }
+
+            // delete floors which are out of screen
+            for (Floor floor : floors) {
+                if (floor.getY() > 1000) {
+                    floors.removeValue(floor, true);
+                }
             }
         }
     }
-
 
     @Override
     public void resize(int width, int height) {
