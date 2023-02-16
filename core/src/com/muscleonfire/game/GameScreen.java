@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameScreen implements Screen {
 
     float floor_time = 0;
+    int random;
     // VARIABLE DECLARATIONS
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
@@ -17,6 +18,7 @@ public class GameScreen implements Screen {
     Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     Array<Rescue> rescues = new Array<Rescue>();
+    Array<Medicine> medicines = new Array<Medicine>();
     Array<Obstacles> obstacle = new Array<Obstacles>();
     Array<FallingObjects> falling_glass =new Array<FallingObjects>();
     Array<FallingObjects> falling_stone =new Array<FallingObjects>();
@@ -83,7 +85,7 @@ public class GameScreen implements Screen {
         Obstacles o = new Obstacles();
         o.spawn(floors);
 
-        // add the o into the obstacles_ppl array
+        // add the o into the obstacle array
         obstacle.add(o);
     }
 
@@ -92,10 +94,18 @@ public class GameScreen implements Screen {
         Rescue r = new Rescue();
         r.spawn(floors);
 
-        // add the o into the obstacles_ppl array
+        // add the o into the rescues array
         rescues.add(r);
     }
 
+    void addMedicine(){
+        // add a new obstacles
+        Medicine m = new Medicine();
+        m.spawn(floors);
+
+        // add the o into the medicines array
+        medicines.add(m);
+    }
     void addGlass(){
         FallingObjects glass=new FallingObjects();
         glass.falling_glass_spawn();
@@ -151,6 +161,11 @@ public class GameScreen implements Screen {
             game.batch.draw(res.rescueAni.getKeyFrame(time_passed, true), res.getX(), res.getY());
         }
 
+        // draw all the medicine
+        for (Medicine med : medicines) {
+            game.batch.draw(med.getTexture(), med.getX(), med.getY());
+        }
+
         // draw all the obstacles
         for (Obstacles obs : obstacle) {
             game.batch.draw(obs.fireAnim.getKeyFrame(time_passed, true), obs.getX(), obs.getY());
@@ -204,6 +219,9 @@ public class GameScreen implements Screen {
 
         // set randomizer obstacle
         randomizer_obstacle = MathUtils.random(15, 20);
+
+        //set random for obstacle,rescue, medicine
+        random = MathUtils.random(1, 10);
 
         // set randomizer falling_objects
         randomizer_objects=MathUtils.random(8,13);
@@ -318,11 +336,17 @@ public class GameScreen implements Screen {
             floor.transpose(delta);
         }
 
-
-
         for (Rescue res : rescues) {
             res.playerTouched(patrick, delta, score);
             res.transpose(delta);
+        }
+
+        for (Medicine med : medicines) {
+            med.playerTouched(patrick);
+            med.transpose(delta);
+            if (med.playerTouched(patrick)){
+                medicines.removeValue(med, true);
+            };
         }
 
         for (Obstacles obs : obstacle) {
@@ -331,15 +355,8 @@ public class GameScreen implements Screen {
         }
 
         for (SpecialFloor spikefloor : spikefloors) {
-
             spikefloor.transpose(delta);
-
             spikefloor.touchedSpike(patrick,delta);
-
-
-
-
-
         }
 //        for (SpecialFloor sfloor : spikefloors) {
 //            sfloor.transpose(delta);
@@ -350,7 +367,6 @@ public class GameScreen implements Screen {
         }
 
         for (Enemies enemy : ebat) {
-
             enemy.checkDirection();
             enemy.move(delta);
             if (enemy.playerTouched(patrick,delta)){
@@ -359,19 +375,14 @@ public class GameScreen implements Screen {
         }
 
         for (FallingObjects gls : falling_glass) {
-
             gls.transpose(delta);
-
-
             if (gls.playerTouched(patrick)){
                 falling_glass.removeValue(gls,true);
             }
-
         }
 
         for (FallingObjects stn : falling_stone) {
             stn.transpose(delta);
-
             if (stn.playerTouched(patrick)){
                 falling_stone.removeValue(stn,true);
             }
@@ -379,7 +390,6 @@ public class GameScreen implements Screen {
 
         for (FallingObjects life : falling_life) {
             life.transpose(delta);
-
             if (life.playerTouchedLife(patrick)){
                 falling_life.removeValue(life,true);
             }
@@ -422,13 +432,16 @@ public class GameScreen implements Screen {
         // the obstacle will be added in the range of (15, 20) of the time passed
         // every 15-20 s will add one rescue
         if (time_passed > randomizer_obstacle) {
-            if (MathUtils.random(1, 5) <= 2) {
+            if (random <= 3) {
                 addRescue();
+            } else if (random<=7) {
+                addMedicine();
             } else {
                 addObstacles();
             }
             addEnemies();
             randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
+            random = MathUtils.random(1, 10);
         }
 
         // delete floors which are out of screen
