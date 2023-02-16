@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
 
-
+    float floor_time = 0;
     // VARIABLE DECLARATIONS
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
@@ -242,6 +242,7 @@ public class GameScreen implements Screen {
         // RECORD ANY GAME CHANGES
         // record time
         time_passed += delta;
+        floor_time += delta;
 
         //add score
         score.addScore(delta);
@@ -390,25 +391,20 @@ public class GameScreen implements Screen {
 
         // ADD / DELETE GAME OBJECTS
         // add new floors
-
-        //no idea what i wrote but somehow working
-        if (floors.peek().getY() > -80) {
+        // use time to control add floor
+        if( floor_time > 1 ){
             if (time_passed > randomizer_tramfloor ) {
                 addTramFloor();
                 randomizer_tramfloor += MathUtils.random(3, 5); // add the obstacles time
-            }
-
-            if ((time_passed > randomizer_spikefloor) && (tramfloors.peek().getY() > -80) ) {
+                floor_time = 0;
+            } else if (time_passed > randomizer_spikefloor) {
                 addSpikeFloor();
-                randomizer_spikefloor += MathUtils.random(20,24);
+                randomizer_spikefloor += MathUtils.random(5, 8);
+                floor_time = 0;
+            } else {
+                addFloor();
+                floor_time = 0;
             }
-            if ((tramfloors.peek().getY() > -80 ) && (spikefloors.peek().getY() > -80 )) {
-
-                addFloor();}
-
-
-
-
         }
 
         if (time_passed > randomizer_objects) {

@@ -14,7 +14,7 @@ public class Player extends GameObject{
     Rectangle feet, head, sword;
     float jumpTime = 0;
     float flashTime = 0;
-    boolean isJumping;
+    boolean isJumping = false;
     boolean isFlashing;
     boolean onFloor;
     boolean isFront;
@@ -89,6 +89,13 @@ public class Player extends GameObject{
         for (SpecialFloor tramfloor: tramfloors){
             if (feet.overlaps(tramfloor.object)) { // floor.object = the rectangle
                 onFloor = true;
+                //jump on the trampoline
+               isJumping = true;
+                jumpTime=0;
+                if(isJumping) {
+                    object.y += 1000 * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
+                    jumpTime += delta;
+                }
             }
         }
 
@@ -142,7 +149,7 @@ public class Player extends GameObject{
         }
     }
 
-    void jump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
+    public void jump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
         // check if standing on floor){ // check for isJumping, if isJumping, then jump
         if (isJumping && !headIsTouching(floors,spikefloors,tramfloors)) { // check for jumping and not hitting head
             object.y += 1400 * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
@@ -155,14 +162,6 @@ public class Player extends GameObject{
         }
     }
 
-    //i duno what i wrote(still working)
-//    void tramjump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors){
-//        for(SpecialFloor tramfloor:tramfloors){
-//            if ((feet.overlaps(tramfloor.object) && onFloor && (isJumping == true) && (jumpTime == 0) )) {
-//                jump(delta, floors, spikefloors, tramfloors);
-//            }
-//        }
-//    }
     boolean headIsTouching(Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
         // check if standing on floor){ // check if head is touching
         for (Floor floor: floors){
