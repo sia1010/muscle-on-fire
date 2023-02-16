@@ -90,10 +90,10 @@ public class Player extends GameObject{
             if (feet.overlaps(tramfloor.object)) { // floor.object = the rectangle
                 onFloor = true;
                 //jump on the trampoline
-               isJumping = true;
+                isJumping = true;
                 jumpTime=0;
                 if(isJumping) {
-                    object.y += 1000 * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
+                    object.y += 1000 * Math.pow(0.01, jumpTime) * delta;
                     jumpTime += delta;
                 }
             }

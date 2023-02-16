@@ -14,7 +14,7 @@ public class SpecialFloor extends GameObject{
         object.height = 13;
         object.width = 129;
         object.x = MathUtils.random(32, 480 - 128 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
-        object.y = -200; // below screen
+        object.y = -10; // below screen
         image = new Texture(Gdx.files.internal("trampoline.png"));
     }
 
@@ -23,7 +23,7 @@ public class SpecialFloor extends GameObject{
         object.height = 8;
         object.width = 129;
         object.x = MathUtils.random(32, 480 - 128 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
-        object.y = -200; // below screen
+        object.y = -10; // below screen
         image = new Texture(Gdx.files.internal("spikefloor.png"));
     }
 
