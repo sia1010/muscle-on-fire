@@ -18,7 +18,7 @@ public class Player extends GameObject{
     boolean isJumping;
     boolean isFlashing;
     Health healthPoint = new Health();
-    Animation<TextureRegion> playerAnim;
+    Animation<TextureRegion> front, left, right, playerAnim;
 
     void spawn(){ // spawn patrick
         // this is the main body
@@ -40,8 +40,10 @@ public class Player extends GameObject{
         updateFeetAndHeadPosition();
 
         // initialise the picture of patrick
-        image = new Texture(Gdx.files.internal("patrick_original.png"));
-        playerAnim = new Ani().loadAnimation("player.png", 4,1, 0.5f);
+        front = new Ani().loadAnimation("player_front.png", 2,1, 0.5f);
+        left = new Ani().loadAnimation("player_left.png", 4,1, 0.2f);
+        right = new Ani().loadAnimation("player_right.png", 4,1, 0.2f);
+        playerAnim = front;
     }
 
     void updateFeetAndHeadPosition(){
@@ -73,16 +75,28 @@ public class Player extends GameObject{
     void move(float delta, Controls controls){
         // take controls from Controls and apply them
         // additional keyboard controls for debugging
+        boolean isMoving = false;
+
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.leftButton.isPressed) {
             goLeft(150 * delta);
+            playerAnim = left;
+            isMoving = true;
         }
+
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || controls.rightButton.isPressed) {
             goRight(150 * delta);
+            playerAnim = right;
+            isMoving = true;
         }
 
         if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && onFloor) {
             isJumping = true; // set isJumping to true
             jumpTime = 0; // set jumpTime to 0
+            isMoving = true;
+        }
+
+        if (!isMoving){
+            playerAnim = front;
         }
     }
 
