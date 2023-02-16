@@ -29,6 +29,7 @@ public class Rescue extends GameObject{
         if (save_timer > 2 && !saved){
             saved = true;
             image = new Texture(Gdx.files.internal("rescue_saved.png"));
+            rescueAni = new Ani().loadAnimation("rescue_saved(sheet).png", 2,1, 0.5f);
             score.upScore(1000);
             pat.healDamage(1);
         }
