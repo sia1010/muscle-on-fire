@@ -25,6 +25,7 @@ public class GameScreen implements Screen {
     Array<FallingObjects> falling_life =new Array<FallingObjects>();
     Array<SpecialFloor> spikefloors = new Array<SpecialFloor>();
     Array<SpecialFloor> tramfloors = new Array<SpecialFloor>();
+    Array<SpecialFloor> woodfloors = new Array<SpecialFloor>();
     Array<Enemies> ebat = new Array<Enemies>();
     Controls controls;
 
@@ -38,6 +39,7 @@ public class GameScreen implements Screen {
     boolean medicine_backlog = false;
     float randomizer_spikefloor;
     float randomizer_tramfloor;
+    float randomizer_woodfloor;
     float randomizer_objects;
     enum State{
         READY,
@@ -79,6 +81,14 @@ public class GameScreen implements Screen {
 
         // add the floor into the floors array
         tramfloors.add(tramfloor);
+    }
+    void addWoodFloor(){
+
+        SpecialFloor woodfloor = new SpecialFloor();
+        woodfloor.wood_spawn();
+
+        // add the floor into the floors array
+        woodfloors.add(woodfloor);
     }
     void addEnemies(){
 
@@ -158,6 +168,9 @@ public class GameScreen implements Screen {
 
         for (SpecialFloor tramfloor : tramfloors) {
             game.batch.draw(tramfloor.getTexture(), tramfloor.getX(), tramfloor.getY());
+        }
+        for (SpecialFloor woodfloor : woodfloors) {
+            game.batch.draw(woodfloor.woodAnim.getKeyFrame(time_passed, true), woodfloor.getX(), woodfloor.getY());
         }
         // draw bat_enemy
         for (Enemies enemy : ebat) {
@@ -324,7 +337,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta, controls);
-            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors);
+            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors,woodfloors);
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
@@ -379,6 +392,10 @@ public class GameScreen implements Screen {
             tramfloor.transpose(delta, time_passed);
         }
 
+        for (SpecialFloor woodfloor : woodfloors) {
+            woodfloor.transpose(delta, time_passed);
+        }
+
         for (Enemies enemy : ebat) {
             enemy.checkDirection();
             enemy.move(delta);
@@ -414,7 +431,7 @@ public class GameScreen implements Screen {
         }
 
         // make patrick fall
-        patrick.fall(delta, time_passed, floors, spikefloors, tramfloors);
+        patrick.fall(delta, time_passed, floors, spikefloors, tramfloors,woodfloors);
 
 
         // ADD / DELETE GAME OBJECTS
@@ -428,6 +445,10 @@ public class GameScreen implements Screen {
             } else if (time_passed > randomizer_spikefloor) {
                 addSpikeFloor();
                 randomizer_spikefloor += MathUtils.random(5, 8);
+                floor_time = 0;
+            } else if (time_passed > randomizer_woodfloor) {
+                addWoodFloor();
+                randomizer_woodfloor += MathUtils.random(5, 8);
                 floor_time = 0;
             } else {
                 addFloor();
