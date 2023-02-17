@@ -30,7 +30,6 @@ public class GameScreen implements Screen {
 
     boolean touch_glass=false;
     boolean touch_stone=false;
-
     boolean touch_life=false;
     float time_passed;
     float randomizer_obstacle;
@@ -51,7 +50,7 @@ public class GameScreen implements Screen {
     // FUNCTIONS
 
     void initialFloor(){
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < 4; i++){
             addFloor();
             floors.peek().object.y += i * 100;
         }
@@ -325,7 +324,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta, controls);
-            patrick.jump(delta, floors, spikefloors, tramfloors);
+            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors);
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
@@ -415,7 +414,7 @@ public class GameScreen implements Screen {
         }
 
         // make patrick fall
-        patrick.fall(delta, floors, spikefloors, tramfloors, time_passed);
+        patrick.fall(delta, time_passed, floors, spikefloors, tramfloors);
 
 
         // ADD / DELETE GAME OBJECTS
@@ -463,41 +462,42 @@ public class GameScreen implements Screen {
                 randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
                 random = MathUtils.random(1, 10);
             }
+        }
 
-            if (rescue_backlog) {
-                for (Floor floor : floors) {
-                    if (floor.getY() < 0) {
-                        rescue_backlog = false;
-                        addRescue();
-                        break;
-                    }
-                }
-            } else if (obstacle_backlog) {
-                for (Floor floor : floors) {
-                    if (floor.getY() < 0) {
-                        obstacle_backlog = false;
-                        addObstacles();
-                        break;
-                    }
-                }
-            } else if (medicine_backlog) {
-                for (Floor floor : floors) {
-                    if (floor.getY() < 0) {
-                        medicine_backlog = false;
-                        addMedicine();
-                        break;
-                    }
+        if (rescue_backlog) {
+            for (Floor floor : floors) {
+                if (floor.getY() < 0) {
+                    rescue_backlog = false;
+                    addRescue();
+                    break;
                 }
             }
-
-            // delete floors which are out of screen
+        } else if (obstacle_backlog) {
             for (Floor floor : floors) {
-                if (floor.getY() > 1000) {
-                    floors.removeValue(floor, true);
+                if (floor.getY() < 0) {
+                    obstacle_backlog = false;
+                    addObstacles();
+                    break;
+                }
+            }
+        } else if (medicine_backlog) {
+            for (Floor floor : floors) {
+                if (floor.getY() < 0) {
+                    medicine_backlog = false;
+                    addMedicine();
+                    break;
                 }
             }
         }
+
+        // delete floors which are out of screen
+        for (Floor floor : floors) {
+            if (floor.getY() > 1000) {
+                floors.removeValue(floor, true);
+            }
+        }
     }
+
 
     @Override
     public void resize(int width, int height) {

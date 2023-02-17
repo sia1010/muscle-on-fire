@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.Array;
 public class Player extends GameObject{
 
     Rectangle feet, head, sword;
-    float timeToAddDifficulty=0;
     float jumpTime = 0;
     float flashTime = 0;
     int jumpPower = 1400;
@@ -37,7 +36,7 @@ public class Player extends GameObject{
         feet.width = 32; // smaller than the object, if the body touch the floor but the feet not, then will drop
 
         head = new Rectangle();
-        head.height = 4;
+        head.height = 8;
         head.width = 32; // if head hit floor, then will stop jump
 
         sword = new Rectangle();
@@ -58,9 +57,9 @@ public class Player extends GameObject{
             head.width = 36;
         }else{
             head.x = object.x;
-            head.width = 32;
+            head.width = 36;
         }
-        head.y = object.y + 64;
+        head.y = object.y + 56;
 
         // make the feet Rectangle() located beneath the body
         if(isFront){
@@ -68,12 +67,12 @@ public class Player extends GameObject{
             feet.width = 32;
         }else{
             feet.x = object.x;
-            feet.width = 28;
+            feet.width = 32;
         }
-        feet.y = object.y;
+        feet.y = object.y - 2;
     }
 
-    void fall(float delta, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, float time_passed){
+    void fall(float delta, float time_passed, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
@@ -100,7 +99,7 @@ public class Player extends GameObject{
         // if not on floor, fall down
         if (!onFloor){
             //object.y-=300*delta;
-            object.y -= 200 * delta;
+            object.y -= 300 * delta;
             object.y -= ((500 + time_passed) / 5) * delta;
             updateFeetAndHeadPosition();
         }
@@ -123,7 +122,7 @@ public class Player extends GameObject{
             isMoving = true;
         }
 
-        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && onFloor) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && onFloor && !isJumping) {
             isJumping = true; // set isJumping to true
             jumpTime = 0; // set jumpTime to 0
             isMoving = true;
@@ -149,12 +148,19 @@ public class Player extends GameObject{
         }
     }
 
-    public void jump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors){
+    public void jump(float delta, float passed_time, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors){
         // check if standing on floor){ // check for isJumping, if isJumping, then jump
         if (isJumping && !headIsTouching(floors,spikefloors,tramfloors)) { // check for jumping and not hitting head
-            object.y += jumpPower * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
+            float ori_y = object.y;
+            object.y += (jumpPower * ((500 + passed_time) / 500) * Math.pow(0.01, jumpTime)) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
+            /*if (bodyIsTouching(floors,spikefloors,tramfloors) && !headIsTouching(floors,spikefloors,tramfloors)){
+                while (bodyIsTouching(floors,spikefloors,tramfloors) && object.y >= ori_y) {
+                    object.y--;
+                }
+            }*/
+            updateFeetAndHeadPosition();
             jumpTime += delta;
-            if (jumpTime > 0.6f) { // after 0.6 seconds, stop jumping
+            if (jumpTime > 0.3f) { // after 0.3 seconds, stop jumping
                 isJumping = false;
             }
         }else{
@@ -183,6 +189,26 @@ public class Player extends GameObject{
         return false;
     }
 
+    boolean bodyIsTouching(Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
+        // check if standing on floor){ // check if head is touching
+        for (Floor floor: floors){
+            if (object.overlaps(floor.object)) { // floor.object = the rectangle
+                return true;
+            }
+        }
+        for (SpecialFloor spikefloor: spikefloors){
+            if (object.overlaps(spikefloor.object)) { // floor.object = the rectangle
+                return true;
+            }
+        }
+        for (SpecialFloor tramfloor: tramfloors){
+            if (object.overlaps(tramfloor.object)) { // floor.object = the rectangle
+                return true;
+            }
+        }
+        return false;
+    }
+
     void takeDamage(int damage){ // minus health equals to passed damage
         healthPoint.currHealth -= damage;
         isFlashing = true;
@@ -195,7 +221,7 @@ public class Player extends GameObject{
     }
 
     void drawHearts(SpriteBatch batch, float delta) {
-        if (flashTime > 3){
+        if (flashTime > 2){
             flashTime = 0;
             isFlashing = false;
         }
@@ -213,9 +239,9 @@ public class Player extends GameObject{
                 if (i < healthPoint.currHealth) {
                     batch.draw(healthPoint.filledHeart, 300 + 40 * i, 100);
                 } else {
-                    if ((int) (flashTime * 5) % 2 == 0) {
+                    if ((int) (flashTime * 10) % 2 == 0) {
                         batch.draw(healthPoint.flashHeart, 300 + 40 * i, 100);
-                    } else if ((int) (flashTime * 5) % 2 == 1) {
+                    } else if ((int) (flashTime * 10) % 2 == 1) {
                         batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 100);
                     }
                 }
@@ -230,6 +256,7 @@ public class Player extends GameObject{
             if(isFront){
                 object.width = 32;
                 object.x += 16;
+                updateFeetAndHeadPosition();
                 isFront = false;
             }
             batch.draw(playerAnim.getKeyFrame(time_passed, true), object.x - 16, object.y);
@@ -238,6 +265,7 @@ public class Player extends GameObject{
             if(isFront){
                 object.width = 32;
                 object.x += 16;
+                updateFeetAndHeadPosition();
                 isFront = false;
             }
             batch.draw(playerAnim.getKeyFrame(time_passed, true), object.x - 16, object.y);
@@ -246,6 +274,7 @@ public class Player extends GameObject{
             if(!isFront){
                 object.width = 64;
                 object.x -= 16;
+                updateFeetAndHeadPosition();
                 isFront = true;
             }
             batch.draw(playerAnim.getKeyFrame(time_passed, true), object.x, object.y);
@@ -254,7 +283,8 @@ public class Player extends GameObject{
     }
 
     boolean updateGameOver(){
-        return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.currHealth < 1);
+        // return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.currHealth < 1);
+        return false; // invincibility mode
     }
 
     @Override // overlap the old thing which u inherit

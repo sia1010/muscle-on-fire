@@ -20,7 +20,7 @@ public class SpecialFloor extends GameObject{
 
     void spike_spawn(){
         object = new Rectangle(); // from GameObject
-        object.height = 8;
+        object.height = 10;
         object.width = 129;
         object.x = MathUtils.random(32, 480 - 128 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
         object.y = -10; // below screen
