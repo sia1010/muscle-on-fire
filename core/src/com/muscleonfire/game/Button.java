@@ -34,7 +34,7 @@ public class Button extends GameObject {
 
     boolean getPressed(OrthographicCamera camera){ // put the coordinate of the touchPoint here
         for (int i = 0; i < 10; i++){
-            if (Gdx.input.justTouched()) {
+            if (Gdx.input.isTouched(i)) {
                 // place the touched coordinate into a vector3
                 Vector3 touchPoint = new Vector3(Gdx.input.getX(i), Gdx.input.getY(i), 0);
                 // unproject the coordinate, so it correlate with the screen shown by the camera

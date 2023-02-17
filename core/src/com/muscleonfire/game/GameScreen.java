@@ -29,9 +29,6 @@ public class GameScreen implements Screen {
     Array<Enemies> ebat = new Array<Enemies>();
     Controls controls;
 
-    boolean touch_glass=false;
-    boolean touch_stone=false;
-    boolean touch_life=false;
     float time_passed;
     float randomizer_obstacle;
     boolean rescue_backlog = false;
