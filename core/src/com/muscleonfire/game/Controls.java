@@ -21,17 +21,17 @@ public class Controls {
     public Controls(controlMode setmode){ // initialise the position and size of the buttons
         mode = setmode;
         if (mode == controlMode.button) {
-            leftButton = new Button(50, 30, 64, 64, new Texture(Gdx.files.internal("badlogic.jpg")), new Texture(Gdx.files.internal("badlogic.jpg")));
-            rightButton = new Button(150, 30, 64, 64, new Texture(Gdx.files.internal("badlogic.jpg")), new Texture(Gdx.files.internal("badlogic.jpg")));
-            jumpButton = new Button(360, 30, 64, 64, new Texture(Gdx.files.internal("badlogic.jpg")), new Texture(Gdx.files.internal("badlogic.jpg")));
+            leftButton = new Button(50, 30, 64, 64, "badlogic.jpg", "badlogic.jpg");
+            rightButton = new Button(150, 30, 64, 64,"badlogic.jpg", "badlogic.jpg");
+            jumpButton = new Button(360, 30, 64, 64, "badlogic.jpg", "badlogic.jpg");
         }else if (mode == controlMode.touch){
-            leftButton = new Button(0, 0, 240, 800, new Texture(Gdx.files.internal("nothing.png")), new Texture(Gdx.files.internal("nothing.png")));
-            rightButton = new Button(240, 0, 240, 800, new Texture(Gdx.files.internal("nothing.png")), new Texture(Gdx.files.internal("nothing.png")));
-            jumpButton = new Button(50, 30, 380, 64, new Texture(Gdx.files.internal("jump_unpressed.png")), new Texture(Gdx.files.internal("jump_unpressed.png")));
+            leftButton = new Button(0, 0, 240, 800,"nothing.png", "nothing.png");
+            rightButton = new Button(240, 0, 240, 800, "nothing.png", "nothing.png");
+            jumpButton = new Button(50, 30, 380, 64, "jump_unpressed.png", "jump_unpressed.png");
         }else if (mode == controlMode.follow){
-            leftButton = new Button(0, 0, 0, 0, new Texture(Gdx.files.internal("nothing.png")), new Texture(Gdx.files.internal("nothing.png")));
-            rightButton = new Button(0, 0, 0, 0, new Texture(Gdx.files.internal("nothing.png")), new Texture(Gdx.files.internal("nothing.png")));
-            jumpButton = new Button(50, 30, 380, 64, new Texture(Gdx.files.internal("jump_unpressed.png")), new Texture(Gdx.files.internal("jump_unpressed.png")));
+            leftButton = new Button(0, 0, 0, 0, "nothing.png", "nothing.png");
+            rightButton = new Button(0, 0, 0, 0, "nothing.png", "nothing.png");
+            jumpButton = new Button(50, 30, 380, 64, "jump_unpressed.png", "jump_unpressed.png");
         }
     }
 

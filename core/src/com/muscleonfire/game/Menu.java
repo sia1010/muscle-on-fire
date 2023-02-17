@@ -26,20 +26,23 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
     private SpriteBatch batch;
     Texture background;
     Sprite backgroundSprite;
-    Texture startButtonTexture = new Texture("start_button.png");
+    // Texture startButtonTexture = new Texture("start_button.png");
     Texture QuitButtonTexture = new Texture("quit.png");
-    TextureRegion StartButtonRegion = new TextureRegion(startButtonTexture);
+    // TextureRegion StartButtonRegion = new TextureRegion(startButtonTexture);
     TextureRegion QuitButtonRegion = new TextureRegion(QuitButtonTexture);
-    Sprite startButton = new Sprite(StartButtonRegion);
+    // Sprite startButton = new Sprite(StartButtonRegion);
     Sprite quitButton = new Sprite(QuitButtonRegion);
+
+    Button startButton;
 
     public Menu(final MuscleOnFire game) {
         this.game = game;
-        batch = new SpriteBatch();
-        background = new Texture("kurmi.png");
+        batch = game.batch;
+        background = new Texture("nothing.png");
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
-        startButton.setBounds(160, 400, 200, 100); //set the size and position of the button
+        // startButton.setBounds(160, 400, 200, 100); //set the size and position of the button
+        startButton = new Button(120, 400,300,80, "start_button.png", "start_button.png");
         quitButton.setBounds(160, 250, 200, 100);
 
     } //parameter is from muscleonfire
@@ -50,46 +53,48 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
 
     }
 
-        @Override
-        public void render( float delta){ //change screen to gamescreen
-            Gdx.gl.glClearColor(1, 1, 1, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            batch.begin();
-            backgroundSprite.draw(batch);
-            startButton.draw(batch);
-            quitButton.draw(batch);
-            batch.end();
+    @Override
+    public void render( float delta){ //change screen to gamescreen
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        backgroundSprite.draw(batch);
+        startButton.draw(batch);
+        quitButton.draw(batch);
+        batch.end();
 
-            //game.setScreen(new GameScreen(this.game));
+        if(startButton.getPressed(this.game.camera)){
+            game.setScreen(new GameScreen(this.game));
         }
+    }
 
-        @Override
-        public void resize ( int width, int height){
-
-        }
-
-        @Override
-        public void pause () {
-
-        }
-
-        @Override
-        public void resume () {
-
-        }
-
-        @Override
-        public void hide () {
-
-        }
-
-        @Override
-        public void dispose () {
-            startButtonTexture.dispose();
-            QuitButtonTexture.dispose();
-            batch.dispose();
-        }
-
+    @Override
+    public void resize ( int width, int height){
 
     }
+
+    @Override
+    public void pause () {
+
+    }
+
+    @Override
+    public void resume () {
+
+    }
+
+    @Override
+    public void hide () {
+
+    }
+
+    @Override
+    public void dispose () {
+        // startButtonTexture.dispose();
+        QuitButtonTexture.dispose();
+        batch.dispose();
+    }
+
+
+}
 

@@ -283,8 +283,8 @@ public class Player extends GameObject{
     }
 
     boolean updateGameOver(){
-        // return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.currHealth < 1);
-        return false; // invincibility mode
+        return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.currHealth < 1);
+        // return false; // invincibility mode
     }
 
     @Override // overlap the old thing which u inherit
