@@ -36,6 +36,7 @@ public class GameScreen implements Screen {
     float randomizer_obstacle;
     boolean rescue_backlog = false;
     boolean obstacle_backlog = false;
+    boolean medicine_backlog = false;
     float randomizer_spikefloor;
     float randomizer_tramfloor;
     float randomizer_objects;
@@ -48,6 +49,13 @@ public class GameScreen implements Screen {
 
 
     // FUNCTIONS
+
+    void initialFloor(){
+        for (int i = 0; i < 6; i++){
+            addFloor();
+            floors.peek().object.y += i * 100;
+        }
+    }
     void addFloor(){
         // add a new floor
         Floor floor = new Floor();
@@ -217,7 +225,7 @@ public class GameScreen implements Screen {
         fallingObjects.falling_building_spawn();
 
         // add first floor
-        addFloor();
+        initialFloor();
 
         // set randomizer obstacle
         randomizer_obstacle = MathUtils.random(15, 20);
@@ -444,11 +452,10 @@ public class GameScreen implements Screen {
         // every 15-20 s will add one rescue
         if (time_passed > randomizer_obstacle) {
             if (MathUtils.random(1, 5) <= 2) {
-                rescue_backlog = true;
                 if (random <= 3) {
-                    addRescue();
+                    rescue_backlog = true;
                 } else if (random <= 7) {
-                    addMedicine();
+                    medicine_backlog = true;
                 } else {
                     obstacle_backlog = true;
                 }
@@ -470,6 +477,14 @@ public class GameScreen implements Screen {
                     if (floor.getY() < 0) {
                         obstacle_backlog = false;
                         addObstacles();
+                        break;
+                    }
+                }
+            } else if (medicine_backlog) {
+                for (Floor floor : floors) {
+                    if (floor.getY() < 0) {
+                        medicine_backlog = false;
+                        addMedicine();
                         break;
                     }
                 }

@@ -203,20 +203,20 @@ public class Player extends GameObject{
         if (!isFlashing) {
             for (int i = 0; i < healthPoint.maxHealth; i++) {
                 if (i < healthPoint.currHealth) {
-                    batch.draw(healthPoint.filledHeart, 300 + 40 * i, 50);
+                    batch.draw(healthPoint.filledHeart, 300 + 40 * i, 100);
                 } else {
-                    batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 50);
+                    batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 100);
                 }
             }
         } else {
             for (int i = 0; i < healthPoint.maxHealth; i++) {
                 if (i < healthPoint.currHealth) {
-                    batch.draw(healthPoint.filledHeart, 300 + 40 * i, 50);
+                    batch.draw(healthPoint.filledHeart, 300 + 40 * i, 100);
                 } else {
                     if ((int) (flashTime * 5) % 2 == 0) {
-                        batch.draw(healthPoint.flashHeart, 300 + 40 * i, 50);
+                        batch.draw(healthPoint.flashHeart, 300 + 40 * i, 100);
                     } else if ((int) (flashTime * 5) % 2 == 1) {
-                        batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 50);
+                        batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 100);
                     }
                 }
 
