@@ -35,6 +35,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
 
     Button startButton;
     Button quitButton;
+    Button shopButton;
 
     public Menu(final MuscleOnFire game) {
         this.game = game;
@@ -45,7 +46,9 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         // startButton.setBounds(160, 400, 200, 100); //set the size and position of the button
         startButton = new Button(93, 400,300,80, "start_button.png", "start_button.png");
         //quitButton.setBounds(135, 250, 200, 100);
-        quitButton = new Button(93,250,300,80,"quit.png","quit.png");
+        quitButton = new Button(93,230,300,80,"quit.png","quit.png");
+
+        shopButton = new Button(93,130,300,80,"Shop_button_menu.png","Shop_button_menu.png");
 
     } //parameter is from muscleonfire
 
@@ -68,6 +71,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         backgroundSprite.draw(batch);
         startButton.draw(batch);
         quitButton.draw(batch);
+        shopButton.draw(batch);
         batch.end();
 
         if(startButton.getPressed(this.game.camera)){
@@ -76,6 +80,9 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         if(quitButton.getPressed(this.game.camera)){
             Gdx.app.exit();
             System.exit(0);
+        }
+        if(shopButton.getPressed(this.game.camera)){
+            game.setScreen(new Shop(this.game));
         }
     }
 

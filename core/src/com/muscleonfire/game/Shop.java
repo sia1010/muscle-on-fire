@@ -1,12 +1,17 @@
 package com.muscleonfire.game;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Shop implements Screen {
     final MuscleOnFire game;
-    public Shop(final MuscleOnFire game,Score score){
+    private SpriteBatch batch;
+    Sprite backgroundSprite;
+    public Shop(final MuscleOnFire game){
         this.game = game;
+        batch = game.batch;
     }
     @Override
     public void show() {
@@ -24,7 +29,7 @@ public class Shop implements Screen {
         game.batch.setProjectionMatrix(game.camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "SHOP", 230, 800); //need to try
+        game.font.draw(game.batch, "SHOP", 210, 800); //need to try
         game.batch.end();
     }
 
