@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-public class Obstacles extends GameObject{
+public class Fire extends GameObject{
     float dmg_timer = 0;
     Animation<TextureRegion> fireAnim;
     void spawn(Array<Floor> floors){

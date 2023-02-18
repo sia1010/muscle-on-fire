@@ -18,7 +18,7 @@ public class GameScreen implements Screen {
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     Array<Rescue> rescues = new Array<Rescue>();
     Array<Medicine> medicines = new Array<Medicine>();
-    Array<Obstacles> obstacle = new Array<Obstacles>();
+    Array<Fire> fires = new Array<Fire>();
     Array<FallingObjects> falling_glass =new Array<FallingObjects>();
     Array<FallingObjects> falling_stone =new Array<FallingObjects>();
     Array<FallingObjects> falling_life =new Array<FallingObjects>();
@@ -65,7 +65,6 @@ public class GameScreen implements Screen {
         // add the floor into the floors array
         floors.add(floor);
     }
-
     void addSpikeFloor(){
 
         SpecialFloor spikefloor = new SpecialFloor();
@@ -98,31 +97,29 @@ public class GameScreen implements Screen {
         // add the floor into the floors array
         ebat.add(enemy);
     }
-    void addObstacles(){
+    void addFire(){
         // add a new obstacles
-        Obstacles o = new Obstacles();
-        o.spawn(floors);
+        Fire fire = new Fire();
+        fire.spawn(floors);
 
         // add the o into the obstacle array
-        obstacle.add(o);
+        fires.add(fire);
     }
-
     void addRescue(){
         // add a new obstacles
-        Rescue r = new Rescue();
-        r.spawn(floors);
+        Rescue rescue = new Rescue();
+        rescue.spawn(floors);
 
         // add the o into the rescues array
-        rescues.add(r);
+        rescues.add(rescue);
     }
-
     void addMedicine(){
         // add a new obstacles
-        Medicine m = new Medicine();
-        m.spawn(floors);
+        Medicine medicine = new Medicine();
+        medicine.spawn(floors);
 
         // add the o into the medicines array
-        medicines.add(m);
+        medicines.add(medicine);
     }
     void addGlass(){
         FallingObjects glass=new FallingObjects();
@@ -130,21 +127,18 @@ public class GameScreen implements Screen {
 
         falling_glass.add(glass);
     }
-
     void addStone(){
         FallingObjects stone=new FallingObjects();
         stone.falling_stone_spawn();
 
         falling_stone.add(stone);
     }
-
     void addLife(){
         FallingObjects life=new FallingObjects();
         life.falling_life_spawn();
 
         falling_life.add(life);
     }
-
 
     void drawAllObjects(float delta){
 
@@ -162,16 +156,21 @@ public class GameScreen implements Screen {
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
         }
 
+        // draw all the spike floors
         for (SpecialFloor spikefloor : spikefloors) {
             game.batch.draw(spikefloor.getTexture(), spikefloor.getX(), spikefloor.getY());
         }
 
+        // draw all the trampoline floors
         for (SpecialFloor tramfloor : tramfloors) {
             game.batch.draw(tramfloor.getTexture(), tramfloor.getX(), tramfloor.getY());
         }
+
+        // draw all the rolling wooden floors
         for (SpecialFloor woodfloor : woodfloors) {
             game.batch.draw(woodfloor.woodAnim.getKeyFrame(time_passed, true), woodfloor.getX(), woodfloor.getY());
         }
+
         // draw bat_enemy
         for (Enemies enemy : ebat) {
             game.batch.draw(enemy.batmanfly.getKeyFrame(time_passed, true), enemy.getX(), enemy.getY());
@@ -179,29 +178,32 @@ public class GameScreen implements Screen {
         }
 
         // draw all the rescue
-        for (Rescue res : rescues) {
-            game.batch.draw(res.rescueAni.getKeyFrame(time_passed, true), res.getX(), res.getY());
-            game.batch.draw(res.getTextureHelpBox(), res.getHelpX(), res.getHelpY());
+        for (Rescue rescue : rescues) {
+            game.batch.draw(rescue.rescueAni.getKeyFrame(time_passed, true), rescue.getX(), rescue.getY());
+            game.batch.draw(rescue.getTextureHelpBox(), rescue.getHelpX(), rescue.getHelpY());
         }
 
         // draw all the medicine
-        for (Medicine med : medicines) {
-            game.batch.draw(med.getTexture(), med.getX(), med.getY());
+        for (Medicine medicine : medicines) {
+            game.batch.draw(medicine.getTexture(), medicine.getX(), medicine.getY());
         }
 
-        // draw all the obstacles
-        for (Obstacles obs : obstacle) {
-            game.batch.draw(obs.fireAnim.getKeyFrame(time_passed, true), obs.getX(), obs.getY());
+        // draw all the fires
+        for (Fire fire : fires) {
+            game.batch.draw(fire.fireAnim.getKeyFrame(time_passed, true), fire.getX(), fire.getY());
         }
 
+        // draw all the falling glass
         for(FallingObjects gls : falling_glass ){
             game.batch.draw(gls.getTexture(), gls.getX(), gls.getY());
         }
 
+        // draw all the falling stone
         for(FallingObjects stn : falling_stone ){
             game.batch.draw(stn.getTexture(), stn.getX(),stn.getY());
         }
 
+        // draw all the falling life
         for(FallingObjects life : falling_life ){
             game.batch.draw(life.getTexture(), life.getX(),life.getY());
         }
@@ -229,12 +231,11 @@ public class GameScreen implements Screen {
         patrick.spawn();
 
         // initialising the background
-        background= new Building();
+        background = new Building();
         background.spawn();
 
         //initialising the falling building
-
-        fallingObjects=new FallingObjects();
+        fallingObjects = new FallingObjects();
         fallingObjects.falling_building_spawn();
 
         // add first floor
@@ -244,13 +245,13 @@ public class GameScreen implements Screen {
         randomizer_obstacle = MathUtils.random(15, 20);
 
         // set randomizer falling_objects
-        randomizer_objects=MathUtils.random(8,13);
+        randomizer_objects = MathUtils.random(8,13);
 
         // set game state as READY
         gameState = State.READY;
 
         // time
-        time_passed = 0;
+        time_passed = 1000;
 
         // open High Score File
         score.openHighScoreFile();
@@ -353,34 +354,30 @@ public class GameScreen implements Screen {
 
         // update everything
         patrick.transpose(delta, time_passed);
+
         for (Floor floor : floors) {
             floor.transpose(delta, time_passed);
         }
 
-        for (Rescue res : rescues) {
-            res.playerTouched(patrick, delta, score);
-            res.transpose(delta, time_passed);
+        for (Rescue rescue : rescues) {
+            rescue.transpose(delta, time_passed);
+            rescue.playerTouched(patrick, delta, score);
         }
 
-        for (Medicine med : medicines) {
-            med.playerTouched(patrick);
-            med.transpose(delta, time_passed);
-            if (med.playerTouched(patrick)) {
-                medicines.removeValue(med, true);
+        for (Medicine medicine : medicines) {
+            medicine.transpose(delta, time_passed);
+            if (medicine.playerTouched(patrick)) {
+                medicines.removeValue(medicine, true);
             }
-            ;
         }
 
-        for (Obstacles obs : obstacle) {
-            obs.playerTouched(patrick, delta);
-            obs.transpose(delta, time_passed);
+        for (Fire fire : fires) {
+            fire.transpose(delta, time_passed);
+            fire.playerTouched(patrick, delta);
         }
 
         for (SpecialFloor spikefloor : spikefloors) {
-
             spikefloor.transpose(delta, time_passed);
-
-
             spikefloor.touchedSpike(patrick, delta);
         }
 //        for (SpecialFloor sfloor : spikefloors) {
@@ -396,24 +393,21 @@ public class GameScreen implements Screen {
         }
 
         for (Enemies enemy : ebat) {
-            if (enemy.killed){
+            if (enemy.killed) {
                 enemy.transpose(delta, time_passed);
-            }
-            else if (enemy.playerTouched(patrick, delta)){
+            } else if (enemy.playerTouched(patrick, delta)) {
                 ebat.removeValue(enemy, true);
-            }else{
+            } else {
                 enemy.checkDirection();
                 enemy.move(delta);
             }
 
-            if (enemy.object.y < -200 || enemy.object.y > 800){
+            if (enemy.object.y < -200 || enemy.object.y > 800) {
                 ebat.removeValue(enemy, true);
             }
-
         }
 
         for (FallingObjects gls : falling_glass) {
-
             gls.transpose(delta, time_passed);
             if (gls.playerTouched(patrick)) {
                 falling_glass.removeValue(gls, true);
@@ -421,9 +415,7 @@ public class GameScreen implements Screen {
         }
 
         for (FallingObjects stn : falling_stone) {
-
             stn.transpose(delta, time_passed);
-
             if (stn.playerTouched(patrick)) {
                 falling_stone.removeValue(stn, true);
             }
@@ -431,14 +423,13 @@ public class GameScreen implements Screen {
 
         for (FallingObjects life : falling_life) {
             life.transpose(delta, time_passed);
-
             if (life.playerTouchedLife(patrick)) {
                 falling_life.removeValue(life, true);
             }
         }
 
         // make patrick fall
-        patrick.fall(delta,  floors, spikefloors, tramfloors,woodfloors, ebat, time_passed);
+        patrick.fall(delta, floors, spikefloors, tramfloors, woodfloors, ebat, time_passed);
 
 
         // ADD / DELETE GAME OBJECTS
@@ -460,10 +451,10 @@ public class GameScreen implements Screen {
         }
 
         if (time_passed > randomizer_objects) {
-            int a = MathUtils.random(1, 10);
-            if (a <= 3) {
+            int random = MathUtils.random(1, 10);
+            if (random <= 3) {
                 addGlass();
-            } else if (a <= 6) {
+            } else if (random <= 6) {
                 addStone();
             } else {
                 addLife();
@@ -474,9 +465,7 @@ public class GameScreen implements Screen {
         // the obstacle will be added in the range of (15, 20) of the time passed
         // every 15-20 s will add one rescue
         if (time_passed > randomizer_obstacle) {
-
             int random = MathUtils.random(1, 10);
-
             if (random <= 3) {
                 next_obstacle = Obstacle.RESCUE;
             } else if (random <= 7) {
@@ -484,18 +473,22 @@ public class GameScreen implements Screen {
             } else {
                 next_obstacle = Obstacle.FIRE;
             }
-
             randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
-
         }
 
         if (next_obstacle != Obstacle.NULL) {
             for (Floor floor : floors) {
                 if (floor.getY() < 0) {
-                    switch (next_obstacle){
-                        case RESCUE: addRescue(); break;
-                        case FIRE:addObstacles(); break;
-                        case MEDICINE: addMedicine(); break;
+                    switch (next_obstacle) {
+                        case RESCUE:
+                            addRescue();
+                            break;
+                        case FIRE:
+                            addFire();
+                            break;
+                        case MEDICINE:
+                            addMedicine();
+                            break;
                     }
                     addEnemies();
                     next_obstacle = Obstacle.NULL;
@@ -510,7 +503,51 @@ public class GameScreen implements Screen {
                 floors.removeValue(floor, true);
             }
         }
-}
+        for (SpecialFloor floor : spikefloors) {
+            if (floor.getY() > 1000) {
+                spikefloors.removeValue(floor, true);
+            }
+        }
+        for (SpecialFloor floor : tramfloors) {
+            if (floor.getY() > 1000) {
+                tramfloors.removeValue(floor, true);
+            }
+        }
+
+        // delete falling objects which are out of screen
+        for (FallingObjects fallingObject : falling_glass) {
+            if (fallingObject.getY() < -200) {
+                falling_glass.removeValue(fallingObject, true);
+            }
+        }
+        for (FallingObjects fallingObject : falling_stone) {
+            if (fallingObject.getY() < -200) {
+                falling_stone.removeValue(fallingObject, true);
+            }
+        }
+        for (FallingObjects fallingObject : falling_life) {
+            if (fallingObject.getY() < -200) {
+                falling_life.removeValue(fallingObject, true);
+            }
+        }
+
+        // delete obstacles which are out of screen
+        for (Fire fire : fires){
+            if (fire.getY() > 1000){
+                fires.removeValue(fire, true);
+            }
+        }
+        for (Rescue rescue : rescues){
+            if (rescue.getY() > 1000){
+                rescues.removeValue(rescue, true);
+            }
+        }
+        for (Medicine medicine : medicines){
+            if (medicine.getY() > 1000){
+                medicines.removeValue(medicine, true);
+            }
+        }
+    }
 
     @Override
     public void resize(int width, int height) {
