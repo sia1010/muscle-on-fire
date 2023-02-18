@@ -4,9 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 public class GameOver implements Screen {
 
+
+    Button retryButton;
+    Button menuButton;
     final MuscleOnFire game;
     @Override
     public void show() {
@@ -17,7 +22,16 @@ public class GameOver implements Screen {
         this.game = game;
         this.game.coin.addCoin(score);
         this.game.coin.saveCoin();
+
+        retryButton=new Button(100,400,300,64,"tap_to_retry.png","tap_to_retry.png");
+        menuButton=new Button(100,250,300,64,"back_to_menu.png","back_to_menu.png");
+
+
     }
+
+
+
+
 
     @Override
     public void render(float delta) {
@@ -30,10 +44,19 @@ public class GameOver implements Screen {
         game.batch.setProjectionMatrix(game.camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "TAP TO RETRY", 135, 400);
+        //game.font.draw(game.batch, "TAP TO RETRY", 135, 400);
+
+
+        menuButton.draw(game.batch);
+        retryButton.draw(game.batch);
+
+
         game.batch.end();
 
-        if (Gdx.input.justTouched()){
+        if (retryButton.getPressed(this.game.camera)){
+            game.setScreen(new GameScreen(this.game));
+        }
+        else if (menuButton.getPressed(this.game.camera)) {
             game.setScreen(new Menu(this.game));
         }
     }
