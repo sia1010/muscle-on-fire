@@ -23,8 +23,8 @@ public class GameOver implements Screen {
         this.game.coin.addCoin(score);
         this.game.coin.saveCoin();
 
-        retryButton=new Button(100,400,300,64,"tap_to_retry.png","tap_to_retry.png");
-        menuButton=new Button(100,250,300,64,"back_to_menu.png","back_to_menu.png");
+        retryButton=new Button(90,400,300,64,"tap_to_retry.png","tap_to_retry.png");
+        menuButton=new Button(90,250,300,64,"back_to_menu.png","back_to_menu.png");
 
 
     }
