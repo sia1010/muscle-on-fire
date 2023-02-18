@@ -27,13 +27,14 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
     Texture background;
     Sprite backgroundSprite;
     // Texture startButtonTexture = new Texture("start_button.png");
-    Texture QuitButtonTexture = new Texture("quit.png");
+    //Texture QuitButtonTexture = new Texture("quit.png");
     // TextureRegion StartButtonRegion = new TextureRegion(startButtonTexture);
-    TextureRegion QuitButtonRegion = new TextureRegion(QuitButtonTexture);
+    //TextureRegion QuitButtonRegion = new TextureRegion(QuitButtonTexture);
     // Sprite startButton = new Sprite(StartButtonRegion);
-    Sprite quitButton = new Sprite(QuitButtonRegion);
+    //Sprite quitButton = new Sprite(QuitButtonRegion);
 
     Button startButton;
+    Button quitButton;
 
     public Menu(final MuscleOnFire game) {
         this.game = game;
@@ -43,7 +44,8 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         backgroundSprite.setSize(480, 800);
         // startButton.setBounds(160, 400, 200, 100); //set the size and position of the button
         startButton = new Button(93, 400,300,80, "start_button.png", "start_button.png");
-        quitButton.setBounds(135, 250, 200, 100);
+        //quitButton.setBounds(135, 250, 200, 100);
+        quitButton = new Button(93,250,300,80,"quit.png","quit.png");
 
     } //parameter is from muscleonfire
 
@@ -71,6 +73,10 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         if(startButton.getPressed(this.game.camera)){
             game.setScreen(new GameScreen(this.game));
         }
+        if(quitButton.getPressed(this.game.camera)){
+            Gdx.app.exit();
+            System.exit(0);
+        }
     }
 
     @Override
@@ -96,7 +102,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
     @Override
     public void dispose () {
         // startButtonTexture.dispose();
-        QuitButtonTexture.dispose();
+        //QuitButtonTexture.dispose();
         batch.dispose();
     }
 
