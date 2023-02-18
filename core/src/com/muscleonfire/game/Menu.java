@@ -42,8 +42,8 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
         // startButton.setBounds(160, 400, 200, 100); //set the size and position of the button
-        startButton = new Button(120, 400,300,80, "start_button.png", "start_button.png");
-        quitButton.setBounds(160, 250, 200, 100);
+        startButton = new Button(93, 400,300,80, "start_button.png", "start_button.png");
+        quitButton.setBounds(135, 250, 200, 100);
 
     } //parameter is from muscleonfire
 
