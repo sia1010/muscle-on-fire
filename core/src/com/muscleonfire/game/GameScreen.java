@@ -493,9 +493,9 @@ public class GameScreen implements Screen {
             for (Floor floor : floors) {
                 if (floor.getY() < 0) {
                     switch (next_obstacle){
-                        case RESCUE: addRescue();
-                        case FIRE:addObstacles();
-                        case MEDICINE: addMedicine();
+                        case RESCUE: addRescue(); break;
+                        case FIRE:addObstacles(); break;
+                        case MEDICINE: addMedicine(); break;
                     }
                     addEnemies();
                     next_obstacle = Obstacle.NULL;
