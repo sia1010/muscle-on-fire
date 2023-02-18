@@ -2,11 +2,16 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Enemies extends GameObject {
+
+    Animation<TextureRegion> batmanfly;
+    Rectangle head, body;
 
     float time = 0;
     int dmg =0;
@@ -16,13 +21,31 @@ public class Enemies extends GameObject {
         object.width = 64;
         object.x = MathUtils.random(32, 480 - 64 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
         object.y = 0; // below screen
-        image = new Texture(Gdx.files.internal("Batman.png"));
+        //image = new Texture(Gdx.files.internal("Batman.png"));
+        batmanfly = new Ani().loadAnimation("batman(sheet).png", 2,1, 0.5f);
+
+        head = new Rectangle();
+        head.height = 4;
+        head.width = 64;
+
+
+        body = new Rectangle();
+        body.height = 36;
+        body.width = 64;
+
     }
 
+    void updateHeadAndBodyPosition(){
+        head.x = object.x;
+        head.y = object.y + 36;
+
+        body.x = object.x;
+        body.y = object.y;
+    }
     boolean move_right = false;
     boolean move_down = false;
 
-
+    boolean killed = false;
 
     void checkDirection(){
         if (object.x <= 32) { // floor.object = the rectangle
@@ -39,28 +62,46 @@ public class Enemies extends GameObject {
 
     void move(float delta){
         if (move_right && move_down){
+            batmanfly = new Ani().loadAnimation("batman(sheet).png", 2,1, 0.5f);
             object.x += MathUtils.random(100,300) * delta;
             object.y -= MathUtils.random(100,300) * delta;
         }else if(!move_right && move_down){
+            batmanfly = new Ani().loadAnimation("batman_left(sheet).png", 2,1, 0.5f);
             object.x -= MathUtils.random(100,200) * delta;
             object.y -= MathUtils.random(100,200) * delta;
         }else if(!move_right && !move_down){
+            batmanfly = new Ani().loadAnimation("batman_left(sheet).png", 2,1, 0.5f);
             object.x -= MathUtils.random(100,200) * delta;
             object.y += MathUtils.random(100,200) * delta;
         }else if(move_right && !move_down){
+            batmanfly = new Ani().loadAnimation("batman(sheet).png", 2,1, 0.5f);
             object.x += MathUtils.random(100,200) * delta;
             object.y += MathUtils.random(100,200) * delta;
         }
+        updateHeadAndBodyPosition();
         time += delta;
     }
 
     boolean playerTouched(Player pat, float delta) {
-        if (pat.object.overlaps(object)) {
+        if (pat.object.overlaps(body)) {
             pat.takeDamage(1);
-            return  true;
+            return true;
         }
         return  false;
     }
 
-
+    boolean batmanKilled(Player pat, float delta){
+        if (pat.feet.overlaps(head)){
+            killed = true;
+            return true;
+        }
+        return false;
+    }
+    @Override
+    void transpose(float delta, float time_passed){
+        if (killed){
+            object.y -= 200 * delta;
+        }
+    }
 }
+

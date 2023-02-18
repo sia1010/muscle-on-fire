@@ -73,7 +73,7 @@ public class Player extends GameObject{
         feet.y = object.y;
     }
 
-    void fall(float delta, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, float time_passed){
+    void fall(float delta, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, Array<Enemies> ebat, float time_passed){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
@@ -91,6 +91,14 @@ public class Player extends GameObject{
         for (SpecialFloor tramfloor: tramfloors){
             if (feet.overlaps(tramfloor.object)) { // floor.object = the rectangle
                 onFloor = true;
+                isJumping = true;
+                jumpTime = 0;
+                jumpPower = 600;
+            }
+        }
+
+        for (Enemies killbat: ebat){
+            if (feet.overlaps(killbat.object)) { // killbat.object = the rectangle
                 isJumping = true;
                 jumpTime = 0;
                 jumpPower = 600;
@@ -149,9 +157,9 @@ public class Player extends GameObject{
         }
     }
 
-    public void jump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors){
+    public void jump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, Array<Enemies> ebat){
         // check if standing on floor){ // check for isJumping, if isJumping, then jump
-        if (isJumping && !headIsTouching(floors,spikefloors,tramfloors)) { // check for jumping and not hitting head
+        if (isJumping && !headIsTouching(floors,spikefloors,tramfloors, ebat)) { // check for jumping and not hitting head
             object.y += jumpPower * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
             jumpTime += delta;
             if (jumpTime > 0.6f) { // after 0.6 seconds, stop jumping
@@ -163,7 +171,7 @@ public class Player extends GameObject{
         }
     }
 
-    boolean headIsTouching(Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
+    boolean headIsTouching(Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, Array<Enemies> ebat ){
         // check if standing on floor){ // check if head is touching
         for (Floor floor: floors){
             if (head.overlaps(floor.object)) { // floor.object = the rectangle
@@ -177,6 +185,11 @@ public class Player extends GameObject{
         }
         for (SpecialFloor tramfloor: tramfloors){
             if (head.overlaps(tramfloor.object)) { // floor.object = the rectangle
+                return true;
+            }
+        }
+        for (Enemies killbat: ebat){
+            if (head.overlaps(killbat.object)) { // floor.object = the rectangle
                 return true;
             }
         }

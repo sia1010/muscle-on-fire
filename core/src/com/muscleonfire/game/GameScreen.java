@@ -162,7 +162,8 @@ public class GameScreen implements Screen {
         }
         // draw bat_enemy
         for (Enemies enemy : ebat) {
-            game.batch.draw(enemy.getTexture(), enemy.getX(), enemy.getY());
+            game.batch.draw(enemy.batmanfly.getKeyFrame(time_passed, true), enemy.getX(), enemy.getY());
+            //game.batch.draw(enemy.getTexture(), enemy.getX(), enemy.getY());
         }
 
         // draw all the rescue
@@ -325,7 +326,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta, controls);
-            patrick.jump(delta, floors, spikefloors, tramfloors);
+            patrick.jump(delta, floors, spikefloors, tramfloors, ebat);
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
@@ -381,12 +382,17 @@ public class GameScreen implements Screen {
         }
 
         for (Enemies enemy : ebat) {
-            enemy.checkDirection();
-            enemy.move(delta);
-            if (enemy.playerTouched(patrick, delta)) {
-                ebat.removeValue(enemy, true);
+            enemy.batmanKilled(patrick, delta);
+            if (enemy.killed){
+                enemy.transpose(delta, time_passed);
             }
-            ;
+            else if (enemy.playerTouched(patrick, delta)){
+                ebat.removeValue(enemy, true);
+            }else{
+                enemy.checkDirection();
+                enemy.move(delta);
+            }
+
         }
 
         for (FallingObjects gls : falling_glass) {
@@ -415,7 +421,7 @@ public class GameScreen implements Screen {
         }
 
         // make patrick fall
-        patrick.fall(delta, floors, spikefloors, tramfloors, time_passed);
+        patrick.fall(delta, floors, spikefloors, tramfloors, ebat, time_passed);
 
 
         // ADD / DELETE GAME OBJECTS
