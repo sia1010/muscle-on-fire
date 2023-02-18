@@ -54,5 +54,28 @@ public class Button extends GameObject {
         // if no touch, return false
         return false;
     }
+
+    boolean getJustPressed(OrthographicCamera camera){ // put the coordinate of the touchPoint here
+        for (int i = 0; i < 10; i++){
+            if (Gdx.input.justTouched()) {
+                // place the touched coordinate into a vector3
+                Vector3 touchPoint = new Vector3(Gdx.input.getX(i), Gdx.input.getY(i), 0);
+                // unproject the coordinate, so it correlate with the screen shown by the camera
+                camera.unproject(touchPoint);
+                // create a Rectangle() with the coordinates of the touchPoint
+                // and check if the button overlaps with the Rectangle()
+                // if it overlaps, it means the button is being pressed
+                // and isPressed = true
+                isPressed = object.overlaps(new Rectangle(touchPoint.x, touchPoint.y, 0,0));
+                // if the button is pressed set the Texture to being pressed and return true
+                if (isPressed) {
+                    setTexture();
+                    return isPressed;
+                }
+            }
+        }
+        // if no touch, return false
+        return false;
+    }
 }
 

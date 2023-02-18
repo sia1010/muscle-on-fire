@@ -53,10 +53,10 @@ public class GameOver implements Screen {
 
         game.batch.end();
 
-        if (retryButton.getPressed(this.game.camera)){
+        if (retryButton.getJustPressed(this.game.camera)){
             game.setScreen(new GameScreen(this.game));
         }
-        else if (menuButton.getPressed(this.game.camera)) {
+        else if (menuButton.getJustPressed(this.game.camera)) {
             game.setScreen(new Menu(this.game));
         }
     }
