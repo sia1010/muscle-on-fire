@@ -251,7 +251,7 @@ public class GameScreen implements Screen {
         gameState = State.READY;
 
         // time
-        time_passed = 1000;
+        time_passed = 0;
 
         // open High Score File
         score.openHighScoreFile();
