@@ -195,6 +195,7 @@ public class Player extends GameObject{
     void takeDamage(int damage){ // minus health equals to passed damage
         healthPoint.currHealth -= damage;
         isFlashing = true;
+        flashTime = 0;
     }
 
     void healDamage(int heal){
