@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameScreen implements Screen {
 
     float floor_time = 0;
-    int random;
     // VARIABLE DECLARATIONS
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
@@ -29,25 +28,25 @@ public class GameScreen implements Screen {
     Array<Enemies> ebat = new Array<Enemies>();
     Controls controls;
 
-    boolean touch_glass=false;
-    boolean touch_stone=false;
-
-    boolean touch_life=false;
     float time_passed;
     float randomizer_obstacle;
-    boolean rescue_backlog = false;
-    boolean obstacle_backlog = false;
-    boolean medicine_backlog = false;
     float randomizer_spikefloor;
     float randomizer_tramfloor;
     float randomizer_woodfloor;
     float randomizer_objects;
+    enum Obstacle {
+        NULL,
+        FIRE,
+        RESCUE,
+        MEDICINE
+    }
     enum State{
         READY,
         RUNNING,
         OVER
     }
     State gameState;
+    Obstacle next_obstacle = Obstacle.NULL;
 
 
     // FUNCTIONS
@@ -243,9 +242,6 @@ public class GameScreen implements Screen {
 
         // set randomizer obstacle
         randomizer_obstacle = MathUtils.random(15, 20);
-
-        //set random for obstacle,rescue, medicine
-        random = MathUtils.random(1, 10);
 
         // set randomizer falling_objects
         randomizer_objects=MathUtils.random(8,13);
@@ -478,53 +474,43 @@ public class GameScreen implements Screen {
         // the obstacle will be added in the range of (15, 20) of the time passed
         // every 15-20 s will add one rescue
         if (time_passed > randomizer_obstacle) {
-            if (MathUtils.random(1, 5) <= 2) {
-                if (random <= 3) {
-                    rescue_backlog = true;
-                } else if (random <= 7) {
-                    medicine_backlog = true;
-                } else {
-                    obstacle_backlog = true;
-                }
-                addEnemies();
-                randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
-                random = MathUtils.random(1, 10);
+
+            int random = MathUtils.random(1, 10);
+
+            if (random <= 3) {
+                next_obstacle = Obstacle.RESCUE;
+            } else if (random <= 7) {
+                next_obstacle = Obstacle.MEDICINE;
+            } else {
+                next_obstacle = Obstacle.FIRE;
             }
 
-            if (rescue_backlog) {
-                for (Floor floor : floors) {
-                    if (floor.getY() < 0) {
-                        rescue_backlog = false;
-                        addRescue();
-                        break;
-                    }
-                }
-            } else if (obstacle_backlog) {
-                for (Floor floor : floors) {
-                    if (floor.getY() < 0) {
-                        obstacle_backlog = false;
-                        addObstacles();
-                        break;
-                    }
-                }
-            } else if (medicine_backlog) {
-                for (Floor floor : floors) {
-                    if (floor.getY() < 0) {
-                        medicine_backlog = false;
-                        addMedicine();
-                        break;
-                    }
-                }
-            }
+            randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
 
-            // delete floors which are out of screen
+        }
+
+        if (next_obstacle != Obstacle.NULL) {
             for (Floor floor : floors) {
-                if (floor.getY() > 1000) {
-                    floors.removeValue(floor, true);
+                if (floor.getY() < 0) {
+                    switch (next_obstacle){
+                        case RESCUE: addRescue();
+                        case FIRE:addObstacles();
+                        case MEDICINE: addMedicine();
+                    }
+                    addEnemies();
+                    next_obstacle = Obstacle.NULL;
+                    break;
                 }
             }
         }
-    }
+
+        // delete floors which are out of screen
+        for (Floor floor : floors) {
+            if (floor.getY() > 1000) {
+                floors.removeValue(floor, true);
+            }
+        }
+}
 
     @Override
     public void resize(int width, int height) {
