@@ -21,9 +21,9 @@ public class Controls {
     public Controls(controlMode setmode){ // initialise the position and size of the buttons
         mode = setmode;
         if (mode == controlMode.button) {
-            leftButton = new Button(50, 30, 64, 64, "badlogic.jpg", "badlogic.jpg");
-            rightButton = new Button(150, 30, 64, 64,"badlogic.jpg", "badlogic.jpg");
-            jumpButton = new Button(360, 30, 64, 64, "badlogic.jpg", "badlogic.jpg");
+            leftButton = new Button(50, 30, 64, 64, "leftButton_unpressed.png", "leftButton_unpressed.png");
+            rightButton = new Button(150, 30, 64, 64,"rightButton_unpressed.png", "rightButton_unpressed.png");
+            jumpButton = new Button(360, 30, 64, 64, "jumpButton_unpressed.png", "jumpButton_unpressed.png");
         }else if (mode == controlMode.touch){
             leftButton = new Button(0, 0, 240, 800,"nothing.png", "nothing.png");
             rightButton = new Button(240, 0, 240, 800, "nothing.png", "nothing.png");
@@ -63,8 +63,6 @@ public class Controls {
     void drawButtons(SpriteBatch batch) {
         leftButton.draw(batch);
         rightButton.draw(batch);
-        batch.setColor(1,1,1,0.85f);
         jumpButton.draw(batch);
-        batch.setColor(1,1,1,1);
     }
 }

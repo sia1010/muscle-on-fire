@@ -74,10 +74,10 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         shopButton.draw(batch);
         batch.end();
 
-        if(startButton.getPressed(this.game.camera)){
+        if(startButton.getJustPressed(this.game.camera)){
             game.setScreen(new GameScreen(this.game));
         }
-        if(quitButton.getPressed(this.game.camera)){
+        if(quitButton.getJustPressed(this.game.camera)){
             Gdx.app.exit();
             System.exit(0);
         }
