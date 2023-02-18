@@ -48,7 +48,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         //quitButton.setBounds(135, 250, 200, 100);
         quitButton = new Button(93,230,300,80,"quit.png","quit.png");
 
-        shopButton = new Button(93,130,300,80,"Shop_button_menu.png","Shop_button_menu.png");
+        shopButton = new Button(93,130,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
 
     } //parameter is from muscleonfire
 
