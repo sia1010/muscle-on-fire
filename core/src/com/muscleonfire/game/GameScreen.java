@@ -339,7 +339,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta, controls);
-            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, woodfloors, ebat);
+            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, woodfloors);
 
         }
         if (gameState == State.OVER) {
@@ -400,7 +400,6 @@ public class GameScreen implements Screen {
         }
 
         for (Enemies enemy : ebat) {
-            enemy.batmanKilled(patrick, delta);
             if (enemy.killed){
                 enemy.transpose(delta, time_passed);
             }
@@ -409,6 +408,10 @@ public class GameScreen implements Screen {
             }else{
                 enemy.checkDirection();
                 enemy.move(delta);
+            }
+
+            if (enemy.object.y < -200 || enemy.object.y > 800){
+                ebat.removeValue(enemy, true);
             }
 
         }

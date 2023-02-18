@@ -25,9 +25,8 @@ public class Enemies extends GameObject {
         batmanfly = new Ani().loadAnimation("batman(sheet).png", 2,1, 0.5f);
 
         head = new Rectangle();
-        head.height = 4;
+        head.height = 8;
         head.width = 64;
-
 
         body = new Rectangle();
         body.height = 36;
@@ -37,11 +36,12 @@ public class Enemies extends GameObject {
 
     void updateHeadAndBodyPosition(){
         head.x = object.x;
-        head.y = object.y + 36;
+        head.y = object.y + 40;
 
         body.x = object.x;
         body.y = object.y;
     }
+
     boolean move_right = false;
     boolean move_down = false;
 
@@ -90,17 +90,17 @@ public class Enemies extends GameObject {
         return  false;
     }
 
-    boolean batmanKilled(Player pat, float delta){
+/*    boolean batmanKilled(Player pat, float delta){
         if (pat.feet.overlaps(head)){
             killed = true;
-            return true;
         }
-        return false;
-    }
+        return killed;
+    }*/
     @Override
     void transpose(float delta, float time_passed){
         if (killed){
             object.y -= 200 * delta;
+            updateHeadAndBodyPosition();
         }
     }
 }
