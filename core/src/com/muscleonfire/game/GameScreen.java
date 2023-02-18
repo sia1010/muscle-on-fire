@@ -339,8 +339,8 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta, controls);
-            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors,woodfloors);
-            patrick.jump(delta, floors, spikefloors, tramfloors, ebat);
+            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, woodfloors, ebat);
+
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
@@ -439,8 +439,7 @@ public class GameScreen implements Screen {
         }
 
         // make patrick fall
-        patrick.fall(delta, time_passed, floors, spikefloors, tramfloors,woodfloors);
-        patrick.fall(delta, floors, spikefloors, tramfloors, ebat, time_passed);
+        patrick.fall(delta,  floors, spikefloors, tramfloors,woodfloors, ebat, time_passed);
 
 
         // ADD / DELETE GAME OBJECTS
@@ -454,10 +453,6 @@ public class GameScreen implements Screen {
             } else if (time_passed > randomizer_spikefloor) {
                 addSpikeFloor();
                 randomizer_spikefloor += MathUtils.random(5, 8);
-                floor_time = 0;
-            } else if (time_passed > randomizer_woodfloor) {
-                addWoodFloor();
-                randomizer_woodfloor += MathUtils.random(5, 8);
                 floor_time = 0;
             } else {
                 addFloor();
@@ -492,42 +487,41 @@ public class GameScreen implements Screen {
                 randomizer_obstacle += MathUtils.random(8, 12); // add the obstacles time
                 random = MathUtils.random(1, 10);
             }
-        }
 
-        if (rescue_backlog) {
-            for (Floor floor : floors) {
-                if (floor.getY() < 0) {
-                    rescue_backlog = false;
-                    addRescue();
-                    break;
+            if (rescue_backlog) {
+                for (Floor floor : floors) {
+                    if (floor.getY() < 0) {
+                        rescue_backlog = false;
+                        addRescue();
+                        break;
+                    }
+                }
+            } else if (obstacle_backlog) {
+                for (Floor floor : floors) {
+                    if (floor.getY() < 0) {
+                        obstacle_backlog = false;
+                        addObstacles();
+                        break;
+                    }
+                }
+            } else if (medicine_backlog) {
+                for (Floor floor : floors) {
+                    if (floor.getY() < 0) {
+                        medicine_backlog = false;
+                        addMedicine();
+                        break;
+                    }
                 }
             }
-        } else if (obstacle_backlog) {
-            for (Floor floor : floors) {
-                if (floor.getY() < 0) {
-                    obstacle_backlog = false;
-                    addObstacles();
-                    break;
-                }
-            }
-        } else if (medicine_backlog) {
-            for (Floor floor : floors) {
-                if (floor.getY() < 0) {
-                    medicine_backlog = false;
-                    addMedicine();
-                    break;
-                }
-            }
-        }
 
-        // delete floors which are out of screen
-        for (Floor floor : floors) {
-            if (floor.getY() > 1000) {
-                floors.removeValue(floor, true);
+            // delete floors which are out of screen
+            for (Floor floor : floors) {
+                if (floor.getY() > 1000) {
+                    floors.removeValue(floor, true);
+                }
             }
         }
     }
-
 
     @Override
     public void resize(int width, int height) {

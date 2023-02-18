@@ -73,7 +73,7 @@ public class Player extends GameObject{
         feet.y = object.y;
     }
 
-    void fall(float delta, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, Array<Enemies> ebat, float time_passed){
+    void fall(float delta, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, Array<SpecialFloor> woodfloors, Array<Enemies> ebat, float time_passed){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
@@ -157,7 +157,7 @@ public class Player extends GameObject{
         }
     }
 
-    public void jump(float delta, Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, Array<Enemies> ebat){
+    public void jump(float delta, float time_passed, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, Array<SpecialFloor> woodfloors, Array<Enemies> ebat){
         // check if standing on floor){ // check for isJumping, if isJumping, then jump
         if (isJumping && !headIsTouching(floors,spikefloors,tramfloors, ebat)) { // check for jumping and not hitting head
             object.y += jumpPower * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
