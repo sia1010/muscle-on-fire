@@ -22,4 +22,7 @@ public class Coins{
     void saveCoin(){
         coinFile.writeString(Integer.toString(coin), false);
     }
+    String displayCoin(){
+        return String.valueOf(coin);
+    }
 }

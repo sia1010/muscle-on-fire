@@ -12,6 +12,8 @@ public class GameOver implements Screen {
 
     Button retryButton;
     Button menuButton;
+    Score score;
+    int coins;
     final MuscleOnFire game;
     @Override
     public void show() {
@@ -22,11 +24,11 @@ public class GameOver implements Screen {
         this.game = game;
         this.game.coin.addCoin(score);
         this.game.coin.saveCoin();
+        this.score = score;
+        this.coins = score.score/100;
 
         retryButton=new Button(90,400,300,64,"tap_to_retry.png","tap_to_retry.png");
         menuButton=new Button(90,250,300,64,"back_to_menu.png","back_to_menu.png");
-
-
     }
 
 
@@ -45,6 +47,10 @@ public class GameOver implements Screen {
 
         game.batch.begin();
         //game.font.draw(game.batch, "TAP TO RETRY", 135, 400);
+
+        game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 750);
+        game.font.draw(game.batch, "Total Coins: "+ this.game.coin.displayCoin(), 120, 700);
+        game.font.draw(game.batch, "Coins earned: "+ this.coins, 120, 650);
 
 
         menuButton.draw(game.batch);

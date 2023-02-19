@@ -32,6 +32,7 @@ public class Shop implements Screen {
 
         game.batch.begin();
         game.font.draw(game.batch, "SHOP", 210, 780);
+        game.font.draw(game.batch, "Coins: "+ this.game.coin.displayCoin(), 160, 730);
         backMenuButton.draw(batch);
         game.batch.end();
         if(backMenuButton.getPressed(this.game.camera)){
