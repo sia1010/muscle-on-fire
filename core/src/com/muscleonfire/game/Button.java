@@ -1,6 +1,5 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,6 +11,7 @@ public class Button extends GameObject {
     boolean isPressed;
     Texture image_Pressed;
     Texture image_notPressed;
+    Rectangle touchLocation;
 
     public Button(float x, float y, float width, float height, String Pressed, String notPressed){
         object = new Rectangle(x, y, width, height);
@@ -32,7 +32,7 @@ public class Button extends GameObject {
         batch.draw(image, object.x, object.y);
     }
 
-    boolean getPressed(OrthographicCamera camera){ // put the coordinate of the touchPoint here
+    boolean getHeldDown(OrthographicCamera camera){ // put the coordinate of the touchPoint here
         for (int i = 0; i < 10; i++){
             if (Gdx.input.isTouched(i)) {
                 // place the touched coordinate into a vector3
@@ -43,7 +43,8 @@ public class Button extends GameObject {
                 // and check if the button overlaps with the Rectangle()
                 // if it overlaps, it means the button is being pressed
                 // and isPressed = true
-                isPressed = object.overlaps(new Rectangle(touchPoint.x, touchPoint.y, 0,0));
+                touchLocation = new Rectangle(touchPoint.x, touchPoint.y, 0,0);
+                isPressed = object.overlaps(touchLocation);
                 // if the button is pressed set the Texture to being pressed and return true
                 if (isPressed) {
                     setTexture();
@@ -52,12 +53,13 @@ public class Button extends GameObject {
             }
         }
         // if no touch, return false
+        isPressed = false;
         return false;
     }
 
     boolean getJustPressed(OrthographicCamera camera){ // put the coordinate of the touchPoint here
-        for (int i = 0; i < 10; i++){
-            if (Gdx.input.justTouched()) {
+        for (int i = 0; i < 10; i++) {
+            if (Gdx.input.isTouched(i)) {
                 // place the touched coordinate into a vector3
                 Vector3 touchPoint = new Vector3(Gdx.input.getX(i), Gdx.input.getY(i), 0);
                 // unproject the coordinate, so it correlate with the screen shown by the camera
@@ -66,14 +68,20 @@ public class Button extends GameObject {
                 // and check if the button overlaps with the Rectangle()
                 // if it overlaps, it means the button is being pressed
                 // and isPressed = true
-                isPressed = object.overlaps(new Rectangle(touchPoint.x, touchPoint.y, 0,0));
-                // if the button is pressed set the Texture to being pressed and return true
-                if (isPressed) {
-                    setTexture();
-                    return isPressed;
-                }
+                touchLocation = new Rectangle(touchPoint.x, touchPoint.y, 0,0);
+                isPressed = object.overlaps(new Rectangle(touchPoint.x, touchPoint.y, 0, 0));
+                // if the button is pressed set the Texture to being pressed
+                setTexture();
             }
         }
+
+
+        // when button is released, return true
+        if (isPressed && !Gdx.input.isTouched() && object.overlaps(touchLocation)){
+            isPressed = false;
+            return true;
+        }
+
         // if no touch, return false
         return false;
     }
