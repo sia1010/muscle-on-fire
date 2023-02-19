@@ -158,17 +158,18 @@ public class GameScreen implements Screen {
 
         // draw backgrounds
         game.batch.draw(wallpaper.getTexture(),wallpaper.getX(), wallpaper.getY());
+        for (Wallpaper wallpaper : wallpapers){
+            game.batch.draw(wallpaper.getTexture(), wallpaper.getX(),wallpaper.getY());
+        }
+
 
         // draw score
         game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 700);
 
-
         //draw high score
         game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 70, 750);
 
-        for (Wallpaper wallpaper : wallpapers){
-            game.batch.draw(wallpaper.getTexture(), wallpaper.getX(),wallpaper.getY());
-        }
+
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
@@ -375,7 +376,13 @@ public class GameScreen implements Screen {
             gameState = State.OVER;
         }
         // update everything
-        patrick.transpose(delta);
+        patrick.transpose(delta, time_passed);
+
+        for (Wallpaper wallpaper : wallpapers){
+            wallpaper.transpose(delta, time_passed);
+        }
+
+
         for (Floor floor : floors) {
             floor.transpose(delta, time_passed);
         }
@@ -383,7 +390,7 @@ public class GameScreen implements Screen {
 
         for (Rescue res : rescues) {
             res.playerTouched(patrick, delta, score);
-            res.transpose(delta);
+            res.transpose(delta, time_passed);
         }
 
         for (Medicine medicine : medicines) {

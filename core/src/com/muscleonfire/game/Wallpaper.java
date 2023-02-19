@@ -27,7 +27,7 @@ public class Wallpaper extends GameObject { // inherits game object
         }
 
         object.x = 0;
-        object.y = -100;
+        object.y = 0;
 
     }
 
