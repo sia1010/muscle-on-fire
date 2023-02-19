@@ -156,12 +156,9 @@ public class GameScreen implements Screen {
         // draw Sidewalls
         game.batch.draw(Sidewalls.getTexture(),Sidewalls.getX(),Sidewalls.getY());
 
-        // draw backgrounds
-        game.batch.draw(wallpaper.getTexture(),wallpaper.getX(), wallpaper.getY());
         for (Wallpaper wallpaper : wallpapers){
             game.batch.draw(wallpaper.getTexture(), wallpaper.getX(),wallpaper.getY());
         }
-
 
         // draw score
         game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 700);

@@ -16,19 +16,18 @@ public class Wallpaper extends GameObject { // inherits game object
         int randomNum = random.nextInt(2);
 
         object = new Rectangle(); // from GameObject
-        object.height = 100;
+        object.height = 120;
         object.width = 480;
 
         // for loop (delta) with number randomizer with specific number assigned to each type of png
         if(randomNum == 0){
-            image = new Texture(Gdx.files.internal("Gym BG.png"));
+            image = new Texture(Gdx.files.internal("Office BG2.png"));
         }else if(randomNum == 1){
-            image = new Texture(Gdx.files.internal("Office BG.png"));
+            image = new Texture(Gdx.files.internal("Burning Office BG2.png"));
         }
 
         object.x = 0;
-        object.y = 0;
-
+        object.y =-210;
     }
 
 
