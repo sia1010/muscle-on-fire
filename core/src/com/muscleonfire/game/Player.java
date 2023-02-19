@@ -163,7 +163,7 @@ public class Player extends GameObject{
     }
 
     boolean headIsTouching(Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors ){
-        // check if standing on floor){ // check if head is touching
+        // check if standing on floor{ // check if head is touching
         for (Floor floor: floors){
             if (head.overlaps(floor.object)) { // floor.object = the rectangle
                 return true;

@@ -13,7 +13,9 @@ public class GameScreen implements Screen {
     // VARIABLE DECLARATIONS
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
-    Building background;
+    Building Sidewalls;
+    Wallpaper wallpaper;
+    Array<Wallpaper> wallpapers = new Array<Wallpaper>();
     FallingObjects fallingObjects;
     Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
@@ -54,6 +56,14 @@ public class GameScreen implements Screen {
 
         // add the floor into the floors array
         floors.add(floor);
+    }
+
+    void addWallpaper(){
+        Wallpaper wallpaper = new Wallpaper();
+        wallpaper.spawn();
+
+        //add wallpaper to wallpapers array?
+        wallpapers.add(wallpaper);
     }
 
     void addSpikeFloor(){
@@ -130,15 +140,22 @@ public class GameScreen implements Screen {
 
     void drawAllObjects(float delta){
 
-        // draw background
-        game.batch.draw(background.getTexture(),background.getX(),background.getY());
+        // draw Sidewalls
+        game.batch.draw(Sidewalls.getTexture(),Sidewalls.getX(),Sidewalls.getY());
+
+        // draw backgrounds
+        game.batch.draw(wallpaper.getTexture(),wallpaper.getX(), wallpaper.getY());
 
         // draw score
         game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 700);
 
+
         //draw high score
         game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 70, 750);
 
+        for (Wallpaper wallpaper : wallpapers){
+            game.batch.draw(wallpaper.getTexture(), wallpaper.getX(),wallpaper.getY());
+        }
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
             game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
@@ -205,9 +222,13 @@ public class GameScreen implements Screen {
         patrick = new Player();
         patrick.spawn();
 
-        // initialising the background
-        background= new Building();
-        background.spawn();
+        // initialising the Sidewalls
+        Sidewalls= new Building();
+        Sidewalls.spawn();
+
+        // initialising Wallpaper
+        wallpaper = new Wallpaper();
+        wallpaper.spawn();
 
         //initialising the falling building
 
@@ -216,6 +237,7 @@ public class GameScreen implements Screen {
 
         // add first floor
         addFloor();
+
 
         // set randomizer obstacle
         randomizer_obstacle = MathUtils.random(15, 20);
@@ -264,6 +286,8 @@ public class GameScreen implements Screen {
 
         //add score
         score.addScore(delta);
+
+
 
         // DISPLAY THE SCREEN
         // clear the screen(but not rectangle)
@@ -329,12 +353,18 @@ public class GameScreen implements Screen {
         if (patrick.updateGameOver()) {
             gameState = State.OVER;
         }
-
         // update everything
         patrick.transpose(delta);
+
+        for (Wallpaper wallpaper : wallpapers){
+            wallpaper.transpose(delta);
+        }
+
+
         for (Floor floor : floors) {
             floor.transpose(delta);
         }
+
 
         for (Rescue res : rescues) {
             res.playerTouched(patrick, delta, score);
@@ -405,14 +435,17 @@ public class GameScreen implements Screen {
         if( floor_time > 1 ){
             if (time_passed > randomizer_tramfloor ) {
                 addTramFloor();
+                addWallpaper();
                 randomizer_tramfloor += MathUtils.random(3, 5); // add the obstacles time
                 floor_time = 0;
             } else if (time_passed > randomizer_spikefloor) {
                 addSpikeFloor();
+                addWallpaper();
                 randomizer_spikefloor += MathUtils.random(5, 8);
                 floor_time = 0;
             } else {
                 addFloor();
+                addWallpaper();
                 floor_time = 0;
             }
         }
@@ -444,11 +477,19 @@ public class GameScreen implements Screen {
             random = MathUtils.random(1, 10);
         }
 
+        if (wallpaper.getY() > 100){
+            wallpapers.removeValue(wallpaper, true);
+        }
+
         // delete floors which are out of screen
         for (Floor floor : floors) {
             if (floor.getY() > 1000) {
                 floors.removeValue(floor, true);
             }
+        }
+
+        for (Wallpaper wallpaper : wallpapers){
+
         }
     }
 
