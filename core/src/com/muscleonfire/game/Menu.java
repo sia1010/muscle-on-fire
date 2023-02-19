@@ -46,7 +46,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         // startButton.setBounds(160, 400, 200, 100); //set the size and position of the button
         startButton = new Button(93, 400,300,80, "start_button.png", "start_button.png");
         //quitButton.setBounds(135, 250, 200, 100);
-        quitButton = new Button(93,230,300,80,"quit.png","quit.png");
+        quitButton = new Button(93,230,330,140,"quit.png","quit.png");
 
         shopButton = new Button(93,130,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
 
@@ -81,7 +81,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
             Gdx.app.exit();
             System.exit(0);
         }
-        if(shopButton.getPressed(this.game.camera)){
+        if(shopButton.getJustPressed(this.game.camera)){
             game.setScreen(new Shop(this.game));
         }
     }

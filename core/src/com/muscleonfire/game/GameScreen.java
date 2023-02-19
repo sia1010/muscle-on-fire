@@ -258,9 +258,6 @@ public class GameScreen implements Screen {
 
         // initialise Controls
         controls = new Controls(Controls.controlMode.follow);
-        controls.jumpButton.setTexture();
-        controls.leftButton.setTexture();
-        controls.rightButton.setTexture();
     }
 
     @Override
@@ -325,11 +322,11 @@ public class GameScreen implements Screen {
 
 
         // PLAYER INPUTS
-        controls.getInputs(this.game, patrick);
+        controls.getInputs(this.game.camera, patrick);
 
         if (gameState == State.READY) {
             // press to start
-            if (Gdx.input.justTouched()) {
+            if (controls.screenButton.getJustPressed(this.game.camera)) {
                 gameState = State.RUNNING;
             }
         }
@@ -341,7 +338,7 @@ public class GameScreen implements Screen {
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
-            if (Gdx.input.justTouched()) {
+            if (controls.screenButton.getJustPressed(this.game.camera)) {
                 this.game.setScreen(new GameOver(this.game, score));
             }
         }

@@ -1,16 +1,13 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 
 public class Controls {
     Button leftButton;
     Button rightButton;
     Button jumpButton;
-    Rectangle touchPoint;
+    Button screenButton;
     enum controlMode{
         button,
         touch,
@@ -20,6 +17,7 @@ public class Controls {
 
     public Controls(controlMode setmode){ // initialise the position and size of the buttons
         mode = setmode;
+        screenButton = new Button(0,0,480,800, "nothing.png", "nothing.png");
         if (mode == controlMode.button) {
             leftButton = new Button(50, 30, 64, 64, "leftButton_unpressed.png", "leftButton_unpressed.png");
             rightButton = new Button(150, 30, 64, 64,"rightButton_unpressed.png", "rightButton_unpressed.png");
@@ -35,8 +33,7 @@ public class Controls {
         }
     }
 
-    void getInputs(MuscleOnFire game, Player pat){
-        resetButtons();
+    void getInputs(OrthographicCamera camera, Player pat){
         if (mode == controlMode.follow) {
             if (pat.isFront){
                 leftButton.object.x = pat.getX() - 480 + 30;
@@ -47,22 +44,18 @@ public class Controls {
             }
         }
         // if touch left button of patrick, set leftButtonPressed to true, else it is false
-        leftButton.getPressed(game.camera);
+        leftButton.getHeldDown(camera);
         // if touch right button of patrick, set rightButtonPressed to true, else it is false
-        rightButton.getPressed(game.camera);
+        rightButton.getHeldDown(camera);
         // if touch jump button of patrick, set jumpButtonPressed to true, else it is false
-        jumpButton.getPressed(game.camera);
-    }
-
-    void resetButtons(){
-        leftButton.isPressed = false;
-        rightButton.isPressed = false;
-        jumpButton.isPressed = false;
+        jumpButton.getHeldDown(camera);
     }
 
     void drawButtons(SpriteBatch batch) {
-        leftButton.draw(batch);
-        rightButton.draw(batch);
+        if (mode == controlMode.button){
+            leftButton.draw(batch);
+            rightButton.draw(batch);
+        }
         jumpButton.draw(batch);
     }
 }
