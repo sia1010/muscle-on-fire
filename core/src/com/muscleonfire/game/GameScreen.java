@@ -264,6 +264,7 @@ public class GameScreen implements Screen {
         initialFloor();
 
 
+
         // set randomizer obstacle
         randomizer_obstacle = MathUtils.random(15, 20);
 
@@ -374,20 +375,15 @@ public class GameScreen implements Screen {
             gameState = State.OVER;
         }
         // update everything
-        patrick.transpose(delta, time_passed);
-
-        for (Wallpaper wallpaper : wallpapers){
-            wallpaper.transpose(delta);
-        }
-
-
+        patrick.transpose(delta);
         for (Floor floor : floors) {
             floor.transpose(delta, time_passed);
         }
 
-        for (Rescue rescue : rescues) {
-            rescue.transpose(delta, time_passed);
-            rescue.playerTouched(patrick, delta, score);
+
+        for (Rescue res : rescues) {
+            res.playerTouched(patrick, delta, score);
+            res.transpose(delta);
         }
 
         for (Medicine medicine : medicines) {
@@ -521,6 +517,10 @@ public class GameScreen implements Screen {
                 addEnemies();
                 next_obstacle = Obstacle.NULL;
             }
+        }
+
+        if (wallpaper.getY() > 100){
+            wallpapers.removeValue(wallpaper, true);
         }
 
         if (wallpaper.getY() > 100){
