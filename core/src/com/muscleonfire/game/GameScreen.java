@@ -59,6 +59,12 @@ public class GameScreen implements Screen {
             floors.peek().object.y += i * 100;
         }
     }
+    void initialWallpaper(){
+        for (int i = 0; i < 4;i++){
+            addWallpaper();
+            wallpapers.peek().object.y += i * 120;
+        }
+    }
     void addFloor(){
         // add a new floor
         Floor floor = new Floor();
@@ -263,6 +269,7 @@ public class GameScreen implements Screen {
 
         // add first floor
         initialFloor();
+        initialWallpaper();
 
 
 

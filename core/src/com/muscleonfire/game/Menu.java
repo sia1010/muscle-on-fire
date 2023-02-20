@@ -31,6 +31,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
     Button startButton;
     Button quitButton;
     Button shopButton;
+    Button settingButton;
 
     public Menu(final MuscleOnFire game) {
         this.game = game;
@@ -41,7 +42,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         startButton = new Button(93, 400,300,80, "start_button.png", "start_button.png");
         quitButton = new Button(93,230,330,140,"quit.png","quit.png");
         shopButton = new Button(93,130,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
-
+        settingButton = new Button(30,100,64,16,"Settings button.png", "Settings button.png");
     } //parameter is from muscleonfire
 
 
@@ -65,6 +66,8 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         startButton.draw(batch);
         quitButton.draw(batch);
         shopButton.draw(batch);
+        settingButton.draw(batch);
+
         batch.end();
 
         if(startButton.getJustPressed(this.game.camera)){
