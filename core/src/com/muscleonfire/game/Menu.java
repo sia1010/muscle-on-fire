@@ -26,12 +26,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
     private SpriteBatch batch;
     Texture background;
     Sprite backgroundSprite;
-    // Texture startButtonTexture = new Texture("start_button.png");
-    //Texture QuitButtonTexture = new Texture("quit.png");
-    // TextureRegion StartButtonRegion = new TextureRegion(startButtonTexture);
-    //TextureRegion QuitButtonRegion = new TextureRegion(QuitButtonTexture);
-    // Sprite startButton = new Sprite(StartButtonRegion);
-    //Sprite quitButton = new Sprite(QuitButtonRegion);
+
 
     Button startButton;
     Button quitButton;
@@ -43,11 +38,8 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         background = new Texture("nothing.png");
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
-        // startButton.setBounds(160, 400, 200, 100); //set the size and position of the button
         startButton = new Button(93, 400,300,80, "start_button.png", "start_button.png");
-        //quitButton.setBounds(135, 250, 200, 100);
         quitButton = new Button(93,230,330,140,"quit.png","quit.png");
-
         shopButton = new Button(93,130,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
 
     } //parameter is from muscleonfire
@@ -69,6 +61,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
 
         batch.begin();
         backgroundSprite.draw(batch);
+        game.font.draw(game.batch,"MUSCLE ON FIRE",93,600);
         startButton.draw(batch);
         quitButton.draw(batch);
         shopButton.draw(batch);
@@ -108,8 +101,6 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
 
     @Override
     public void dispose () {
-        // startButtonTexture.dispose();
-        //QuitButtonTexture.dispose();
         batch.dispose();
     }
 
