@@ -376,7 +376,7 @@ public class GameScreen implements Screen {
         patrick.transpose(delta, time_passed);
 
         for (Wallpaper wallpaper : wallpapers){
-            wallpaper.transpose(delta, time_passed);
+            wallpaper.BGtranspose(delta, wallpapers.peek().getY());
         }
 
 
@@ -523,13 +523,10 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (wallpaper.getY() > 100){
+        if (wallpaper.getY() > 900){
             wallpapers.removeValue(wallpaper, true);
         }
 
-        if (wallpaper.getY() > 100){
-            wallpapers.removeValue(wallpaper, true);
-        }
 
         // delete floors which are out of screen
         for (Floor floor : floors) {
