@@ -11,13 +11,9 @@ public class GameObject{
     protected Texture image;
 
     void transpose(float delta, float time_passed){
-        object.y += ((500 + time_passed) / 5) * delta;
+        object.y += ((300 + time_passed) / 3) * delta;
       //object.y+=100*delta;
 
-    }
-    //BGtranspose for background, to remove gap overtime
-    void BGtranspose(float delta, float time_passed){
-        object.y+=100*delta;
     }
 
     float getX(){

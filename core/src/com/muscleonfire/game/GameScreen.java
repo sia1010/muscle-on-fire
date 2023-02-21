@@ -36,6 +36,7 @@ public class GameScreen implements Screen {
     float randomizer_tramfloor;
     float randomizer_woodfloor;
     float randomizer_objects;
+    Floor latestFloor;
     enum Obstacle {
         NULL,
         FIRE,
@@ -262,10 +263,14 @@ public class GameScreen implements Screen {
         // initialising Wallpaper
         wallpaper = new Wallpaper();
         wallpaper.spawn();
+        wallpapers.add(wallpaper);
 
         //initialising the falling building
         fallingObjects = new FallingObjects();
         fallingObjects.falling_building_spawn();
+
+        latestFloor = new Floor();
+        latestFloor.spawn();
 
         // add first floor
         initialFloor();
@@ -312,9 +317,10 @@ public class GameScreen implements Screen {
         time_passed += delta;
         floor_time += delta;
 
-        //add score
+        // add score
         score.addScore(delta);
 
+        latestFloor.transpose(delta, time_passed);
 
 
         // DISPLAY THE SCREEN
@@ -386,7 +392,7 @@ public class GameScreen implements Screen {
         patrick.transpose(delta, time_passed);
 
         for (Wallpaper wallpaper : wallpapers){
-            wallpaper.BGtranspose(delta, wallpapers.peek().getY());
+            wallpaper.transpose(delta, wallpapers.peek().getY());
         }
 
 
@@ -416,9 +422,6 @@ public class GameScreen implements Screen {
             spikefloor.transpose(delta, time_passed);
             spikefloor.touchedSpike(patrick, delta);
         }
-//        for (SpecialFloor sfloor : spikefloors) {
-//            sfloor.transpose(delta);
-//        }
 
         for (SpecialFloor tramfloor : tramfloors) {
             tramfloor.transpose(delta, time_passed);
@@ -471,22 +474,21 @@ public class GameScreen implements Screen {
         // ADD / DELETE GAME OBJECTS
         // add new floors
         // use time to control add floor
-        if (floor_time > (1000 / (850 + time_passed))) {
+        if (latestFloor.getY() > 0) {
             if (time_passed > randomizer_tramfloor) {
                 addTramFloor();
-                addWallpaper();
                 randomizer_tramfloor += MathUtils.random(3, 5); // add the obstacles time
-                floor_time = 0;
             } else if (time_passed > randomizer_spikefloor) {
                 addSpikeFloor();
-                addWallpaper();
                 randomizer_spikefloor += MathUtils.random(5, 8);
-                floor_time = 0;
             } else {
                 addFloor();
-                addWallpaper();
-                floor_time = 0;
             }
+            latestFloor.object.y = -120;
+        }
+
+        if(wallpapers.peek().getY() > -210 + 120){
+            addWallpaper();
         }
 
         if (time_passed > randomizer_objects) {

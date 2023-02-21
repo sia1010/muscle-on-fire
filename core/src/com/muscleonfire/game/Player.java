@@ -110,7 +110,7 @@ public class Player extends GameObject{
         if (!onFloor){
             //object.y-=300*delta;
             object.y -= 200 * delta;
-            object.y -= ((500 + time_passed) / 5) * delta;
+            object.y -= ((300 + time_passed) / 3) * delta;
             updateFeetAndHeadPosition();
         }
     }

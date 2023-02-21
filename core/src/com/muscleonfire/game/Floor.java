@@ -15,7 +15,7 @@ public class Floor extends GameObject { // inheritance
         object.height = 10;
         object.width = 129;
         object.x = MathUtils.random(32, 480 - 128 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
-        object.y = -100; // below screen
+        object.y = -120; // below screen
         image = new Texture(Gdx.files.internal("floor_original.png"));
 
     }

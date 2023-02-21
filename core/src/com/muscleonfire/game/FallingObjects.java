@@ -58,7 +58,7 @@ public class FallingObjects extends GameObject{
     void transpose(float delta, float time_passed){
         super.transpose(delta, time_passed);
         object.y -= 200 * delta;
-        object.y -= ((500 + time_passed) / 5) * delta;
+        object.y -= ((300 + time_passed) / 3) * delta;
         //object.y-=250*delta;
     }
 
