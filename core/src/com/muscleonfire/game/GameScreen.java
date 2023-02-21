@@ -26,7 +26,8 @@ public class GameScreen implements Screen {
     Array<FallingObjects> falling_life =new Array<FallingObjects>();
     Array<SpecialFloor> spikefloors = new Array<SpecialFloor>();
     Array<SpecialFloor> tramfloors = new Array<SpecialFloor>();
-    Array<SpecialFloor> woodfloors = new Array<SpecialFloor>();
+    Array<SpecialFloor> rightrolls = new Array<SpecialFloor>();
+    Array<SpecialFloor> leftrolls = new Array<SpecialFloor>();
     Array<Enemies> ebat = new Array<Enemies>();
     Controls controls;
 
@@ -34,7 +35,8 @@ public class GameScreen implements Screen {
     float randomizer_obstacle;
     float randomizer_spikefloor;
     float randomizer_tramfloor;
-    float randomizer_woodfloor;
+    float randomizer_rightroll;
+    float randomizer_leftroll;
     float randomizer_objects;
     Floor latestFloor;
     enum Obstacle {
@@ -99,13 +101,21 @@ public class GameScreen implements Screen {
         // add the floor into the floors array
         tramfloors.add(tramfloor);
     }
-    void addWoodFloor(){
+    void addRightRoll(){
 
-        SpecialFloor woodfloor = new SpecialFloor();
-        woodfloor.wood_spawn();
+        SpecialFloor rightroll = new SpecialFloor();
+        rightroll.rightroll_spawn();
 
         // add the floor into the floors array
-        woodfloors.add(woodfloor);
+        rightrolls.add(rightroll);
+    }
+    void addLeftRoll(){
+
+        SpecialFloor leftroll = new SpecialFloor();
+        leftroll.leftroll_spawn();
+
+        // add the floor into the floors array
+        leftrolls.add(leftroll);
     }
     void addEnemies(){
 
@@ -193,8 +203,11 @@ public class GameScreen implements Screen {
         }
 
         // draw all the rolling wooden floors
-        for (SpecialFloor woodfloor : woodfloors) {
-            game.batch.draw(woodfloor.woodAnim.getKeyFrame(time_passed, true), woodfloor.getX(), woodfloor.getY());
+        for (SpecialFloor rightroll : rightrolls) {
+            game.batch.draw(rightroll.rightrollAnim.getKeyFrame(time_passed, true), rightroll.getX(), rightroll.getY());
+        }
+        for (SpecialFloor leftroll : leftrolls) {
+            game.batch.draw(leftroll.leftrollAnim.getKeyFrame(time_passed, true), leftroll.getX(), leftroll.getY());
         }
 
         // draw bat_enemy
@@ -373,7 +386,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta, controls);
-            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, woodfloors);
+            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, rightrolls,leftrolls);
 
         }
         if (gameState == State.OVER) {
@@ -427,8 +440,13 @@ public class GameScreen implements Screen {
             tramfloor.transpose(delta, time_passed);
         }
 
-        for (SpecialFloor woodfloor : woodfloors) {
-            woodfloor.transpose(delta, time_passed);
+        for (SpecialFloor rightroll : rightrolls) {
+            rightroll.transpose(delta, time_passed);
+            rightroll.touchedRightRolls(patrick,delta);
+        }
+        for (SpecialFloor leftroll : leftrolls) {
+            leftroll.transpose(delta, time_passed);
+            leftroll.touchedLeftRolls(patrick,delta);
         }
 
         for (Enemies enemy : ebat) {
@@ -468,7 +486,7 @@ public class GameScreen implements Screen {
         }
 
         // make patrick fall
-        patrick.fall(delta, floors, spikefloors, tramfloors, woodfloors, ebat, time_passed);
+        patrick.fall(delta, floors, spikefloors, tramfloors, rightrolls,leftrolls, ebat, time_passed);
 
 
         // ADD / DELETE GAME OBJECTS
@@ -477,16 +495,21 @@ public class GameScreen implements Screen {
         if (latestFloor.getY() > 0) {
             if (time_passed > randomizer_tramfloor) {
                 addTramFloor();
-                randomizer_tramfloor += MathUtils.random(3, 5); // add the obstacles time
+                randomizer_tramfloor += MathUtils.random(5, 10); // add the obstacles time
             } else if (time_passed > randomizer_spikefloor) {
                 addSpikeFloor();
-                randomizer_spikefloor += MathUtils.random(5, 8);
-            }  else if (time_passed > randomizer_woodfloor) {
-                addWoodFloor();
+                randomizer_spikefloor += MathUtils.random(5, 10);
+            }  else if (time_passed > randomizer_rightroll) {
+                addRightRoll();
                 addWallpaper();
-                randomizer_woodfloor += MathUtils.random(5, 8);
+                randomizer_rightroll += MathUtils.random(10, 15);
                 floor_time = 0;
-            }else {
+            }else if (time_passed > randomizer_leftroll) {
+                addLeftRoll();
+                addWallpaper();
+                randomizer_leftroll += MathUtils.random(10, 15);
+                floor_time = 0;
+            } else {
                 addFloor();
             }
             latestFloor.object.y = -120;
