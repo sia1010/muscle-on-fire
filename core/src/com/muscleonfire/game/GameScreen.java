@@ -375,7 +375,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta);
-            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, woodfloors);
+            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, rightrolls, leftrolls);
 
         }
         if (gameState == State.OVER) {
@@ -490,12 +490,10 @@ public class GameScreen implements Screen {
                 randomizer_spikefloor += MathUtils.random(5, 10);
             }  else if (time_passed > randomizer_rightroll) {
                 addRightRoll();
-                addWallpaper();
                 randomizer_rightroll += MathUtils.random(10, 15);
                 floor_time = 0;
             }else if (time_passed > randomizer_leftroll) {
                 addLeftRoll();
-                addWallpaper();
                 randomizer_leftroll += MathUtils.random(10, 15);
                 floor_time = 0;
             } else {
