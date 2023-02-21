@@ -13,7 +13,6 @@ public class GameScreen implements Screen {
     final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
     Player patrick;
     Building Sidewalls;
-    Wallpaper wallpaper;
     Array<Wallpaper> wallpapers = new Array<Wallpaper>();
     FallingObjects fallingObjects;
     Score score = new Score();
@@ -28,7 +27,6 @@ public class GameScreen implements Screen {
     Array<SpecialFloor> tramfloors = new Array<SpecialFloor>();
     Array<SpecialFloor> woodfloors = new Array<SpecialFloor>();
     Array<Enemies> ebat = new Array<Enemies>();
-    Controls controls;
 
     float time_passed;
     float randomizer_obstacle;
@@ -57,11 +55,11 @@ public class GameScreen implements Screen {
     void initialFloor(){
         for (int i = 0; i < 4; i++){
             addFloor();
-            floors.peek().object.y += i * 100;
+            floors.peek().object.y += i * 120;
         }
     }
     void initialWallpaper(){
-        for (int i = 0; i < 4;i++){
+        for (int i = 0; i < 8; i++){
             addWallpaper();
             wallpapers.peek().object.y += i * 120;
         }
@@ -167,7 +165,6 @@ public class GameScreen implements Screen {
         for (Wallpaper wallpaper : wallpapers){
             game.batch.draw(wallpaper.getTexture(), wallpaper.getX(),wallpaper.getY());
         }
-
         game.batch.setColor(1,1,1,1);
 
         // draw score
@@ -244,7 +241,7 @@ public class GameScreen implements Screen {
         patrick.drawHearts(this.game.batch, delta);
 
         // draw all the buttons
-        controls.drawButtons(this.game.batch);
+        patrick.controls.drawButtons(this.game.batch);
     }
 
 
@@ -253,17 +250,12 @@ public class GameScreen implements Screen {
         this.game = game;
 
         // spawn patrick
-        patrick = new Player();
+        patrick = new Player(Controls.controlMode.follow);
         patrick.spawn();
 
         // initialising the Sidewalls
         Sidewalls= new Building();
         Sidewalls.spawn();
-
-        // initialising Wallpaper
-        wallpaper = new Wallpaper();
-        wallpaper.spawn();
-        wallpapers.add(wallpaper);
 
         //initialising the falling building
         fallingObjects = new FallingObjects();
@@ -292,9 +284,6 @@ public class GameScreen implements Screen {
 
         // open High Score File
         score.openHighScoreFile();
-
-        // initialise Controls
-        controls = new Controls(Controls.controlMode.follow);
     }
 
     @Override
@@ -362,23 +351,23 @@ public class GameScreen implements Screen {
 
 
         // PLAYER INPUTS
-        controls.getInputs(this.game.camera, patrick);
+        patrick.controls.getInputs(this.game.camera, patrick);
 
         if (gameState == State.READY) {
             // press to start
-            if (controls.screenButton.getJustPressed(this.game.camera)) {
+            if (patrick.controls.screenButton.getJustPressed(this.game.camera)) {
                 gameState = State.RUNNING;
             }
         }
         if (gameState == State.RUNNING) {
             // player movement (next frame)
-            patrick.move(delta, controls);
+            patrick.move(delta);
             patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, woodfloors);
 
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
-            if (controls.screenButton.getJustPressed(this.game.camera)) {
+            if (patrick.controls.screenButton.getJustPressed(this.game.camera)) {
                 this.game.setScreen(new GameOver(this.game, score));
             }
         }
@@ -535,11 +524,6 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (wallpaper.getY() > 900){
-            wallpapers.removeValue(wallpaper, true);
-        }
-
-
         // delete floors which are out of screen
         for (Floor floor : floors) {
             if (floor.getY() > 1000) {
@@ -554,6 +538,11 @@ public class GameScreen implements Screen {
         for (SpecialFloor floor : tramfloors) {
             if (floor.getY() > 1000) {
                 tramfloors.removeValue(floor, true);
+            }
+        }
+        for (Wallpaper wallpaper : wallpapers){
+            if (wallpaper.getY() > 1000){
+                wallpapers.removeValue(wallpaper, true);
             }
         }
 

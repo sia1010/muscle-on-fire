@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 
 public class Player extends GameObject{
@@ -20,8 +19,14 @@ public class Player extends GameObject{
     boolean isFlashing;
     boolean onFloor;
     boolean isFront;
+    boolean forcedJump = false;
     Health healthPoint = new Health();
+    Controls controls;
     Animation<TextureRegion> front, left, right, playerAnim;
+
+    public Player(Controls.controlMode controlMode){
+        controls = new Controls(controlMode);
+    }
 
     void spawn(){ // spawn patrick
         // this is the main body
@@ -94,6 +99,7 @@ public class Player extends GameObject{
                 isJumping = true;
                 jumpTime = 0;
                 jumpPower = 600;
+                forcedJump = true;
             }
         }
 
@@ -103,19 +109,19 @@ public class Player extends GameObject{
                 jumpTime = 0;
                 jumpPower = 600;
                 killbat.killed = true;
+                forcedJump = true;
             }
         }
 
         // if not on floor, fall down
-        if (!onFloor){
-            //object.y-=300*delta;
+        if (!onFloor) {
             object.y -= 200 * delta;
             object.y -= ((300 + time_passed) / 3) * delta;
             updateFeetAndHeadPosition();
         }
     }
 
-    void move(float delta, Controls controls){
+    void move(float delta){
         // take controls from Controls and apply them
         // additional keyboard controls for debugging
         boolean isMoving = false;
@@ -132,10 +138,15 @@ public class Player extends GameObject{
             isMoving = true;
         }
 
-        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && onFloor) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && onFloor && !forcedJump) {
             isJumping = true; // set isJumping to true
-            jumpTime = 0; // set jumpTime to 0
+            jumpTime = 0; // set jumpTime to 0;
+            jumpPower = 1400;
             isMoving = true;
+        }
+
+        if(!(Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && !forcedJump){
+            jumpTime += delta * 8;
         }
 
         if (!isMoving){
@@ -163,11 +174,11 @@ public class Player extends GameObject{
         if (isJumping && !headIsTouching(floors,spikefloors,tramfloors)) { // check for jumping and not hitting head
             object.y += jumpPower * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
             jumpTime += delta;
-            if (jumpTime > 0.6f) { // after 0.6 seconds, stop jumping
+            if (jumpTime > 0.4f) { // after 0.4 seconds, stop jumping
                 isJumping = false;
+                forcedJump = false;
             }
         }else{
-            jumpPower = 1400;
             isJumping = false;
         }
     }
