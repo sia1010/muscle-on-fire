@@ -10,7 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class SpecialFloor extends GameObject{
     float dmg_timer;
-    Animation<TextureRegion> woodAnim;
+    Animation<TextureRegion> rightrollAnim;
+    Animation<TextureRegion> leftrollAnim;
     void trampoline_spawn(){
         object = new Rectangle(); // from GameObject
         object.height = 13;
@@ -29,25 +30,42 @@ public class SpecialFloor extends GameObject{
         image = new Texture(Gdx.files.internal("spikefloor.png"));
     }
 
-    void wood_spawn(){
+    void rightroll_spawn(){
         object = new Rectangle(); // from GameObject
-        object.height = 12;
-        object.width = 122;
+        object.height = 13;
+        object.width = 130;
         object.x = MathUtils.random(32, 480 - 128 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
         object.y = -120; // below screen
-        woodAnim = new Ani().loadAnimation("rollingwood.png", 2,1, 0.2f);
+        rightrollAnim = new Ani().loadAnimation("rightrollingfloor.png", 2,1, 0.2f);
     }
 
+    void leftroll_spawn(){
+        object = new Rectangle(); // from GameObject
+        object.height = 13;
+        object.width = 130;
+        object.x = MathUtils.random(32, 480 - 128 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
+        object.y = -120; // below screen
+        leftrollAnim = new Ani().loadAnimation("leftrollingfloor.png", 2,1, 0.2f);
+    }
     void touchedSpike(Player pat,float delta){
-        if (pat.object.overlaps(object)){
+        if (pat.feet.overlaps(object)){
             dmg_timer += delta;
             while(dmg_timer>1){
                 dmg_timer-=1;
                 pat.takeDamage(1);
             }
         }
-
-
     }
 
+    void touchedRightRolls(Player pat,float delta){
+        if (pat.feet.overlaps(object)){
+            pat.object.x += 150*delta;
+        }
+    }
+
+    void touchedLeftRolls(Player pat,float delta){
+        if (pat.feet.overlaps(object)){
+            pat.object.x -= 150*delta;
+        }
+    }
 }

@@ -40,9 +40,9 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
         startButton = new Button(93, 400,300,80, "start_button.png", "start_button.png");
-        quitButton = new Button(93,230,330,140,"quit.png","quit.png");
-        shopButton = new Button(93,130,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
-        settingButton = new Button(30,100,64,16,"Settings button.png", "Settings button.png");
+        quitButton = new Button(93,150,340,100,"quit.png","quit.png");
+        shopButton = new Button(93,300,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
+        settingButton = new Button(93,60,64,16,"Settings button.png", "Settings button.png");
     } //parameter is from muscleonfire
 
 
