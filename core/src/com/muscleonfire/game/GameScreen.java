@@ -481,7 +481,12 @@ public class GameScreen implements Screen {
             } else if (time_passed > randomizer_spikefloor) {
                 addSpikeFloor();
                 randomizer_spikefloor += MathUtils.random(5, 8);
-            } else {
+            }  else if (time_passed > randomizer_woodfloor) {
+                addWoodFloor();
+                addWallpaper();
+                randomizer_woodfloor += MathUtils.random(5, 8);
+                floor_time = 0;
+            }else {
                 addFloor();
             }
             latestFloor.object.y = -120;

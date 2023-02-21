@@ -97,6 +97,12 @@ public class Player extends GameObject{
             }
         }
 
+        for (SpecialFloor woodfloor: woodfloors){
+            if (feet.overlaps(woodfloor.object)) { // floor.object = the rectangle
+                onFloor = true;
+            }
+        }
+
         for (Enemies killbat: ebat){
             if (feet.overlaps(killbat.head)) { // killbat.object = the rectangle
                 isJumping = true;
