@@ -39,10 +39,10 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         background = new Texture("nothing.png");
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
-        startButton = new Button(93, 400,300,80, "start_button.png", "start_button.png");
-        quitButton = new Button(93,150,340,100,"quit.png","quit.png");
-        shopButton = new Button(93,300,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
-        settingButton = new Button(93,60,64,16,"Settings button.png", "Settings button.png");
+        startButton = new Button(115, 400,300,80, "start_button_pressed.png", "start_button.png");
+        quitButton = new Button(150,160,340,100,"quit_pressed.png","quit.png");
+        shopButton = new Button(150,300,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
+        settingButton = new Button(150,230,64,16,"Settings button_pressed.png", "Settings button.png");
     } //parameter is from muscleonfire
 
 
@@ -62,7 +62,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
 
         batch.begin();
         backgroundSprite.draw(batch);
-        game.font.draw(game.batch,"MUSCLE ON FIRE",93,600);
+        game.font.draw(game.batch,"MUSCLE ON FIRE",115,600);
         startButton.draw(batch);
         quitButton.draw(batch);
         shopButton.draw(batch);
