@@ -52,15 +52,15 @@ public class Score {
         }
     }
 
-    public void drawScore(SpriteBatch batch, BitmapFont font, float delta) {
+    public void drawScore(MuscleOnFire game, float delta) {
         // draw score
-        font.draw(batch, "SCORE: "+ displayScore(), 150, 700);
+        game.font.draw(game.batch, "SCORE: "+ displayScore(), 150, 700);
 
         // draw high score
-        font.draw(batch, "HIGHEST SCORE: "+ displayHighScore(), 70, 750);
+        game.font.draw(game.batch, "HIGHEST SCORE: "+ displayHighScore(), 70, 750);
 
         for(FloatingScore scoreDisplay : scoreToAdd){
-            if(scoreDisplay.drawScore(batch, font, delta)){
+            if(scoreDisplay.drawScore(game, delta)){
                 scoreToAdd.removeValue(scoreDisplay, true);
             }
         }

@@ -59,13 +59,13 @@ public class SpecialFloor extends GameObject{
 
     void touchedRightRolls(Player pat,float delta){
         if (pat.feet.overlaps(object)){
-            pat.object.x += 150*delta;
+            pat.goRight(50 * delta);
         }
     }
 
     void touchedLeftRolls(Player pat,float delta){
         if (pat.feet.overlaps(object)){
-            pat.object.x -= 150*delta;
+            pat.goLeft(50 * delta);
         }
     }
 }
