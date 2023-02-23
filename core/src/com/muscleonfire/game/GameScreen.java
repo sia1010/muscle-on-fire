@@ -1,6 +1,5 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
@@ -177,12 +176,8 @@ public class GameScreen implements Screen {
         }
         game.batch.setColor(1,1,1,1);
 
-        // draw score
-        game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 700);
-
-        //draw high score
-        game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 70, 750);
-
+        // draw score items
+        score.drawScore(game, delta);
 
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
@@ -440,6 +435,10 @@ public class GameScreen implements Screen {
 
         for (Enemies enemy : ebat) {
             if (enemy.killed) {
+                if(!enemy.givenScore){
+                    score.upScore(500);
+                    enemy.givenScore = true;
+                }
                 enemy.transpose(delta, time_passed);
             } else if (enemy.playerTouched(patrick, delta)) {
                 ebat.removeValue(enemy, true);

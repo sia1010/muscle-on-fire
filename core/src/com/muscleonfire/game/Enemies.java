@@ -1,17 +1,15 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
 
 public class Enemies extends GameObject {
 
     Animation<TextureRegion> batmanfly;
     Rectangle head, body;
+    boolean givenScore = false;
 
     float time = 0;
     int dmg =0;

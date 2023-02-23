@@ -13,6 +13,8 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 	SpriteBatch batch;
 	BitmapFont font;
 	OrthographicCamera camera;
+	FreeTypeFontGenerator generator;
+	FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
 	Coins coin;
 
@@ -25,11 +27,10 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 		camera.setToOrtho(false, 480,800);
 
 		// create freetype font generator and assign a .ttf font to it
-		FreeTypeFontGenerator generator;
 		generator = new FreeTypeFontGenerator(Gdx.files.internal("Minecraft.ttf"));
 
 		// create a freetype font parameter to set the properties of the font we want to use
-		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		parameter.size = 30	; // size = 30
 		parameter.color = new Color(0,0,0,1); // color = black
 

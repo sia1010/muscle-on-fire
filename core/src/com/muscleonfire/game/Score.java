@@ -1,10 +1,15 @@
 package com.muscleonfire.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
+
+import java.util.ArrayList;
 
 public class Score {
     int score = 0, highScore;
+    Array<FloatingScore> scoreToAdd = new Array<>();
     float timeSinceLastAddScore = 0;
     FileHandle highScoreFile;
 
@@ -28,6 +33,7 @@ public class Score {
     }
 
     void upScore(int up_amt){
+        scoreToAdd.add(new FloatingScore(up_amt));
         score += up_amt;
     }
 
@@ -46,4 +52,17 @@ public class Score {
         }
     }
 
+    public void drawScore(MuscleOnFire game, float delta) {
+        // draw score
+        game.font.draw(game.batch, "SCORE: "+ displayScore(), 150, 700);
+
+        // draw high score
+        game.font.draw(game.batch, "HIGHEST SCORE: "+ displayHighScore(), 70, 750);
+
+        for(FloatingScore scoreDisplay : scoreToAdd){
+            if(scoreDisplay.drawScore(game, delta)){
+                scoreToAdd.removeValue(scoreDisplay, true);
+            }
+        }
+    }
 }
