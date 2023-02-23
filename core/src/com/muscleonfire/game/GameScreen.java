@@ -177,12 +177,8 @@ public class GameScreen implements Screen {
         }
         game.batch.setColor(1,1,1,1);
 
-        // draw score
-        game.font.draw(game.batch, "SCORE: "+ score.displayScore(), 150, 700);
-
-        //draw high score
-        game.font.draw(game.batch, "HIGHEST SCORE: "+ score.displayHighScore(), 70, 750);
-
+        // draw score items
+        score.drawScore(game.batch, game.font, delta);
 
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor

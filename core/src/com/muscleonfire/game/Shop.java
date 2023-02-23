@@ -7,12 +7,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Shop implements Screen {
     final MuscleOnFire game;
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
     Sprite backgroundSprite;
     Button backMenuButton;
     public Shop(final MuscleOnFire game){
         this.game = game;
-        batch = game.batch;
+        batch = this.game.batch;
         backMenuButton = new Button(20,752,101,31,"Back_to_menu_shop_pressed.png","Back_to_menu_shop.png");
     }
     @Override
@@ -35,7 +35,7 @@ public class Shop implements Screen {
         game.font.draw(game.batch, "Coins: "+ this.game.coin.displayCoin(), 160, 730);
         backMenuButton.draw(batch);
         game.batch.end();
-        if(backMenuButton.getHeldDown(this.game.camera)){
+        if(backMenuButton.getJustPressed(this.game.camera)){
             game.setScreen(new Menu(this.game));
         }
     }
