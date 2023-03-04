@@ -29,9 +29,8 @@ public class GameScreen implements Screen {
     Array<Slime> onfloor_slime=new Array<Slime>();
     Array<Enemies> ebat = new Array<Enemies>();
 
-    Music BGM = Gdx.audio.newMusic(Gdx.files.internal("BGM.mp3"));
     Sound sound = Gdx.audio.newSound(Gdx.files.internal("Sounds/jump.mp3"));
-
+    final Music music = Gdx.audio.newMusic(Gdx.files.internal("BGM.mp3"));
 
     float time_passed;
     float randomizer_obstacle;
@@ -155,7 +154,6 @@ public class GameScreen implements Screen {
     }
 
     void drawAllObjects(float delta){
-
         // draw Sidewalls
         game.batch.draw(Sidewalls.getTexture(),Sidewalls.getX(),Sidewalls.getY());
 
@@ -235,6 +233,12 @@ public class GameScreen implements Screen {
 
     // SCREEN METHODS
     public GameScreen(final MuscleOnFire game) {
+
+        //plays music
+
+        music.setVolume(1.0f);
+        music.play();
+
         this.game = game;
 
         // spawn patrick
@@ -327,6 +331,7 @@ public class GameScreen implements Screen {
 
         // if game is in OVER state give everything red overlay and display text
         if (gameState == State.OVER) {
+            music.stop();
             game.batch.setColor(0.8f, 0, 0, 0.8f);
             drawAllObjects(delta);
             game.font.draw(game.batch, "GAME OVER", 160, 420);
