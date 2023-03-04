@@ -9,11 +9,11 @@ public class Shop implements Screen {
     final MuscleOnFire game;
     private final SpriteBatch batch;
     Sprite backgroundSprite;
-    Button backMenuButton;
+    Button backButton;
     public Shop(final MuscleOnFire game){
         this.game = game;
         batch = this.game.batch;
-        backMenuButton = new Button(20,752,101,31,"Back_to_menu_shop_pressed.png","Back_to_menu_shop.png");
+        backButton = new Button(20,752,128,32,"back_button_pressed.png","back_button.png");
     }
     @Override
     public void show() {
@@ -31,11 +31,11 @@ public class Shop implements Screen {
         game.batch.setProjectionMatrix(game.camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "SHOP", 210, 780);
+        game.font.draw(game.batch, "Shop", 210, 780);
         game.font.draw(game.batch, "Coins: "+ this.game.coin.displayCoin(), 160, 730);
-        backMenuButton.draw(batch);
+        backButton.draw(batch);
         game.batch.end();
-        if(backMenuButton.getJustPressed(this.game.camera)){
+        if(backButton.getJustPressed(this.game.camera)){
             game.setScreen(new Menu(this.game));
         }
     }

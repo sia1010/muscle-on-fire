@@ -1,6 +1,9 @@
 package com.muscleonfire.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -25,6 +28,10 @@ public class GameScreen implements Screen {
     Array<FallingObjects> falling_slime =new Array<FallingObjects>();
     Array<Slime> onfloor_slime=new Array<Slime>();
     Array<Enemies> ebat = new Array<Enemies>();
+
+    Music BGM = Gdx.audio.newMusic(Gdx.files.internal("BGM.mp3"));
+    Sound sound = Gdx.audio.newSound(Gdx.files.internal("Sounds/jump.mp3"));
+
 
     float time_passed;
     float randomizer_obstacle;

@@ -27,7 +27,6 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
     Texture background;
     Sprite backgroundSprite;
 
-
     Button startButton;
     Button quitButton;
     Button shopButton;
@@ -39,10 +38,10 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         background = new Texture("nothing.png");
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
-        startButton = new Button(115, 400,300,80, "start_button_pressed.png", "start_button.png");
-        quitButton = new Button(150,160,340,100,"quit_pressed.png","quit.png");
-        shopButton = new Button(150,300,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
-        settingButton = new Button(150,230,64,16,"Settings button_pressed.png", "Settings button.png");
+        startButton = new Button(115, 400,256,64, "start_button_pressed.png", "start_button.png");
+        quitButton = new Button(150,160,192,48,"quit_pressed.png","quit.png");
+        shopButton = new Button(150,300,192,48,"Shop_button_menu_pressed.png","Shop_button_menu.png");
+        settingButton = new Button(150,230,192,48,"Settings button_pressed.png", "Settings button.png");
     } //parameter is from muscleonfire
 
 
@@ -79,6 +78,9 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         }
         if(shopButton.getJustPressed(this.game.camera)){
             game.setScreen(new Shop(this.game));
+        }
+        if(settingButton.getJustPressed(this.game.camera)){
+            game.setScreen(new Settings(this.game));
         }
     }
 
