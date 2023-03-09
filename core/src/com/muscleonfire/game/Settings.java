@@ -5,10 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import jdk.internal.icu.text.UnicodeSet;
@@ -21,6 +23,7 @@ public class Settings implements Screen {
     private Stage stage;
     private Slider musicSlider;
     Table table = new Table();
+    Musics musics = new Musics() ;
 
     public Settings(final MuscleOnFire game){
         this.game = game;
@@ -29,8 +32,16 @@ public class Settings implements Screen {
         //creates a skin from json file for slider
         skin = new Skin(Gdx.files.internal("defaultui/uiskin.json"));
         stage = new Stage(new ScreenViewport());
-        Slider musicSlider = new Slider(0f, 100f, 1f, true, skin);
-        musicSlider.draw(batch,100f);
+        final Slider musicSlider = new Slider(0f, 1f, 1f, false  , skin);
+        //musicSlider.draw();
+        add(musicSlider);
+
+        musicSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                float volume = musicSlider.getValue();
+                musics.setBGMVolume(volume);
+            }
+        });
         backMenuButton = new Button(20,752,128,32,"back_button_pressed.png","back_button.png");
 //        musicSlider.setBounds(100, 300, 200, 20);
 
@@ -41,6 +52,13 @@ public class Settings implements Screen {
 
     }
 
+
+    public void add(Slider slider){
+        slider.setHeight(16);
+        slider.setWidth(300);
+        slider.setX(100);
+        slider.setY(100);
+    }
 
     @Override
     public void show() {
