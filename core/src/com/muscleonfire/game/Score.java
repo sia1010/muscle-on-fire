@@ -1,9 +1,12 @@
 package com.muscleonfire.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Array;
+import sun.font.TrueTypeFont;
 
 import java.util.ArrayList;
 
@@ -12,6 +15,13 @@ public class Score {
     Array<FloatingScore> scoreToAdd = new Array<>();
     float timeSinceLastAddScore = 0;
     FileHandle highScoreFile;
+    BitmapFont scorefont;
+
+    public Score(MuscleOnFire game){
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = game.parameter;
+        parameter.color = new Color(0.72f,0.53f,0.04f,1);
+        scorefont = game.generator.generateFont(parameter);
+    }
 
     void openHighScoreFile(){
         // open highScore.txt file and set highScore to the record
@@ -60,7 +70,7 @@ public class Score {
         game.font.draw(game.batch, "HIGHEST SCORE: "+ displayHighScore(), 70, 750);
 
         for(FloatingScore scoreDisplay : scoreToAdd){
-            if(scoreDisplay.drawScore(game, delta)){
+            if(scoreDisplay.drawScore(scorefont, game, delta)){
                 scoreToAdd.removeValue(scoreDisplay, true);
             }
         }
