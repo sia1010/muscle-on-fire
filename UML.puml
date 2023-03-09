@@ -1,0 +1,328 @@
+@startuml
+class com.muscleonfire.game.Wallpaper {
+~ void spawn()
+}
+class com.muscleonfire.game.MuscleOnFire {
+~ SpriteBatch batch
+~ BitmapFont font
+~ OrthographicCamera camera
+~ FreeTypeFontGenerator generator
+~ FreeTypeFontGenerator.FreeTypeFontParameter parameter
+~ Coins coin
++ void create()
++ void render()
++ void dispose()
+}
+class com.muscleonfire.game.Menu {
+~ MuscleOnFire game
+- SpriteBatch batch
+~ Texture background
+~ Sprite backgroundSprite
+~ Button startButton
+~ Button quitButton
+~ Button shopButton
+~ Button settingButton
++ void show()
++ void render(float)
++ void resize(int,int)
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
+}
+class com.muscleonfire.game.Health {
+~ int maxHealth
+~ int currHealth
+~ Texture filledHeart
+~ Texture emptyHeart
+~ Texture flashHeart
+}
+class com.muscleonfire.game.GameObject {
+# Rectangle object
+# Texture image
+~ void transpose(float,float)
+~ float getX()
+~ float getY()
+~ Texture getTexture()
+}
+class com.muscleonfire.game.GameOver {
+~ Button retryButton
+~ Button menuButton
+~ Score score
+~ int coins
+~ MuscleOnFire game
++ void show()
++ void render(float)
++ void resize(int,int)
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
+}
+class com.muscleonfire.game.FloatingScore {
+~ int score
+~ float time_passed
+~ boolean drawScore(MuscleOnFire,float)
+}
+class com.muscleonfire.game.Medicine {
+~ void spawn(Array<Floor>)
+~ boolean playerTouched(Player)
+}
+class com.muscleonfire.game.SpecialFloor {
+~ float dmg_timer
+~ Animation<TextureRegion> rightrollAnim
+~ Animation<TextureRegion> leftrollAnim
+~ void trampoline_spawn()
+~ void spike_spawn()
+~ void rightroll_spawn()
+~ void leftroll_spawn()
+~ void touchedSpike(Player,float)
+~ void touchedRightRolls(Player,float)
+~ void touchedLeftRolls(Player,float)
+}
+class com.muscleonfire.game.FallingObjects {
+~ float timetoAddDifficulty
+~ void falling_building_spawn()
+~ void falling_glass_spawn()
+~ void falling_stone_spawn()
+~ void falling_life_spawn()
+~ void transpose(float,float)
+~ boolean playerTouched(Player)
+~ boolean playerTouchedLife(Player)
+}
+class com.muscleonfire.game.Player {
+~ Rectangle feet
+~ float timeToAddDifficulty
+~ float jumpTime
+~ float flashTime
+~ int jumpPower
+~ boolean isJumping
+~ boolean isFlashing
+~ boolean onFloor
+~ boolean isFront
+~ boolean forcedJump
+~ Health healthPoint
+~ Controls controls
+~ Animation<TextureRegion> front
+~ void spawn()
+~ void updateFeetAndHeadPosition()
+~ void fall(float,Array<Floor>,Array<SpecialFloor>,Array<SpecialFloor>,Array<SpecialFloor>,Array<SpecialFloor>,Array<Enemies>,float)
+~ void move(float)
+~ void goLeft(float)
+~ void goRight(float)
++ void jump(float,float,Array<Floor>,Array<SpecialFloor>,Array<SpecialFloor>,Array<SpecialFloor>,Array<SpecialFloor>)
+~ boolean headIsTouching(Array<Floor>,Array<SpecialFloor>,Array<SpecialFloor>,Array<SpecialFloor>,Array<SpecialFloor>)
+~ void takeDamage(int)
+~ void healDamage(int)
+~ void drawHearts(SpriteBatch,float)
+~ void drawPatrick(SpriteBatch,float)
+~ boolean updateGameOver()
+~ void transpose(float,float)
+}
+class com.muscleonfire.game.Button {
+~ boolean isPressed
+~ Texture image_Pressed
+~ Texture image_notPressed
+~ Rectangle touchLocation
+~ void setTexture()
+~ void draw(SpriteBatch)
+~ boolean getHeldDown(OrthographicCamera)
+~ boolean getJustPressed(OrthographicCamera)
+}
+class com.muscleonfire.game.Rescue {
+~ Animation<TextureRegion> rescueAni
+~ Rectangle help_box
+~ Texture image_help
+~ float save_timer
+~ boolean saved
+~ void spawn(Array<Floor>)
+~ void updateHelpBoxPos()
+~ void playerTouched(Player,float,Score)
+~ Texture getTextureHelpBox()
+~ float getHelpX()
+~ float getHelpY()
+~ void transpose(float,float)
+}
+class com.muscleonfire.game.Coins {
+~ int coin
+~ FileHandle coinFile
+~ void openCoinFile()
+~ void addCoin(Score)
+~ void saveCoin()
+~ String displayCoin()
+}
+class com.muscleonfire.game.Controls {
+~ Button leftButton
+~ Button rightButton
+~ Button jumpButton
+~ Button screenButton
+~ controlMode mode
+~ void getInputs(OrthographicCamera,Player)
+~ void drawButtons(SpriteBatch)
+}
+enum com.muscleonfire.game.controlMode {
++  button
++  touch
++  follow
+}
+class com.muscleonfire.game.Floor {
+~ DifficultyIncrease addDifficulty
+~ void spawn()
+}
+class com.muscleonfire.game.GameScreen {
+~ float floor_time
+~ MuscleOnFire game
+~ Player patrick
+~ Building Sidewalls
+~ Array<Wallpaper> wallpapers
+~ FallingObjects fallingObjects
+~ Score score
+~ Array<Floor> floors
+~ Array<Rescue> rescues
+~ Array<Medicine> medicines
+~ Array<Fire> fires
+~ Array<FallingObjects> falling_glass
+~ Array<FallingObjects> falling_stone
+~ Array<FallingObjects> falling_life
+~ Array<SpecialFloor> spikefloors
+~ Array<SpecialFloor> tramfloors
+~ Array<SpecialFloor> rightrolls
+~ Array<SpecialFloor> leftrolls
+~ Array<Enemies> ebat
+~ float time_passed
+~ float randomizer_obstacle
+~ float randomizer_spikefloor
+~ float randomizer_tramfloor
+~ float randomizer_rightroll
+~ float randomizer_leftroll
+~ float randomizer_objects
+~ Floor latestFloor
+~ State gameState
+~ Obstacle next_obstacle
+~ void initialFloor()
+~ void initialWallpaper()
+~ void addFloor()
+~ void addWallpaper()
+~ void addSpikeFloor()
+~ void addTramFloor()
+~ void addRightRoll()
+~ void addLeftRoll()
+~ void addEnemies()
+~ void addFire()
+~ void addRescue()
+~ void addMedicine()
+~ void addGlass()
+~ void addStone()
+~ void addLife()
+~ void drawAllObjects(float)
++ void show()
++ void render(float)
++ void resize(int,int)
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
+}
+enum com.muscleonfire.game.Obstacle {
++  NULL
++  FIRE
++  RESCUE
++  MEDICINE
+}
+enum com.muscleonfire.game.State {
++  READY
++  RUNNING
++  OVER
+}
+class com.muscleonfire.game.Enemies {
+~ Animation<TextureRegion> batmanfly
+~ Rectangle head
+~ boolean givenScore
+~ float time
+~ int dmg
+~ boolean move_right
+~ boolean move_down
+~ boolean killed
+~ void spawn()
+~ void updateHeadAndBodyPosition()
+~ void checkDirection()
+~ void move(float)
+~ boolean playerTouched(Player,float)
+~ void transpose(float,float)
+}
+class com.muscleonfire.game.Settings {
+~ MuscleOnFire game
+- SpriteBatch batch
+~ Button setting
++ void show()
++ void render(float)
++ void resize(int,int)
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
+}
+class com.muscleonfire.game.Fire {
+~ float dmg_timer
+~ Animation<TextureRegion> fireAnim
+~ void spawn(Array<Floor>)
+~ void playerTouched(Player,float)
+}
+class com.muscleonfire.game.DifficultyIncrease {
+~ float timeAddDifficulty
+}
+class com.muscleonfire.game.Score {
+~ int score
+~ Array<FloatingScore> scoreToAdd
+~ float timeSinceLastAddScore
+~ FileHandle highScoreFile
+~ void openHighScoreFile()
+~ void addScore(float)
+~ void upScore(int)
+~ String displayScore()
+~ String displayHighScore()
+~ void saveScore()
++ void drawScore(MuscleOnFire,float)
+}
+class com.muscleonfire.game.Building {
+~ void spawn()
+}
+class com.muscleonfire.game.Ani {
+~ Animation<TextureRegion> loadAnimation(String,int,int,float)
+}
+class com.muscleonfire.game.Shop {
+~ MuscleOnFire game
+- SpriteBatch batch
+~ Sprite backgroundSprite
+~ Button backMenuButton
++ void show()
++ void render(float)
++ void resize(int,int)
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
+}
+class com.muscleonfire.game.Item {
+}
+
+
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Wallpaper
+com.badlogic.gdx.Game <|-- com.muscleonfire.game.MuscleOnFire
+com.badlogic.gdx.Screen <|.. com.muscleonfire.game.Menu
+com.badlogic.gdx.Screen <|.. com.muscleonfire.game.GameOver
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Medicine
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.SpecialFloor
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.FallingObjects
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Player
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Button
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Rescue
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Floor
+com.badlogic.gdx.Screen <|.. com.muscleonfire.game.GameScreen
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Enemies
+com.badlogic.gdx.Screen <|.. com.muscleonfire.game.Settings
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Fire
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Building
+com.badlogic.gdx.Screen <|.. com.muscleonfire.game.Shop
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Item
+@enduml
