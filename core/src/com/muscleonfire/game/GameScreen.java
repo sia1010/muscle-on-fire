@@ -16,9 +16,9 @@ public class GameScreen implements Screen {
     FallingObjects fallingObjects;
     Score score;
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
-    Array<Rescue> rescues = new Array<Rescue>();
-    Array<Medicine> medicines = new Array<Medicine>();
-    Array<Fire> fires = new Array<Fire>();
+    Array<Obstacles> rescues = new Array<Obstacles>();
+    Array<Obstacles> medicines = new Array<Obstacles>();
+    Array<Obstacles> fires = new Array<Obstacles>();
     Array<FallingObjects> falling_glass =new Array<FallingObjects>();
     Array<FallingObjects> falling_stone =new Array<FallingObjects>();
     Array<FallingObjects> falling_life =new Array<FallingObjects>();
@@ -53,7 +53,7 @@ public class GameScreen implements Screen {
 
     void initialFloor(){
         for (int i = 0; i < 4; i++){
-            addFloor(Floor.FloorID.floor);
+            addFloor();
             floors.peek().object.y += i * 120;
         }
     }
@@ -90,24 +90,24 @@ public class GameScreen implements Screen {
     }
     void addFire(){
         // add a new obstacles
-        Fire fire = new Fire();
-        fire.spawn(floors);
+        Obstacles fire = new Obstacles();
+        fire.spawnFire(floors);
 
         // add the o into the obstacle array
         fires.add(fire);
     }
     void addRescue(){
         // add a new obstacles
-        Rescue rescue = new Rescue();
-        rescue.spawn(floors);
+        Obstacles rescue = new Obstacles();
+        rescue.spawnRescue(floors);
 
         // add the o into the rescues array
         rescues.add(rescue);
     }
     void addMedicine(){
         // add a new obstacles
-        Medicine medicine = new Medicine();
-        medicine.spawn(floors);
+        Obstacles medicine = new Obstacles();
+        medicine.spawnMedicine(floors);
 
         // add the o into the medicines array
         medicines.add(medicine);
@@ -173,18 +173,18 @@ public class GameScreen implements Screen {
         }
 
         // draw all the rescue
-        for (Rescue rescue : rescues) {
+        for (Obstacles rescue : rescues) {
             game.batch.draw(rescue.rescueAni.getKeyFrame(time_passed, true), rescue.getX(), rescue.getY());
             game.batch.draw(rescue.getTextureHelpBox(), rescue.getHelpX(), rescue.getHelpY());
         }
 
         // draw all the medicine
-        for (Medicine medicine : medicines) {
+        for (Obstacles medicine : medicines) {
             game.batch.draw(medicine.getTexture(), medicine.getX(), medicine.getY());
         }
 
         // draw all the fires
-        for (Fire fire : fires) {
+        for (Obstacles fire : fires) {
             game.batch.draw(fire.fireAnim.getKeyFrame(time_passed, true), fire.getX(), fire.getY());
         }
 
@@ -371,21 +371,21 @@ public class GameScreen implements Screen {
             floor.touched(patrick, delta);
         }
 
-        for (Rescue res : rescues) {
-            res.playerTouched(patrick, delta, score);
-            res.transpose(delta, time_passed);
+        for (Obstacles res : rescues) {
+            res.playerTouchedRescue(patrick, delta, score);
+            res.transposeRescue(delta, time_passed);
         }
 
-        for (Medicine medicine : medicines) {
+        for (Obstacles medicine : medicines) {
             medicine.transpose(delta, time_passed);
-            if (medicine.playerTouched(patrick)) {
+            if (medicine.playerTouchedMedicine(patrick)) {
                 medicines.removeValue(medicine, true);
             }
         }
 
-        for (Fire fire : fires) {
+        for (Obstacles fire : fires) {
             fire.transpose(delta, time_passed);
-            fire.playerTouched(patrick, delta);
+            fire.playerTouchedFire(patrick, delta);
         }
 
 
@@ -569,17 +569,17 @@ public class GameScreen implements Screen {
         }
 
         // delete obstacles which are out of screen
-        for (Fire fire : fires){
+        for (Obstacles fire : fires){
             if (fire.getY() > 1000){
                 fires.removeValue(fire, true);
             }
         }
-        for (Rescue rescue : rescues){
+        for (Obstacles rescue : rescues){
             if (rescue.getY() > 1000){
                 rescues.removeValue(rescue, true);
             }
         }
-        for (Medicine medicine : medicines){
+        for (Obstacles medicine : medicines){
             if (medicine.getY() > 1000){
                 medicines.removeValue(medicine, true);
             }
