@@ -53,7 +53,7 @@ public class GameScreen implements Screen {
 
     void initialFloor(){
         for (int i = 0; i < 4; i++){
-            addFloor();
+            addFloor(Floor.FloorID.floor);
             floors.peek().object.y += i * 120;
         }
     }
@@ -431,7 +431,7 @@ public class GameScreen implements Screen {
 
         for (FallingObjects slime : falling_slime) {
             slime.transpose(delta, time_passed);
-            if (slime.isTouchingFloor(floors) && slime.object.y < 500) {
+            if (slime.isTouchingFloor(floors) && slime.object.y < 400) {
                 addOnFloorSlime(slime);
                 falling_slime.removeValue(slime, true);
             }

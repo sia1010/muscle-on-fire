@@ -33,6 +33,7 @@ public class Floor extends GameObject { // inheritance
                         dmg_timer-=1;
                         pat.takeDamage(1);
                     }
+                    break;
                 case rollLeft:
                     pat.goRight(50 * delta);
                     break;

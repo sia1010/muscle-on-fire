@@ -22,6 +22,7 @@ public class Player extends GameObject{
     boolean forcedJump = false;
     Health healthPoint = new Health();
     Controls controls;
+    Floor currentFloor;
     Animation<TextureRegion> front, left, right, playerAnim;
 
     public Player(Controls.controlMode controlMode){
@@ -92,6 +93,7 @@ public class Player extends GameObject{
         onFloor = false;
         for (Floor floor: floors){
             if (feet.overlaps(floor.object)) { // floor.object = the rectangle
+                currentFloor = floor;
                 onFloor = true;
             }
         }
@@ -108,6 +110,8 @@ public class Player extends GameObject{
             object.y -= 200 * delta;
             object.y -= ((300 + time_passed) / 3) * delta;
             updateFeetAndHeadPosition();
+        } else {
+            object.y = currentFloor.getY() + 8;
         }
     }
 

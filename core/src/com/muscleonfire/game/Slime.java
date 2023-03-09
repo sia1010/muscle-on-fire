@@ -9,10 +9,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Slime extends GameObject {
-    boolean move_right=true;
+    boolean move_right;
     boolean changeDirection=false;
     float time=0;
     boolean onFloor;
+    Floor currentFloor;
     Animation<TextureRegion> slimemove;
     void onfloor_spawn(GameObject slime){
 
@@ -22,8 +23,13 @@ public class Slime extends GameObject {
         object.x = slime.getX();
         object.y = slime.getY();
 
-
-        image=new Texture(Gdx.files.internal("slime_right.png"));
+        if (MathUtils.random(1,2) == 1){
+            move_right = true;
+            image=new Texture(Gdx.files.internal("slime_right.png"));
+        } else {
+            move_right = false;
+            image=new Texture(Gdx.files.internal("slime_left.png"));
+        }
 
     }
 
@@ -43,9 +49,11 @@ public class Slime extends GameObject {
         // force left/right if position too to the side
         if (object.x > 360) {
             move_right = false;
+            image = new Texture(Gdx.files.internal("slime_left.png"));
         }
         if (object.x < 40) {
             move_right = true;
+            image = new Texture(Gdx.files.internal("slime_right.png"));
         }
     }
 
@@ -58,7 +66,7 @@ public class Slime extends GameObject {
                 object.x -= 150 * delta;
             }
             if(time > 3){
-                changeDirection=true;
+                changeDirection = true;
                 time = MathUtils.random(1,2);
             }
         }
@@ -71,12 +79,15 @@ public class Slime extends GameObject {
         for (Floor floor: floors){
             if (slime.overlaps(floor.object)) { // floor.object = the rectangle
                 onFloor = true;
+                currentFloor = floor;
             }
         }
         // if not on floor, fall down
         if(!onFloor){
             object.y -= 200 * delta;
             object.y -= ((300 + time_passed) / 3) * delta;
+        } else {
+            object.y = currentFloor.getY() + 8;
         }
     }
 
