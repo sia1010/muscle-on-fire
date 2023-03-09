@@ -20,7 +20,7 @@ public class Rescue extends GameObject{
         object.height = 64;
         object.width = 64;
         object.x = floors.peek().getX() + MathUtils.random(0, 128 - 64); // randomly at the floor, can be at left or right
-        object.y = floors.peek().getY()+10;
+        object.y = floors.peek().getY() + 10;
         image = new Texture(Gdx.files.internal("rescue_unsaved.png"));
         rescueAni = new Ani().loadAnimation("rescue_unsaved(sheet).png", 2,1, 0.5f);
 

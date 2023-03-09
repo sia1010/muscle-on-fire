@@ -10,11 +10,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 //cheah
 
 public class MuscleOnFire extends Game { //Game like main,can change screen using setscreen(in built method)
-	SpriteBatch batch;
-	BitmapFont font;
-	OrthographicCamera camera;
-	FreeTypeFontGenerator generator;
-	FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+	protected SpriteBatch batch;
+	protected BitmapFont font;
+	protected OrthographicCamera camera;
+	protected FreeTypeFontGenerator generator;
+	protected FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
 	Coins coin;
 

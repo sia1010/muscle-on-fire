@@ -78,7 +78,16 @@ public class Player extends GameObject{
         feet.y = object.y;
     }
 
-    void fall(float delta, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, Array<SpecialFloor> rightrolls, Array<SpecialFloor> leftrolls,Array<Enemies> ebat, float time_passed){
+    void initiateJump(int power, boolean forced){
+        isJumping = true;
+        jumpTime = 0;
+        jumpPower = power;
+        if (forced){
+            forcedJump = true;
+        }
+    }
+
+    void fall(float delta, Array<Floor> floors, Array<Enemies> ebat, float time_passed){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
@@ -87,40 +96,10 @@ public class Player extends GameObject{
             }
         }
 
-        for (SpecialFloor spikefloor: spikefloors){
-            if (feet.overlaps(spikefloor.object)) { // floor.object = the rectangle
-                onFloor = true;
-            }
-        }
-
-        for (SpecialFloor tramfloor: tramfloors){
-            if (feet.overlaps(tramfloor.object)) { // floor.object = the rectangle
-                onFloor = true;
-                isJumping = true;
-                jumpTime = 0;
-                jumpPower = 600;
-                forcedJump = true;
-            }
-        }
-
-        for (SpecialFloor rightroll: rightrolls){
-            if (feet.overlaps(rightroll.object)) { // floor.object = the rectangle
-                onFloor = true;
-            }
-        }
-
-        for (SpecialFloor leftroll: leftrolls){
-            if (feet.overlaps(leftroll.object)) { // floor.object = the rectangle
-                onFloor = true;
-            }
-        }
         for (Enemies killbat: ebat){
             if (feet.overlaps(killbat.head)) { // killbat.object = the rectangle
-                isJumping = true;
-                jumpTime = 0;
-                jumpPower = 600;
+                initiateJump(600, true);
                 killbat.killed = true;
-                forcedJump = true;
             }
         }
 
@@ -150,9 +129,7 @@ public class Player extends GameObject{
         }
 
         if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && onFloor && !forcedJump) {
-            isJumping = true; // set isJumping to true
-            jumpTime = 0; // set jumpTime to 0;
-            jumpPower = 1400;
+            initiateJump(1400, false);
             isMoving = true;
         }
 
@@ -180,9 +157,9 @@ public class Player extends GameObject{
         }
     }
 
-    public void jump(float delta, float time_passed, Array<Floor> floors, Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors, Array<SpecialFloor> rightrolls,Array<SpecialFloor>leftrolls){
+    public void jump(float delta, float time_passed, Array<Floor> floors){
         // check if standing on floor){ // check for isJumping, if isJumping, then jump
-        if (isJumping && !headIsTouching(floors,spikefloors,tramfloors,rightrolls,leftrolls)) { // check for jumping and not hitting head
+        if (isJumping && !headIsTouching(floors)) { // check for jumping and not hitting head
             object.y += jumpPower * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
             jumpTime += delta;
             if (jumpTime > 0.4f) { // after 0.4 seconds, stop jumping
@@ -194,30 +171,10 @@ public class Player extends GameObject{
         }
     }
 
-    boolean headIsTouching(Array<Floor> floors,Array<SpecialFloor> spikefloors, Array<SpecialFloor> tramfloors,Array<SpecialFloor> rightrolls,Array<SpecialFloor> leftrolls ){
+    boolean headIsTouching(Array<Floor> floors){
         // check if standing on floor{ // check if head is touching
         for (Floor floor: floors){
             if (head.overlaps(floor.object)) { // floor.object = the rectangle
-                return true;
-            }
-        }
-        for (SpecialFloor spikefloor: spikefloors){
-            if (head.overlaps(spikefloor.object)) { // floor.object = the rectangle
-                return true;
-            }
-        }
-        for (SpecialFloor tramfloor: tramfloors){
-            if (head.overlaps(tramfloor.object)) { // floor.object = the rectangle
-                return true;
-            }
-        }
-        for (SpecialFloor rightroll: rightrolls){
-            if (head.overlaps(rightroll.object)) { // floor.object = the rectangle
-                return true;
-            }
-        }
-        for (SpecialFloor leftroll: leftrolls){
-            if (head.overlaps(leftroll.object)) { // floor.object = the rectangle
                 return true;
             }
         }

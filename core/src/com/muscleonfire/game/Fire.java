@@ -16,7 +16,7 @@ public class Fire extends GameObject{
         object.height = 32;
         object.width = 28;
         object.x = floors.peek().getX() + MathUtils.random(0, 128 - 28); // randomly at the floor, can be at left or right
-        object.y = floors.peek().getY()+10;
+        object.y = floors.peek().getY() + 10;
         image = new Texture(Gdx.files.internal("Fire.png"));
         fireAnim = new Ani().loadAnimation("Fire(sheet).png", 3,1, 0.5f);
     }

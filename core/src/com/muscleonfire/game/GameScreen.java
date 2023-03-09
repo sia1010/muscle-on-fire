@@ -22,14 +22,8 @@ public class GameScreen implements Screen {
     Array<FallingObjects> falling_glass =new Array<FallingObjects>();
     Array<FallingObjects> falling_stone =new Array<FallingObjects>();
     Array<FallingObjects> falling_life =new Array<FallingObjects>();
-    Array<FallingObjects> falling_slime =new Array<FallingObjects>();
-    Array<Slime> onfloor_slime=new Array<Slime>();
-    Array<SpecialFloor> spikefloors = new Array<SpecialFloor>();
-    Array<SpecialFloor> tramfloors = new Array<SpecialFloor>();
-    Array<SpecialFloor> rightrolls = new Array<SpecialFloor>();
-    Array<SpecialFloor> leftrolls = new Array<SpecialFloor>();
     Array<Enemies> ebat = new Array<Enemies>();
-    boolean onfloor=false;
+
     float time_passed;
     float randomizer_obstacle;
     float randomizer_spikefloor;
@@ -57,7 +51,7 @@ public class GameScreen implements Screen {
 
     void initialFloor(){
         for (int i = 0; i < 4; i++){
-            addFloor();
+            addFloor(Floor.FloorID.floor);
             floors.peek().object.y += i * 120;
         }
     }
@@ -67,10 +61,10 @@ public class GameScreen implements Screen {
             wallpapers.peek().object.y += i * 120;
         }
     }
-    void addFloor(){
+    void addFloor(Floor.FloorID id){
         // add a new floor
         Floor floor = new Floor();
-        floor.spawn();
+        floor.spawn(id);
 
         // add the floor into the floors array
         floors.add(floor);
@@ -84,38 +78,6 @@ public class GameScreen implements Screen {
         wallpapers.add(wallpaper);
     }
 
-    void addSpikeFloor(){
-
-        SpecialFloor spikefloor = new SpecialFloor();
-        spikefloor.spike_spawn();
-
-        // add the floor into the floors array
-        spikefloors.add(spikefloor);
-    }
-    void addTramFloor(){
-
-        SpecialFloor tramfloor = new SpecialFloor();
-        tramfloor.trampoline_spawn();
-
-        // add the floor into the floors array
-        tramfloors.add(tramfloor);
-    }
-    void addRightRoll(){
-
-        SpecialFloor rightroll = new SpecialFloor();
-        rightroll.rightroll_spawn();
-
-        // add the floor into the floors array
-        rightrolls.add(rightroll);
-    }
-    void addLeftRoll(){
-
-        SpecialFloor leftroll = new SpecialFloor();
-        leftroll.leftroll_spawn();
-
-        // add the floor into the floors array
-        leftrolls.add(leftroll);
-    }
     void addEnemies(){
 
         Enemies enemy = new Enemies();
@@ -167,21 +129,6 @@ public class GameScreen implements Screen {
         falling_life.add(life);
     }
 
-    void addSlime(){
-        FallingObjects slime=new FallingObjects();
-        slime.falling_slime_spawn(floors);
-
-        falling_slime.add(slime);
-
-    }
-
-    void addOnFloorSlime(GameObject oldslime){
-        Slime onfloorSlime=new Slime();
-        onfloorSlime.onfloor_spawn(oldslime);
-
-        onfloor_slime.add(onfloorSlime);
-
-    }
     void drawAllObjects(float delta){
 
         // draw Sidewalls
@@ -198,25 +145,7 @@ public class GameScreen implements Screen {
 
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
-            game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
-        }
-
-        // draw all the spike floors
-        for (SpecialFloor spikefloor : spikefloors) {
-            game.batch.draw(spikefloor.getTexture(), spikefloor.getX(), spikefloor.getY());
-        }
-
-        // draw all the trampoline floors
-        for (SpecialFloor tramfloor : tramfloors) {
-            game.batch.draw(tramfloor.getTexture(), tramfloor.getX(), tramfloor.getY());
-        }
-
-        // draw all the rolling wooden floors
-        for (SpecialFloor rightroll : rightrolls) {
-            game.batch.draw(rightroll.rightrollAnim.getKeyFrame(time_passed, true), rightroll.getX(), rightroll.getY());
-        }
-        for (SpecialFloor leftroll : leftrolls) {
-            game.batch.draw(leftroll.leftrollAnim.getKeyFrame(time_passed, true), leftroll.getX(), leftroll.getY());
+            floor.draw(this.game.batch, time_passed);
         }
 
         // draw bat_enemy
@@ -256,15 +185,6 @@ public class GameScreen implements Screen {
             game.batch.draw(life.getTexture(), life.getX(),life.getY());
         }
 
-        // draw all the falling slime
-        for(FallingObjects sli : falling_slime ){
-            game.batch.draw(sli.getTexture(), sli.getX(),sli.getY());
-        }
-
-        for(Slime onfloor_slime : onfloor_slime ){
-            game.batch.draw(onfloor_slime.getTexture(), onfloor_slime.getX(),onfloor_slime.getY());
-        }
-
         // draw patrick
         patrick.drawPatrick(this.game.batch, time_passed);
 
@@ -296,7 +216,7 @@ public class GameScreen implements Screen {
         fallingObjects.falling_building_spawn();
 
         latestFloor = new Floor();
-        latestFloor.spawn();
+        latestFloor.spawn(Floor.FloorID.floor);
 
         // add first floor
         initialFloor();
@@ -396,7 +316,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta);
-            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, rightrolls, leftrolls);
+            patrick.jump(delta, time_passed, floors);
 
         }
         if (gameState == State.OVER) {
@@ -418,11 +338,10 @@ public class GameScreen implements Screen {
             wallpaper.transpose(delta, wallpapers.peek().getY());
         }
 
-
         for (Floor floor : floors) {
             floor.transpose(delta, time_passed);
+            floor.touched(patrick, delta);
         }
-
 
         for (Rescue res : rescues) {
             res.playerTouched(patrick, delta, score);
@@ -441,23 +360,6 @@ public class GameScreen implements Screen {
             fire.playerTouched(patrick, delta);
         }
 
-        for (SpecialFloor spikefloor : spikefloors) {
-            spikefloor.transpose(delta, time_passed);
-            spikefloor.touchedSpike(patrick, delta);
-        }
-
-        for (SpecialFloor tramfloor : tramfloors) {
-            tramfloor.transpose(delta, time_passed);
-        }
-
-        for (SpecialFloor rightroll : rightrolls) {
-            rightroll.transpose(delta, time_passed);
-            rightroll.touchedRightRolls(patrick,delta);
-        }
-        for (SpecialFloor leftroll : leftrolls) {
-            leftroll.transpose(delta, time_passed);
-            leftroll.touchedLeftRolls(patrick,delta);
-        }
 
         for (Enemies enemy : ebat) {
             if (enemy.killed) {
@@ -499,31 +401,8 @@ public class GameScreen implements Screen {
             }
         }
 
-        for (FallingObjects slime : falling_slime) {
-            onfloor = slime.fall(slime.object,delta,floors, time_passed);
-
-            if (onfloor) {
-                addOnFloorSlime(slime);
-                falling_slime.removeValue(slime, true);
-
-            }
-
-
-        }
-        for (Slime slime1 : onfloor_slime) {
-            if(onfloor) {
-                slime1.transpose_up(delta, time_passed);}
-
-            slime1.checkMovingDirection();
-            slime1.move(delta);
-
-            onfloor=slime1.fall(slime1.object,delta,floors,time_passed);
-
-
-        }
-
         // make patrick fall
-        patrick.fall(delta, floors, spikefloors, tramfloors, rightrolls, leftrolls, ebat, time_passed);
+        patrick.fall(delta, floors, ebat, time_passed);
 
 
         // ADD / DELETE GAME OBJECTS
@@ -531,21 +410,21 @@ public class GameScreen implements Screen {
         // use time to control add floor
         if (latestFloor.getY() > 0) {
             if (time_passed > randomizer_tramfloor) {
-                addTramFloor();
+                addFloor(Floor.FloorID.trampoline);
                 randomizer_tramfloor += MathUtils.random(5, 10); // add the obstacles time
             } else if (time_passed > randomizer_spikefloor) {
-                addSpikeFloor();
+                addFloor(Floor.FloorID.spike);
                 randomizer_spikefloor += MathUtils.random(5, 10);
             }  else if (time_passed > randomizer_rightroll) {
-                addRightRoll();
+                addFloor(Floor.FloorID.rollRight);
                 randomizer_rightroll += MathUtils.random(10, 15);
                 floor_time = 0;
             }else if (time_passed > randomizer_leftroll) {
-                addLeftRoll();
+                addFloor(Floor.FloorID.rollLeft);
                 randomizer_leftroll += MathUtils.random(10, 15);
                 floor_time = 0;
             } else {
-                addFloor();
+                addFloor(Floor.FloorID.floor);
             }
             latestFloor.object.y = -120;
         }
@@ -556,15 +435,12 @@ public class GameScreen implements Screen {
 
         if (time_passed > randomizer_objects) {
             int random = MathUtils.random(1, 10);
-            if (random <= 1) {
+            if (random <= 3) {
                 addGlass();
-            } else if (random <= 2) {
+            } else if (random <= 6) {
                 addStone();
-            } else if(random<=3){
+            } else {
                 addLife();
-            }
-            else{
-                addSlime();
             }
             randomizer_objects += MathUtils.random(8, 15); // add the object time
         }
@@ -607,16 +483,7 @@ public class GameScreen implements Screen {
                 floors.removeValue(floor, true);
             }
         }
-        for (SpecialFloor floor : spikefloors) {
-            if (floor.getY() > 1000) {
-                spikefloors.removeValue(floor, true);
-            }
-        }
-        for (SpecialFloor floor : tramfloors) {
-            if (floor.getY() > 1000) {
-                tramfloors.removeValue(floor, true);
-            }
-        }
+
         for (Wallpaper wallpaper : wallpapers){
             if (wallpaper.getY() > 1000){
                 wallpapers.removeValue(wallpaper, true);
@@ -637,11 +504,6 @@ public class GameScreen implements Screen {
         for (FallingObjects fallingObject : falling_life) {
             if (fallingObject.getY() < -200) {
                 falling_life.removeValue(fallingObject, true);
-            }
-        }
-        for (FallingObjects fallingObject : falling_slime) {
-            if (fallingObject.getY() < -200) {
-                falling_slime.removeValue(fallingObject, true);
             }
         }
 
