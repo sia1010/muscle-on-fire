@@ -8,6 +8,8 @@ public class Controls {
     Button rightButton;
     Button jumpButton;
     Button screenButton;
+
+
     enum controlMode{
         button,
         touch,
@@ -58,4 +60,6 @@ public class Controls {
         }
         jumpButton.draw(batch);
     }
+
+
 }
