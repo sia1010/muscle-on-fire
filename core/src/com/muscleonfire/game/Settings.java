@@ -19,45 +19,31 @@ public class Settings implements Screen {
     final MuscleOnFire game;
     private final SpriteBatch batch;
     Button backMenuButton;;
-    private Skin skin;
-    private Stage stage;
-    private Slider musicSlider;
-    Table table = new Table();
-    Musics musics = new Musics() ;
+    Musics musics = new Musics();
+    private Skin sliderSkin = new Skin(Gdx.files.internal("Slider/uiskin.json"));
+
+    private Stage stage = new Stage(new ScreenViewport());
+    final Slider musicSlider = new Slider(0f, 2f, 0.1f, false, sliderSkin);
+    final Slider soundSlider = new Slider(0f,2f,0.1f,false, sliderSkin);
+
 
     public Settings(final MuscleOnFire game){
         this.game = game;
         batch = this.game.batch;
 
-        //creates a skin from json file for slider
-        skin = new Skin(Gdx.files.internal("defaultui/uiskin.json"));
-        stage = new Stage(new ScreenViewport());
-        final Slider musicSlider = new Slider(0f, 1f, 1f, false  , skin);
-        //musicSlider.draw();
-        add(musicSlider);
+        Gdx.input.setInputProcessor(stage);
 
-        musicSlider.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                float volume = musicSlider.getValue();
-                musics.setBGMVolume(volume);
-            }
-        });
-        backMenuButton = new Button(20,752,128,32,"back_button_pressed.png","back_button.png");
-//        musicSlider.setBounds(100, 300, 200, 20);
+        backMenuButton = new Button(20,740,128,32,"back_button_pressed.png","back_button.png");
 
-//        musicSlider.setValue(game.getMusicVolume());
-
-//        stage.addActor(musicSlider);
-
+        setSliderLocation();
 
     }
 
-
-    public void add(Slider slider){
-        slider.setHeight(16);
-        slider.setWidth(300);
-        slider.setX(100);
-        slider.setY(100);
+    public void setSliderLocation(){
+        musicSlider.setX(250);
+        musicSlider.setY(750);
+        soundSlider.setX(250);
+        soundSlider.setY(650);
     }
 
     @Override
@@ -74,21 +60,24 @@ public class Settings implements Screen {
         // set the projection area
         game.batch.setProjectionMatrix(game.camera.combined);
 
+        //start drawing
         game.batch.begin();
-        game.font.draw(game.batch, "Settings", 200, 780);
-
+        game.font.draw(game.batch, "Settings", 200, 750);
         backMenuButton.draw(batch);
+        game.font.draw(game.batch, "Music  : ", 100, 650);
+        game.font.draw(game.batch,"SFX    : ", 100, 560);
         game.batch.end();
+
+        //creates a stage with actors
+        stage.draw();
+        stage.addActor(musicSlider);
+        stage.addActor(soundSlider);
+
         if(backMenuButton.getJustPressed(this.game.camera)){
             game.setScreen(new Menu(this.game));
         }
 
-//        musicSlider = new Slider(0f, 100f, 1f, true, skin);
-
-//        musicSlider.setDebug(true);
-
     }
-
 
 
 
@@ -118,3 +107,9 @@ public class Settings implements Screen {
 
     }
 }
+    /*   musicSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                float volume = musicSlider.getValue();
+                musics.setBGMVolume(volume);
+            }
+        });*/
