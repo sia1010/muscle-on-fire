@@ -19,6 +19,7 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 	protected FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
 
+
 	Coins coin;
 
 	public void create() {

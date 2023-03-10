@@ -77,6 +77,16 @@ public class Settings implements Screen {
             game.setScreen(new Menu(this.game));
         }
 
+        backMenuButton.draw(batch);
+        game.batch.end();
+        if(backMenuButton.getJustPressed(this.game.camera)){
+            game.setScreen(new Menu(this.game));
+        }
+
+//        musicSlider = new Slider(0f, 100f, 1f, true, skin);
+
+//        musicSlider.setDebug(true);
+
     }
 
 
