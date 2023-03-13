@@ -35,7 +35,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
     public Menu(final MuscleOnFire game) {
         this.game = game;
         batch = game.batch;
-        background = new Texture("nothing.png");
+        background = new Texture("menu_background.png");
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
         startButton = new Button(115, 400,256,64, "start_button_pressed.png", "start_button.png");
