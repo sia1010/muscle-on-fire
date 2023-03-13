@@ -4,21 +4,33 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Controls {
-    Button leftButton;
-    Button rightButton;
-    Button jumpButton;
-    Button screenButton;
-
+    static Button leftButton;
+    static Button rightButton;
+    static Button jumpButton;
+    static Button screenButton;
 
     enum controlMode{
         button,
         touch,
         follow
     }
-    controlMode mode;
+    static controlMode mode;
 
-    public Controls(controlMode setmode){ // initialise the position and size of the buttons
-        mode = setmode;
+    public Controls() {
+    }
+
+    public Controls(String setmode){ // initialise the position and size of the buttons
+        if (setmode == "touch"){
+            mode = controlMode.touch;
+        }
+        else if(setmode == "follow"){
+            mode = controlMode.follow;
+        }
+        else if(setmode == "button"){
+            mode = controlMode.button;
+        }else{
+            mode = controlMode.follow;
+        }
         screenButton = new Button(0,0,480,800, "nothing.png", "nothing.png");
         if (mode == controlMode.button) {
             leftButton = new Button(50, 30, 64, 64, "leftButton_unpressed.png", "leftButton_unpressed.png");
@@ -61,5 +73,26 @@ public class Controls {
         jumpButton.draw(batch);
     }
 
+    public static void setControlMode(String control){
+        if (control == "touch"){
+            mode = controlMode.touch;
+        }if(control == "follow"){
+            mode = controlMode.follow;
+        }if(control == "button"){
+            mode = controlMode.button;
+        }
+    }
+
+    public static String getControlMode(){
+        String check = "";
+        if (mode == controlMode.touch){
+            check = "touch";
+        }if (mode == controlMode.follow){
+            check = "follow";
+        }if (mode == controlMode.button){
+            check = "button";
+        }
+        return check;
+    }
 
 }

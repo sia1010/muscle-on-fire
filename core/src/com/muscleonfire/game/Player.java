@@ -25,7 +25,7 @@ public class Player extends GameObject{
     Floor currentFloor;
     Animation<TextureRegion> front, left, right, playerAnim;
 
-    public Player(Controls.controlMode controlMode){
+    public Player(String controlMode){
         controls = new Controls(controlMode);
     }
 

@@ -28,6 +28,7 @@ public class GameScreen implements Screen {
     Array<FallingObjects> falling_slime =new Array<FallingObjects>();
     Array<Slime> onfloor_slime=new Array<Slime>();
     Array<Enemies> ebat = new Array<Enemies>();
+    Controls controls = new Controls();
 
 
     //AUDIO
@@ -242,7 +243,7 @@ public class GameScreen implements Screen {
         this.game = game;
 
         // spawn patrick
-        patrick = new Player(Controls.controlMode.follow);
+        patrick = new Player(controls.getControlMode());
         patrick.spawn();
 
         // initialising the Sidewalls
