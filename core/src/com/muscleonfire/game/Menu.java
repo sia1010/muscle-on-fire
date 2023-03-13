@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import java.util.Random;
 
 
 import javax.swing.text.View;
@@ -34,8 +35,11 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
 
     public Menu(final MuscleOnFire game) {
         this.game = game;
+        Random rand = new Random();
+        int randmenu = rand.nextInt(5);
+        randmenu+=1;
         batch = game.batch;
-        background = new Texture("menu_background.png");
+        background = new Texture("menu_background"+randmenu+".png");
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
         startButton = new Button(115, 400,256,64, "start_button_pressed.png", "start_button.png");
