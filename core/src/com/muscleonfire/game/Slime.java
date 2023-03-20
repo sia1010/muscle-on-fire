@@ -32,10 +32,21 @@ public class Slime extends GameObject {
         }
 
     }
+    void dieSlime_spawn(GameObject onfloorslime){
+
+        object=new Rectangle();
+        object.height=32;
+        object.width=64;
+        object.x = onfloorslime.getX();
+        object.y = onfloorslime.getY();
+        image=new Texture(Gdx.files.internal("slime_die.png"));
+        time = 0;
+
+    }
 
     void checkMovingDirection(){
         // change direction if the boolean is true
-        if (changeDirection) { // floor.object = the rectangle
+        if (changeDirection) {
             if (move_right) {
                 move_right = false;
                 image = new Texture(Gdx.files.internal("slime_left.png"));
@@ -89,6 +100,15 @@ public class Slime extends GameObject {
         } else {
             object.y = currentFloor.getY() + 8;
         }
+    }
+
+    boolean playerTouched(Player pat) {
+        if (pat.object.overlaps(object)) {
+            pat.takeDamage(1);
+
+            return true;
+        }
+        return  false;
     }
 
 }

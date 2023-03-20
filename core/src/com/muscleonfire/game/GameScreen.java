@@ -34,6 +34,8 @@ public class GameScreen implements Screen {
     private Sounds sounds = new Sounds();
     private Musics musics = new Musics();
 
+    Array<Slime> die_slime=new Array<Slime>();
+
     float time_passed;
     float randomizer_obstacle;
     float randomizer_spikefloor;
@@ -154,6 +156,11 @@ public class GameScreen implements Screen {
         onfloor_slime.add(onfloorSlime);
 
     }
+    void addDieSlime(GameObject oldonfloorslime){
+        Slime dieSlime=new Slime();
+        dieSlime.dieSlime_spawn(oldonfloorslime);
+        die_slime.add(dieSlime);
+    }
 
     void drawAllObjects(float delta){
         // draw Sidewalls
@@ -217,6 +224,10 @@ public class GameScreen implements Screen {
 
         for(Slime onfloor_slime : onfloor_slime ){
             game.batch.draw(onfloor_slime.getTexture(), onfloor_slime.getX(),onfloor_slime.getY());
+        }
+
+        for(Slime die_slime : die_slime ){
+            game.batch.draw(die_slime.getTexture(), die_slime.getX(),die_slime.getY());
         }
 
         // draw patrick
@@ -443,20 +454,37 @@ public class GameScreen implements Screen {
 
         for (FallingObjects slime : falling_slime) {
             slime.transpose(delta, time_passed);
+            if (slime.playerTouched(patrick)) {
+                falling_slime.removeValue(slime, true);
+            }
             if (slime.isTouchingFloor(floors) && slime.object.y < 400) {
                 addOnFloorSlime(slime);
                 falling_slime.removeValue(slime, true);
             }
         }
 
-        for (Slime slime1 : onfloor_slime) {
-            if(slime1.onFloor) {
-                slime1.transpose(delta, time_passed);
+        for (Slime slime : onfloor_slime) {
+            if(slime.onFloor) {
+                slime.transpose(delta, time_passed);
             }
 
-            slime1.checkMovingDirection();
-            slime1.move(delta);
-            slime1.fall(slime1.object,delta,floors,time_passed);
+            slime.checkMovingDirection();
+            slime.move(delta);
+            slime.fall(slime.object,delta,floors,time_passed);
+
+            if(slime.playerTouched(patrick)){
+                onfloor_slime.removeValue(slime,true);
+                addDieSlime(slime);
+            }
+        }
+        for(Slime slime:die_slime){
+            slime.transpose(delta,time_passed);
+            slime.fall(slime.object,delta,floors,time_passed);
+            slime.time+=delta;
+
+            if (slime.time > 2){
+                die_slime.removeValue(slime, true);
+            }
         }
 
         // make patrick fall
@@ -495,7 +523,7 @@ public class GameScreen implements Screen {
             int random = MathUtils.random(1, 10);
             if (random <= 1) {
                 addGlass();
-            } else if (random <= 2) {
+            } else if (random <=2) {
                 addStone();
             } else if(random<=3){
                 addLife();
@@ -542,7 +570,7 @@ public class GameScreen implements Screen {
         for (Floor floor : floors) {
             if (floor.getY() > 1000) {
                 floors.removeValue(floor, true);
-                addSlime();
+
             }
         }
 
