@@ -561,11 +561,11 @@ public class GameScreen implements Screen {
         // every 15-20 s will add one rescue
         if (time_passed > randomizer_obstacle) {
             int random = MathUtils.random(1, 10);
-            if (random <= 1) {
+            if (random <= 3) {
                 next_obstacle = Obstacle.RESCUE;
-            } else if (random <= 1) {
+            } else if (random <= 5) {
                 next_obstacle = Obstacle.MEDICINE;
-            } else if (random <= 10) {
+            } else if (random <= 7) {
                 next_obstacle = Obstacle.MYSTERY;
             } else {
                 next_obstacle = Obstacle.FIRE;
