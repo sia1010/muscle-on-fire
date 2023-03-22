@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import java.util.Random;
 
 
 import javax.swing.text.View;
@@ -27,7 +28,6 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
     Texture background;
     Sprite backgroundSprite;
 
-
     Button startButton;
     Button quitButton;
     Button shopButton;
@@ -35,14 +35,17 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
 
     public Menu(final MuscleOnFire game) {
         this.game = game;
+        Random rand = new Random();
+        int randmenu = rand.nextInt(5);
+        randmenu+=1;
         batch = game.batch;
-        background = new Texture("nothing.png");
+        background = new Texture("menu_background"+randmenu+".png");
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
-        startButton = new Button(93, 400,300,80, "start_button.png", "start_button.png");
-        quitButton = new Button(93,150,340,100,"quit.png","quit.png");
-        shopButton = new Button(93,300,300,80,"Shop_button_menu_pressed.png","Shop_button_menu.png");
-        settingButton = new Button(93,60,64,16,"Settings button.png", "Settings button.png");
+        startButton = new Button(115, 400,256,64, "start_button_pressed.png", "start_button.png");
+        quitButton = new Button(150,160,192,48,"quit_pressed.png","quit.png");
+        shopButton = new Button(150,300,192,48,"Shop_button_menu_pressed.png","Shop_button_menu.png");
+        settingButton = new Button(150,230,192,48,"Settings button_pressed.png", "Settings button.png");
     } //parameter is from muscleonfire
 
 
@@ -62,7 +65,7 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
 
         batch.begin();
         backgroundSprite.draw(batch);
-        game.font.draw(game.batch,"MUSCLE ON FIRE",93,600);
+        game.font.draw(game.batch,"MUSCLE ON FIRE",115,600);
         startButton.draw(batch);
         quitButton.draw(batch);
         shopButton.draw(batch);
@@ -79,6 +82,9 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         }
         if(shopButton.getJustPressed(this.game.camera)){
             game.setScreen(new Shop(this.game));
+        }
+        if(settingButton.getJustPressed(this.game.camera)){
+            game.setScreen(new Settings(this.game));
         }
     }
 

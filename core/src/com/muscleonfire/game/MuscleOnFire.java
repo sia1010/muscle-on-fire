@@ -2,6 +2,8 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,11 +12,13 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 //cheah
 
 public class MuscleOnFire extends Game { //Game like main,can change screen using setscreen(in built method)
-	SpriteBatch batch;
-	BitmapFont font;
-	OrthographicCamera camera;
-	FreeTypeFontGenerator generator;
-	FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+	protected SpriteBatch batch;
+	protected BitmapFont font;
+	protected OrthographicCamera camera;
+	protected FreeTypeFontGenerator generator;
+	protected FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+
+
 
 	Coins coin;
 
@@ -54,4 +58,12 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 		batch.dispose();
 		font.dispose();
 	}
+
+	public float getMusicVolume() {
+		Music music = Gdx.audio.newMusic(Gdx.files.internal("BGM.mp3"));
+
+		return music.getVolume();
+	}
+
+
 }

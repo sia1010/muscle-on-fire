@@ -1,6 +1,9 @@
 package com.muscleonfire.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -14,20 +17,28 @@ public class GameScreen implements Screen {
     Building Sidewalls;
     Array<Wallpaper> wallpapers = new Array<Wallpaper>();
     FallingObjects fallingObjects;
-    Score score = new Score();
+    Score score;
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     Array<Rescue> rescues = new Array<Rescue>();
     Array<MysteryBox> mystery = new Array<MysteryBox>();
     Array<Medicine> medicines = new Array<Medicine>();
     Array<Fire> fires = new Array<Fire>();
+    Array<Obstacles> rescues = new Array<Obstacles>();
+    Array<Obstacles> medicines = new Array<Obstacles>();
+    Array<Obstacles> fires = new Array<Obstacles>();
     Array<FallingObjects> falling_glass =new Array<FallingObjects>();
     Array<FallingObjects> falling_stone =new Array<FallingObjects>();
     Array<FallingObjects> falling_life =new Array<FallingObjects>();
-    Array<SpecialFloor> spikefloors = new Array<SpecialFloor>();
-    Array<SpecialFloor> tramfloors = new Array<SpecialFloor>();
-    Array<SpecialFloor> rightrolls = new Array<SpecialFloor>();
-    Array<SpecialFloor> leftrolls = new Array<SpecialFloor>();
+    Array<FallingObjects> falling_slime =new Array<FallingObjects>();
+    Array<Slime> onfloor_slime=new Array<Slime>();
     Array<Enemies> ebat = new Array<Enemies>();
+
+
+    //AUDIO
+    private Sounds sounds = new Sounds();
+    private Musics musics = new Musics();
+
+    Array<Slime> die_slime=new Array<Slime>();
 
     float time_passed;
     float randomizer_obstacle;
@@ -56,7 +67,7 @@ public class GameScreen implements Screen {
 
     void initialFloor(){
         for (int i = 0; i < 4; i++){
-            addFloor();
+            addFloor(Floor.FloorID.floor);
             floors.peek().object.y += i * 120;
         }
     }
@@ -66,10 +77,10 @@ public class GameScreen implements Screen {
             wallpapers.peek().object.y += i * 120;
         }
     }
-    void addFloor(){
+    void addFloor(Floor.FloorID id){
         // add a new floor
         Floor floor = new Floor();
-        floor.spawn();
+        floor.spawn(id);
 
         // add the floor into the floors array
         floors.add(floor);
@@ -83,38 +94,6 @@ public class GameScreen implements Screen {
         wallpapers.add(wallpaper);
     }
 
-    void addSpikeFloor(){
-
-        SpecialFloor spikefloor = new SpecialFloor();
-        spikefloor.spike_spawn();
-
-        // add the floor into the floors array
-        spikefloors.add(spikefloor);
-    }
-    void addTramFloor(){
-
-        SpecialFloor tramfloor = new SpecialFloor();
-        tramfloor.trampoline_spawn();
-
-        // add the floor into the floors array
-        tramfloors.add(tramfloor);
-    }
-    void addRightRoll(){
-
-        SpecialFloor rightroll = new SpecialFloor();
-        rightroll.rightroll_spawn();
-
-        // add the floor into the floors array
-        rightrolls.add(rightroll);
-    }
-    void addLeftRoll(){
-
-        SpecialFloor leftroll = new SpecialFloor();
-        leftroll.leftroll_spawn();
-
-        // add the floor into the floors array
-        leftrolls.add(leftroll);
-    }
     void addEnemies(){
 
         Enemies enemy = new Enemies();
@@ -125,8 +104,8 @@ public class GameScreen implements Screen {
     }
     void addFire(){
         // add a new obstacles
-        Fire fire = new Fire();
-        fire.spawn(floors);
+        Obstacles fire = new Obstacles();
+        fire.spawnFire(floors);
 
         // add the o into the obstacle array
         fires.add(fire);
@@ -144,14 +123,16 @@ public class GameScreen implements Screen {
         // add a new obstacles
         Rescue rescue = new Rescue();
         rescue.spawn(floors);
+        Obstacles rescue = new Obstacles();
+        rescue.spawnRescue(floors);
 
         // add the o into the rescues array
         rescues.add(rescue);
     }
     void addMedicine(){
         // add a new obstacles
-        Medicine medicine = new Medicine();
-        medicine.spawn(floors);
+        Obstacles medicine = new Obstacles();
+        medicine.spawnMedicine(floors);
 
         // add the o into the medicines array
         medicines.add(medicine);
@@ -175,8 +156,28 @@ public class GameScreen implements Screen {
         falling_life.add(life);
     }
 
-    void drawAllObjects(float delta){
+    void addSlime(){
+        FallingObjects slime=new FallingObjects();
+        slime.falling_slime_spawn(floors);
 
+        falling_slime.add(slime);
+
+    }
+
+    void addOnFloorSlime(GameObject oldslime){
+        Slime onfloorSlime=new Slime();
+        onfloorSlime.onfloor_spawn(oldslime);
+
+        onfloor_slime.add(onfloorSlime);
+
+    }
+    void addDieSlime(GameObject oldonfloorslime){
+        Slime dieSlime=new Slime();
+        dieSlime.dieSlime_spawn(oldonfloorslime);
+        die_slime.add(dieSlime);
+    }
+
+    void drawAllObjects(float delta){
         // draw Sidewalls
         game.batch.draw(Sidewalls.getTexture(),Sidewalls.getX(),Sidewalls.getY());
 
@@ -191,25 +192,7 @@ public class GameScreen implements Screen {
 
         // draw all the floors
         for (Floor floor : floors) { // for each floor(data type Floor) in floors(array) draw the floor
-            game.batch.draw(floor.getTexture(), floor.getX(), floor.getY());
-        }
-
-        // draw all the spike floors
-        for (SpecialFloor spikefloor : spikefloors) {
-            game.batch.draw(spikefloor.getTexture(), spikefloor.getX(), spikefloor.getY());
-        }
-
-        // draw all the trampoline floors
-        for (SpecialFloor tramfloor : tramfloors) {
-            game.batch.draw(tramfloor.getTexture(), tramfloor.getX(), tramfloor.getY());
-        }
-
-        // draw all the rolling wooden floors
-        for (SpecialFloor rightroll : rightrolls) {
-            game.batch.draw(rightroll.rightrollAnim.getKeyFrame(time_passed, true), rightroll.getX(), rightroll.getY());
-        }
-        for (SpecialFloor leftroll : leftrolls) {
-            game.batch.draw(leftroll.leftrollAnim.getKeyFrame(time_passed, true), leftroll.getX(), leftroll.getY());
+            floor.draw(this.game.batch, time_passed);
         }
 
         // draw bat_enemy
@@ -219,18 +202,18 @@ public class GameScreen implements Screen {
         }
 
         // draw all the rescue
-        for (Rescue rescue : rescues) {
+        for (Obstacles rescue : rescues) {
             game.batch.draw(rescue.rescueAni.getKeyFrame(time_passed, true), rescue.getX(), rescue.getY());
             game.batch.draw(rescue.getTextureHelpBox(), rescue.getHelpX(), rescue.getHelpY());
         }
 
         // draw all the medicine
-        for (Medicine medicine : medicines) {
+        for (Obstacles medicine : medicines) {
             game.batch.draw(medicine.getTexture(), medicine.getX(), medicine.getY());
         }
 
         // draw all the fires
-        for (Fire fire : fires) {
+        for (Obstacles fire : fires) {
             game.batch.draw(fire.fireAnim.getKeyFrame(time_passed, true), fire.getX(), fire.getY());
         }
 
@@ -249,6 +232,19 @@ public class GameScreen implements Screen {
             game.batch.draw(life.getTexture(), life.getX(),life.getY());
         }
 
+        // draw all the falling slime
+        for(FallingObjects sli : falling_slime ){
+            game.batch.draw(sli.getTexture(), sli.getX(),sli.getY());
+        }
+
+        for(Slime onfloor_slime : onfloor_slime ){
+            game.batch.draw(onfloor_slime.getTexture(), onfloor_slime.getX(),onfloor_slime.getY());
+        }
+
+        for(Slime die_slime : die_slime ){
+            game.batch.draw(die_slime.getTexture(), die_slime.getX(),die_slime.getY());
+        }
+
         // draw patrick
         patrick.drawPatrick(this.game.batch, time_passed);
 
@@ -265,6 +261,10 @@ public class GameScreen implements Screen {
 
     // SCREEN METHODS
     public GameScreen(final MuscleOnFire game) {
+
+        //plays music
+        musics.gamePlay();
+
         this.game = game;
 
         // spawn patrick
@@ -280,7 +280,7 @@ public class GameScreen implements Screen {
         fallingObjects.falling_building_spawn();
 
         latestFloor = new Floor();
-        latestFloor.spawn();
+        latestFloor.spawn(Floor.FloorID.floor);
 
         // add first floor
         initialFloor();
@@ -301,6 +301,7 @@ public class GameScreen implements Screen {
         time_passed = 0;
 
         // open High Score File
+        score = new Score(game);
         score.openHighScoreFile();
     }
 
@@ -356,6 +357,7 @@ public class GameScreen implements Screen {
 
         // if game is in OVER state give everything red overlay and display text
         if (gameState == State.OVER) {
+            musics.gameStop();
             game.batch.setColor(0.8f, 0, 0, 0.8f);
             drawAllObjects(delta);
             game.font.draw(game.batch, "GAME OVER", 160, 420);
@@ -380,7 +382,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.move(delta);
-            patrick.jump(delta, time_passed, floors, spikefloors, tramfloors, rightrolls, leftrolls);
+            patrick.jump(delta, time_passed, floors);
 
         }
         if (gameState == State.OVER) {
@@ -402,46 +404,28 @@ public class GameScreen implements Screen {
             wallpaper.transpose(delta, wallpapers.peek().getY());
         }
 
-
         for (Floor floor : floors) {
             floor.transpose(delta, time_passed);
+            floor.touched(patrick, delta);
         }
 
-
-        for (Rescue res : rescues) {
-            res.playerTouched(patrick, delta, score);
-            res.transpose(delta, time_passed);
+        for (Obstacles res : rescues) {
+            res.playerTouchedRescue(patrick, delta, score);
+            res.transposeRescue(delta, time_passed);
         }
 
-        for (Medicine medicine : medicines) {
+        for (Obstacles medicine : medicines) {
             medicine.transpose(delta, time_passed);
-            if (medicine.playerTouched(patrick)) {
+            if (medicine.playerTouchedMedicine(patrick)) {
                 medicines.removeValue(medicine, true);
             }
         }
 
-        for (Fire fire : fires) {
+        for (Obstacles fire : fires) {
             fire.transpose(delta, time_passed);
-            fire.playerTouched(patrick, delta);
+            fire.playerTouchedFire(patrick, delta);
         }
 
-        for (SpecialFloor spikefloor : spikefloors) {
-            spikefloor.transpose(delta, time_passed);
-            spikefloor.touchedSpike(patrick, delta);
-        }
-
-        for (SpecialFloor tramfloor : tramfloors) {
-            tramfloor.transpose(delta, time_passed);
-        }
-
-        for (SpecialFloor rightroll : rightrolls) {
-            rightroll.transpose(delta, time_passed);
-            rightroll.touchedRightRolls(patrick,delta);
-        }
-        for (SpecialFloor leftroll : leftrolls) {
-            leftroll.transpose(delta, time_passed);
-            leftroll.touchedLeftRolls(patrick,delta);
-        }
 
         for (Enemies enemy : ebat) {
             if (enemy.killed) {
@@ -483,8 +467,43 @@ public class GameScreen implements Screen {
             }
         }
 
+        for (FallingObjects slime : falling_slime) {
+            slime.transpose(delta, time_passed);
+            if (slime.playerTouched(patrick)) {
+                falling_slime.removeValue(slime, true);
+            }
+            if (slime.isTouchingFloor(floors) && slime.object.y < 400) {
+                addOnFloorSlime(slime);
+                falling_slime.removeValue(slime, true);
+            }
+        }
+
+        for (Slime slime : onfloor_slime) {
+            if(slime.onFloor) {
+                slime.transpose(delta, time_passed);
+            }
+
+            slime.checkMovingDirection();
+            slime.move(delta);
+            slime.fall(slime.object,delta,floors,time_passed);
+
+            if(slime.playerTouched(patrick)){
+                onfloor_slime.removeValue(slime,true);
+                addDieSlime(slime);
+            }
+        }
+        for(Slime slime:die_slime){
+            slime.transpose(delta,time_passed);
+            slime.fall(slime.object,delta,floors,time_passed);
+            slime.time+=delta;
+
+            if (slime.time > 2){
+                die_slime.removeValue(slime, true);
+            }
+        }
+
         // make patrick fall
-        patrick.fall(delta, floors, spikefloors, tramfloors, rightrolls, leftrolls, ebat, time_passed);
+        patrick.fall(delta, floors, ebat, time_passed);
 
 
         // ADD / DELETE GAME OBJECTS
@@ -492,21 +511,21 @@ public class GameScreen implements Screen {
         // use time to control add floor
         if (latestFloor.getY() > 0) {
             if (time_passed > randomizer_tramfloor) {
-                addTramFloor();
+                addFloor(Floor.FloorID.trampoline);
                 randomizer_tramfloor += MathUtils.random(5, 10); // add the obstacles time
             } else if (time_passed > randomizer_spikefloor) {
-                addSpikeFloor();
+                addFloor(Floor.FloorID.spike);
                 randomizer_spikefloor += MathUtils.random(5, 10);
             }  else if (time_passed > randomizer_rightroll) {
-                addRightRoll();
+                addFloor(Floor.FloorID.rollRight);
                 randomizer_rightroll += MathUtils.random(10, 15);
                 floor_time = 0;
             }else if (time_passed > randomizer_leftroll) {
-                addLeftRoll();
+                addFloor(Floor.FloorID.rollLeft);
                 randomizer_leftroll += MathUtils.random(10, 15);
                 floor_time = 0;
             } else {
-                addFloor();
+                addFloor(Floor.FloorID.floor);
             }
             latestFloor.object.y = -120;
         }
@@ -517,12 +536,15 @@ public class GameScreen implements Screen {
 
         if (time_passed > randomizer_objects) {
             int random = MathUtils.random(1, 10);
-            if (random <= 3) {
+            if (random <= 1) {
                 addGlass();
-            } else if (random <= 6) {
+            } else if (random <=2) {
                 addStone();
-            } else {
+            } else if(random<=3){
                 addLife();
+            }
+            else{
+                addSlime();
             }
             randomizer_objects += MathUtils.random(8, 15); // add the object time
         }
@@ -563,18 +585,10 @@ public class GameScreen implements Screen {
         for (Floor floor : floors) {
             if (floor.getY() > 1000) {
                 floors.removeValue(floor, true);
+
             }
         }
-        for (SpecialFloor floor : spikefloors) {
-            if (floor.getY() > 1000) {
-                spikefloors.removeValue(floor, true);
-            }
-        }
-        for (SpecialFloor floor : tramfloors) {
-            if (floor.getY() > 1000) {
-                tramfloors.removeValue(floor, true);
-            }
-        }
+
         for (Wallpaper wallpaper : wallpapers){
             if (wallpaper.getY() > 1000){
                 wallpapers.removeValue(wallpaper, true);
@@ -597,19 +611,30 @@ public class GameScreen implements Screen {
                 falling_life.removeValue(fallingObject, true);
             }
         }
+        for (FallingObjects fallingObject : falling_slime) {
+            if (fallingObject.getY() < -200) {
+                falling_slime.removeValue(fallingObject, true);
+            }
+        }
+
+        for (Slime slime : onfloor_slime){
+            if (slime.getY() < -200) {
+                onfloor_slime.removeValue(slime, true);
+            }
+        }
 
         // delete obstacles which are out of screen
-        for (Fire fire : fires){
+        for (Obstacles fire : fires){
             if (fire.getY() > 1000){
                 fires.removeValue(fire, true);
             }
         }
-        for (Rescue rescue : rescues){
+        for (Obstacles rescue : rescues){
             if (rescue.getY() > 1000){
                 rescues.removeValue(rescue, true);
             }
         }
-        for (Medicine medicine : medicines){
+        for (Obstacles medicine : medicines){
             if (medicine.getY() > 1000){
                 medicines.removeValue(medicine, true);
             }

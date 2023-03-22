@@ -4,12 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.TimeUtils;
-
-import java.util.Random;
+import com.badlogic.gdx.utils.Array;
 
 public class FallingObjects extends GameObject{
 
+    boolean onFloor;
     float timetoAddDifficulty=0;
     void falling_building_spawn(){
         object=new Rectangle();
@@ -51,6 +50,16 @@ public class FallingObjects extends GameObject{
         image = new Texture(Gdx.files.internal("falling_life.png"));
     }
 
+    void falling_slime_spawn(Array<Floor> floors){
+
+        object=new Rectangle();
+        object.height=32;
+        object.width=64;
+        object.x = floors.peek().getX()+MathUtils.random(0, 128 - 64);
+        object.y=700;
+        image=new Texture(Gdx.files.internal("slime.png"));
+    }
+
 
 
 
@@ -78,6 +87,17 @@ public class FallingObjects extends GameObject{
             touched=true;
         }
         return touched;
+    }
+
+    boolean isTouchingFloor(Array<Floor> floors){
+        // check if standing on floor
+        onFloor = false;
+        for (Floor floor: floors){
+            if (object.overlaps(floor.object)) { // floor.object = the rectangle
+                onFloor = true;
+            }
+        }
+        return onFloor;
     }
 
 
