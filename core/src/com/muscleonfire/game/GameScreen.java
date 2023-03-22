@@ -17,6 +17,7 @@ public class GameScreen implements Screen {
     Score score = new Score();
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     Array<Rescue> rescues = new Array<Rescue>();
+    Array<MysteryBox> mystery = new Array<MysteryBox>();
     Array<Medicine> medicines = new Array<Medicine>();
     Array<Fire> fires = new Array<Fire>();
     Array<FallingObjects> falling_glass =new Array<FallingObjects>();
@@ -131,6 +132,15 @@ public class GameScreen implements Screen {
         fires.add(fire);
     }
     void addRescue(){
+        // add a new obstacles
+        Rescue rescue = new Rescue();
+        rescue.spawn(floors);
+
+        // add the o into the rescues array
+        rescues.add(rescue);
+    }
+
+    void addMysteryBox(){
         // add a new obstacles
         Rescue rescue = new Rescue();
         rescue.spawn(floors);
