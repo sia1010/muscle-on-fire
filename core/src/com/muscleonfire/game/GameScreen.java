@@ -651,6 +651,11 @@ public class GameScreen implements Screen {
                 medicines.removeValue(medicine, true);
             }
         }
+        for (Obstacles mystery : mysteries){
+            if (mystery.getY() > 1000){
+                mysteries.removeValue(mystery, true);
+            }
+        }
     }
 
     @Override
