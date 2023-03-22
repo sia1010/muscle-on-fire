@@ -521,11 +521,11 @@ public class GameScreen implements Screen {
 
         if (time_passed > randomizer_objects) {
             int random = MathUtils.random(1, 10);
-            if (random <= 1) {
+            if (random <= 3) {
                 addGlass();
-            } else if (random <=2) {
+            } else if (random <=5) {
                 addStone();
-            } else if(random<=3){
+            } else if(random<=7){
                 addLife();
             }
             else{
