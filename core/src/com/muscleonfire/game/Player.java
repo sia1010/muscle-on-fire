@@ -14,16 +14,23 @@ public class Player extends GameObject{
     float timeToAddDifficulty=0;
     float jumpTime = 0;
     float flashTime = 0;
+    float speedUp = 0;
+    float speedTime = 0;
     int jumpPower = 1400;
     boolean isJumping = false;
     boolean isFlashing;
     boolean onFloor;
     boolean isFront;
     boolean forcedJump = false;
+    PowerUp powerUp = null;
     Health healthPoint = new Health();
     Controls controls;
     Floor currentFloor;
     Animation<TextureRegion> front, left, right, playerAnim;
+    enum PowerUp{
+        Shield,
+        Speed
+    }
 
     public Player(Controls.controlMode controlMode){
         controls = new Controls(controlMode);
@@ -120,14 +127,26 @@ public class Player extends GameObject{
         // additional keyboard controls for debugging
         boolean isMoving = false;
 
+        if(powerUp == PowerUp.Speed){
+            if (speedTime < 10) {
+                speedTime += delta;
+            } else {
+                speedUp = 0;
+                powerUp = null;
+                front = new Ani().loadAnimation("player_front.png", 2, 1, 0.5f);
+                left = new Ani().loadAnimation("player_left.png", 4, 1, 0.2f);
+                right = new Ani().loadAnimation("player_right.png", 4, 1, 0.2f);
+            }
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.leftButton.isPressed) {
-            goLeft(150 * delta);
+            goLeft((150 + speedUp) * delta);
             playerAnim = left;
             isMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || controls.rightButton.isPressed) {
-            goRight(150 * delta);
+            goRight((150 + speedUp) * delta);
             playerAnim = right;
             isMoving = true;
         }
@@ -186,6 +205,13 @@ public class Player extends GameObject{
     }
 
     void takeDamage(int damage){ // minus health equals to passed damage
+        if (powerUp == PowerUp.Shield){
+            powerUp = null;
+            front = new Ani().loadAnimation("player_front.png", 2,1, 0.5f);
+            left = new Ani().loadAnimation("player_left.png", 4,1, 0.2f);
+            right = new Ani().loadAnimation("player_right.png", 4,1, 0.2f);
+            return;
+        }
         healthPoint.currHealth -= damage;
         isFlashing = true;
         flashTime = 0;
@@ -258,6 +284,22 @@ public class Player extends GameObject{
 
     boolean updateGameOver(){
         return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.currHealth < 1);
+    }
+
+    void setShieldUp(){
+        powerUp = PowerUp.Shield;
+        front = new Ani().loadAnimation("playerfront_powerup.png", 2,1, 0.5f);
+        left = new Ani().loadAnimation("playerleft_powerup.png", 4,1, 0.2f);
+        right = new Ani().loadAnimation("playerright_powerup.png", 4,1, 0.2f);
+    }
+
+    void setSpeedUp(){
+        powerUp = PowerUp.Speed;
+        speedTime = 0;
+        speedUp = 100;
+        front = new Ani().loadAnimation("playerfront_speed.png", 2,1, 0.5f);
+        left = new Ani().loadAnimation("playerleft_speed.png", 4,1, 0.2f);
+        right = new Ani().loadAnimation("playerright_speed.png", 4,1, 0.2f);
     }
 
     @Override // overlap the old thing which u inherit
