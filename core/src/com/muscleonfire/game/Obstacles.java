@@ -59,7 +59,7 @@ public class Obstacles extends GameObject{
         if (pat.object.overlaps(object)){
             save_timer += delta;
         }
-        if (save_timer > 2 && !saved){
+        if (save_timer > 1 && !saved){
             saved = true;
             image = new Texture(Gdx.files.internal("rescue_saved.png"));
             rescueAni = new Ani().loadAnimation("rescue_saved(sheet).png", 2,1, 0.5f);
