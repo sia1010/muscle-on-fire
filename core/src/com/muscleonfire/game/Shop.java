@@ -16,6 +16,9 @@ public class Shop extends GameObject implements Screen {
     Button backButton;
     Texture shopbg;
     Texture textbg;
+    Texture shield;
+    Texture itembg;
+    Texture speed;
     public Shop(final MuscleOnFire game){
         this.game = game;
 
@@ -30,6 +33,9 @@ public class Shop extends GameObject implements Screen {
         backButton = new Button(20,752,128,32,"back_button_pressed.png","back_button.png");
         shopbg = new Texture("shop_bg_items.png");
         textbg = new Texture("textbg.png");
+        shield = new Texture("shop_shield.png");
+        speed = new Texture("shop_speedup.png");
+        itembg = new Texture("shop_item_bg");
     }
     @Override
     public void show() {
@@ -48,12 +54,17 @@ public class Shop extends GameObject implements Screen {
 
         game.batch.begin();
         backgroundSprite.draw(batch);
-        game.batch.draw(textbg,145,690);
+        game.batch.draw(textbg,145,690); //upper textbox
         game.font.draw(game.batch, "Shop", 210, 780);
         game.font.draw(game.batch, "Coins: "+ this.game.coin.displayCoin(), 160, 730);
         backButton.draw(batch);
         game.batch.draw(shopbg, 65, 200);
-
+        game.batch.draw(itembg,80,350); //first itembox
+        game.batch.draw(itembg,222,350); //second itembox
+        game.batch.draw(shield, 95,480);
+        game.font.draw(game.batch,"Shield", 88,450);
+        game.batch.draw(speed, 235,480);
+        game.font.draw(game.batch,"Speed", 228,450);
 
 
         game.batch.end();
