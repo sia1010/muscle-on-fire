@@ -1,19 +1,35 @@
 package com.muscleonfire.game;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class Shop implements Screen {
+import java.util.Random;
+
+public class Shop extends GameObject implements Screen {
     final MuscleOnFire game;
     private final SpriteBatch batch;
+    Texture background;
     Sprite backgroundSprite;
     Button backButton;
+    Texture shopbg;
+    Texture textbg;
     public Shop(final MuscleOnFire game){
         this.game = game;
-        batch = this.game.batch;
+
+        Random rand = new Random();
+        int randmenu = rand.nextInt(5);
+        randmenu+=1;
+        batch = game.batch;
+        background = new Texture("menu_background"+randmenu+".png");
+        backgroundSprite = new Sprite(background);
+        backgroundSprite.setSize(480, 800);
+
         backButton = new Button(20,752,128,32,"back_button_pressed.png","back_button.png");
+        shopbg = new Texture("shop_bg_items.png");
+        textbg = new Texture("textbg.png");
     }
     @Override
     public void show() {
@@ -31,9 +47,15 @@ public class Shop implements Screen {
         game.batch.setProjectionMatrix(game.camera.combined);
 
         game.batch.begin();
+        backgroundSprite.draw(batch);
+        game.batch.draw(textbg,145,690);
         game.font.draw(game.batch, "Shop", 210, 780);
         game.font.draw(game.batch, "Coins: "+ this.game.coin.displayCoin(), 160, 730);
         backButton.draw(batch);
+        game.batch.draw(shopbg, 65, 200);
+
+
+
         game.batch.end();
         if(backButton.getJustPressed(this.game.camera)){
             game.setScreen(new Menu(this.game));
