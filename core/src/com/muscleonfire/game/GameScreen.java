@@ -19,6 +19,7 @@ public class GameScreen implements Screen {
     FallingObjects fallingObjects;
     Score score;
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
+    Array<Obstacles> mysteries = new Array<Obstacles>();
     Array<Obstacles> rescues = new Array<Obstacles>();
     Array<Obstacles> medicines = new Array<Obstacles>();
     Array<Obstacles> fires = new Array<Obstacles>();
@@ -48,7 +49,8 @@ public class GameScreen implements Screen {
         NULL,
         FIRE,
         RESCUE,
-        MEDICINE
+        MEDICINE,
+        MYSTERY
     }
     enum State{
         READY,
@@ -121,6 +123,15 @@ public class GameScreen implements Screen {
 
         // add the o into the medicines array
         medicines.add(medicine);
+    }
+
+    void addMystery(){
+        // add a new obstacles
+        Obstacles mystery = new Obstacles();
+        mystery.spawnMysteryBox(floors);
+
+        // add the o into the medicines array
+        mysteries.add(mystery);
     }
     void addGlass(){
         FallingObjects glass=new FallingObjects();
@@ -195,6 +206,11 @@ public class GameScreen implements Screen {
         // draw all the medicine
         for (Obstacles medicine : medicines) {
             game.batch.draw(medicine.getTexture(), medicine.getX(), medicine.getY());
+        }
+
+        // draw all mystery boxes
+        for (Obstacles mystery : mysteries) {
+            game.batch.draw(mystery.getTexture(), mystery.getX(), mystery.getY());
         }
 
         // draw all the fires
@@ -406,6 +422,13 @@ public class GameScreen implements Screen {
             }
         }
 
+        for (Obstacles mystery : mysteries) {
+            mystery.transpose(delta, time_passed);
+            if (mystery.playerTouchedMysteryBox(patrick, score)) {
+                mysteries.removeValue(mystery, true);
+            }
+        }
+
         for (Obstacles fire : fires) {
             fire.transpose(delta, time_passed);
             fire.playerTouchedFire(patrick, delta);
@@ -521,11 +544,11 @@ public class GameScreen implements Screen {
 
         if (time_passed > randomizer_objects) {
             int random = MathUtils.random(1, 10);
-            if (random <= 1) {
+            if (random <= 3) {
                 addGlass();
-            } else if (random <=2) {
+            } else if (random <=5) {
                 addStone();
-            } else if(random<=3){
+            } else if(random<=7){
                 addLife();
             }
             else{
@@ -540,8 +563,10 @@ public class GameScreen implements Screen {
             int random = MathUtils.random(1, 10);
             if (random <= 3) {
                 next_obstacle = Obstacle.RESCUE;
-            } else if (random <= 7) {
+            } else if (random <= 5) {
                 next_obstacle = Obstacle.MEDICINE;
+            } else if (random <= 7) {
+                next_obstacle = Obstacle.MYSTERY;
             } else {
                 next_obstacle = Obstacle.FIRE;
             }
@@ -560,6 +585,8 @@ public class GameScreen implements Screen {
                     case MEDICINE:
                         addMedicine();
                         break;
+                    case MYSTERY:
+                        addMystery();
                 }
                 addEnemies();
                 next_obstacle = Obstacle.NULL;
