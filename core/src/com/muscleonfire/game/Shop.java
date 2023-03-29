@@ -14,6 +14,7 @@ public class Shop extends GameObject implements Screen {
     Texture background;
     Sprite backgroundSprite;
     Button backButton;
+    Button buybutton;
     Texture shopbg;
     Texture textbg;
     Texture shield;
@@ -31,6 +32,8 @@ public class Shop extends GameObject implements Screen {
         backgroundSprite.setSize(480, 800);
 
         backButton = new Button(20,752,128,32,"back_button_pressed.png","back_button.png");
+        buybutton = new Button(222,320,128,32,"shop_buy_pressed.png","shop_buy_button.png");
+
         shopbg = new Texture("shop_bg_items.png");
         textbg = new Texture("textbg.png");
         shield = new Texture("shop_shield.png");
@@ -65,6 +68,7 @@ public class Shop extends GameObject implements Screen {
         game.font.draw(game.batch,"Shield", 88,450);
         game.batch.draw(speed, 235,480);
         game.font.draw(game.batch,"Speed", 228,450);
+        buybutton.draw(batch);
 
 
         game.batch.end();
