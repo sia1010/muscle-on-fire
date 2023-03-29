@@ -2,24 +2,28 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Shop extends GameObject implements Screen {
     final MuscleOnFire game;
     private final SpriteBatch batch;
+    private final BitmapFont font;
     Texture background;
     Sprite backgroundSprite;
     Button backButton;
     Button buybutton;
     Texture shopbg;
     Texture textbg;
-    Texture shield;
-    Texture itembg;
-    Texture speed;
+    ButtonShop shield;
+    ButtonShop speed;
+    ButtonShop selected_item;
+
     public Shop(final MuscleOnFire game){
         this.game = game;
 
@@ -27,18 +31,19 @@ public class Shop extends GameObject implements Screen {
         int randmenu = rand.nextInt(5);
         randmenu+=1;
         batch = game.batch;
+        font = game.font;
         background = new Texture("menu_background"+randmenu+".png");
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
 
         backButton = new Button(20,752,128,32,"back_button_pressed.png","back_button.png");
-        buybutton = new Button(222,320,128,32,"shop_buy_pressed.png","shop_buy_button.png");
+        buybutton = new Button(200,280,128,32,"shop_buy_pressed.png","shop_buy_button.png");
 
         shopbg = new Texture("shop_bg_items.png");
         textbg = new Texture("textbg.png");
-        shield = new Texture("shop_shield.png");
-        speed = new Texture("shop_speedup.png");
-        itembg = new Texture("shop_item_bg");
+        shield = new ButtonShop(100, 350,"shop_shield.png", "Shield");
+        speed = new ButtonShop(270, 350, "shop_speedup.png", "Speed");
+        selected_item = new ButtonShop(0,0,"nothing.png", "nothing.png");
     }
     @Override
     public void show() {
@@ -60,21 +65,31 @@ public class Shop extends GameObject implements Screen {
         game.batch.draw(textbg,145,690); //upper textbox
         game.font.draw(game.batch, "Shop", 210, 780);
         game.font.draw(game.batch, "Coins: "+ this.game.coin.displayCoin(), 160, 730);
-        backButton.draw(batch);
         game.batch.draw(shopbg, 65, 200);
-        game.batch.draw(itembg,80,350); //first itembox
-        game.batch.draw(itembg,222,350); //second itembox
-        game.batch.draw(shield, 95,480);
-        game.font.draw(game.batch,"Shield", 88,450);
-        game.batch.draw(speed, 235,480);
-        game.font.draw(game.batch,"Speed", 228,450);
+        shield.draw(batch, font); // shield item
+        speed.draw(batch, font); // speed item
+        backButton.draw(batch);
         buybutton.draw(batch);
 
 
         game.batch.end();
-        if(backButton.getJustPressed(this.game.camera)){
-            game.setScreen(new Menu(this.game));
+        if(backButton.getJustPressed(game.camera)){
+            game.setScreen(new Menu(game));
         }
+
+        if(shield.getJustPressed(game.camera)){
+            selected_item = shield;
+        }
+
+        if(speed.getJustPressed(game.camera)){
+            selected_item = speed;
+        }
+
+        if(buybutton.getJustPressed(game.camera)){
+
+        }
+
+        selected_item.permanentTrue();
     }
 
     @Override
