@@ -2,6 +2,7 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,6 +28,7 @@ public class Player extends GameObject{
     Controls controls;
     Floor currentFloor;
     Animation<TextureRegion> front, left, right, playerAnim;
+    Item item = new Item();
     enum PowerUp{
         Shield,
         Speed
@@ -122,7 +124,7 @@ public class Player extends GameObject{
         }
     }
 
-    void move(float delta){
+    void processControls(float delta, OrthographicCamera camera){
         // take controls from Controls and apply them
         // additional keyboard controls for debugging
         boolean isMoving = false;
@@ -139,7 +141,17 @@ public class Player extends GameObject{
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.leftButton.isPressed) {
+        if(controls.shieldButton.getJustPressed(camera) && item.getShield_amt() > 0){
+            item.setShield_amt(item.getShield_amt() - 1);
+            setShieldUp();
+        }
+
+        if(controls.speedButton.getJustPressed(camera) && item.getSpeed_amt() > 0){
+            item.setSpeed_amt(item.getSpeed_amt() - 1);
+            setSpeedUp();
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.leftButton.isPressed && (!controls.speedButton.isPressed && !controls.shieldButton.isPressed)) {
             goLeft((150 + speedUp) * delta);
             playerAnim = left;
             isMoving = true;

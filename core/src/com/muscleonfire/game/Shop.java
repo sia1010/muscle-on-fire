@@ -1,11 +1,14 @@
 package com.muscleonfire.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.*;
+import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,6 +26,7 @@ public class Shop extends GameObject implements Screen {
     ButtonShop shield;
     ButtonShop speed;
     ButtonShop selected_item;
+    Item item;
 
     public Shop(final MuscleOnFire game){
         this.game = game;
@@ -44,7 +48,10 @@ public class Shop extends GameObject implements Screen {
         shield = new ButtonShop(100, 350,"shop_shield.png", "Shield");
         speed = new ButtonShop(270, 350, "shop_speedup.png", "Speed");
         selected_item = new ButtonShop(0,0,"nothing.png", "nothing.png");
-    }
+
+        item = new Item();
+        }
+
     @Override
     public void show() {
 
@@ -66,8 +73,8 @@ public class Shop extends GameObject implements Screen {
         game.font.draw(game.batch, "Shop", 210, 780);
         game.font.draw(game.batch, "Coins: "+ this.game.coin.displayCoin(), 160, 730);
         game.batch.draw(shopbg, 65, 200);
-        shield.draw(batch, font); // shield item
-        speed.draw(batch, font); // speed item
+        shield.draw(batch, font, item.getShield_amt()); // shield item
+        speed.draw(batch, font, item.getSpeed_amt()); // speed item
         backButton.draw(batch);
         buybutton.draw(batch);
 
@@ -86,7 +93,15 @@ public class Shop extends GameObject implements Screen {
         }
 
         if(buybutton.getJustPressed(game.camera)){
-
+            if (selected_item.isPressed) {
+                if (selected_item == shield){
+                    game.coin.spendCoin(50);
+                    item.setShield_amt(item.getShield_amt() + 1);
+                }else if(selected_item == speed){
+                    game.coin.spendCoin(50);
+                    item.setSpeed_amt(item.getSpeed_amt() + 1);
+                }
+            }
         }
 
         selected_item.permanentTrue();

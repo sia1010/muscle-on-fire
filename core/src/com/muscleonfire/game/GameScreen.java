@@ -1,9 +1,6 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -256,7 +253,7 @@ public class GameScreen implements Screen {
         patrick.drawHearts(this.game.batch, delta);
 
         // draw all the buttons
-        patrick.controls.drawButtons(this.game.batch);
+        patrick.controls.drawButtons(this.game.batch, this.game.font);
     }
 
 
@@ -382,7 +379,7 @@ public class GameScreen implements Screen {
         }
         if (gameState == State.RUNNING) {
             // player movement (next frame)
-            patrick.move(delta);
+            patrick.processControls(delta, game.camera);
             patrick.jump(delta, time_passed, floors);
 
         }
