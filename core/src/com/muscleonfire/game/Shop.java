@@ -1,11 +1,14 @@
 package com.muscleonfire.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.*;
+import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,6 +26,9 @@ public class Shop extends GameObject implements Screen {
     ButtonShop shield;
     ButtonShop speed;
     ButtonShop selected_item;
+    FileHandle itemFile;
+    int shield_amt;
+    int speed_amt;
 
     public Shop(final MuscleOnFire game){
         this.game = game;
@@ -44,6 +50,18 @@ public class Shop extends GameObject implements Screen {
         shield = new ButtonShop(100, 350,"shop_shield.png", "Shield");
         speed = new ButtonShop(270, 350, "shop_speedup.png", "Speed");
         selected_item = new ButtonShop(0,0,"nothing.png", "nothing.png");
+
+        itemFile = Gdx.files.external("item.txt");
+
+        if(itemFile.exists()){
+            String[] arr = itemFile.readString().split("@");
+            shield_amt = Integer.parseInt(arr[0]);
+            speed_amt = Integer.parseInt(arr[1]);
+        }else{
+            shield_amt = 0;
+            speed_amt = 0;
+            itemFile.writeString(shield_amt + "@" + speed_amt, false);
+        }
     }
     @Override
     public void show() {
@@ -86,7 +104,17 @@ public class Shop extends GameObject implements Screen {
         }
 
         if(buybutton.getJustPressed(game.camera)){
-
+            if (selected_item.isPressed) {
+                if (selected_item == shield){
+                    game.coin.spendCoin(50);
+                    shield_amt += 1;
+                }else if(selected_item == speed){
+                    game.coin.spendCoin(50);
+                    speed_amt += 1;
+                }
+                itemFile.writeString(shield_amt + "@" + speed_amt, false);
+                System.out.println(shield_amt + "@" + speed_amt);
+            }
         }
 
         selected_item.permanentTrue();

@@ -19,6 +19,10 @@ public class Coins{
     void addCoin(Score score){
         coin += (int)(score.score/100);
     }
+    void spendCoin(int payment){
+        coin -= payment;
+        saveCoin();
+    }
     void saveCoin(){
         coinFile.writeString(Integer.toString(coin), false);
     }
