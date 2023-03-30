@@ -9,12 +9,26 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Slime extends GameObject {
-    boolean move_right;
-    boolean changeDirection=false;
-    float time=0;
-    boolean onFloor;
-    Floor currentFloor;
-    Animation<TextureRegion> slimemove;
+
+    private boolean move_right;
+    private boolean changeDirection=false;
+    private float time=0;
+    private boolean onFloor;
+    private Floor currentFloor;
+
+
+
+
+    public float getTime() {
+        return time;
+    }
+
+
+    public boolean isOnFloor() {
+        return onFloor;
+    }
+
+
     void onfloor_spawn(GameObject slime){
 
         object=new Rectangle();

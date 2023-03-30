@@ -483,7 +483,7 @@ public class GameScreen implements Screen {
         }
 
         for (Slime slime : onfloor_slime) {
-            if(slime.onFloor) {
+            if(slime.isOnFloor()) {
                 slime.transpose(delta, time_passed);
             }
 
@@ -499,9 +499,9 @@ public class GameScreen implements Screen {
         for(Slime slime:die_slime){
             slime.transpose(delta,time_passed);
             slime.fall(slime.object,delta,floors,time_passed);
-            slime.time+=delta;
-
-            if (slime.time > 2){
+            float slime_die_time=slime.getTime();
+            slime_die_time+=delta;
+            if (slime_die_time > 2){
                 die_slime.removeValue(slime, true);
             }
         }

@@ -7,9 +7,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class FallingObjects extends GameObject{
+    private boolean onFloor;
+    private float timetoAddDifficulty=0;
+    public boolean isOnFloor() {
+        return onFloor;
+    }
 
-    boolean onFloor;
-    float timetoAddDifficulty=0;
     void falling_building_spawn(){
         object=new Rectangle();
         object.x=5;

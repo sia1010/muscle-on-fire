@@ -8,13 +8,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 public class GameOver implements Screen {
+    private Button retryButton;
+    private Button menuButton;
+    private Score score;
+    private int coins;
+    private final MuscleOnFire game;
 
-
-    Button retryButton;
-    Button menuButton;
-    Score score;
-    int coins;
-    final MuscleOnFire game;
     @Override
     public void show() {
 

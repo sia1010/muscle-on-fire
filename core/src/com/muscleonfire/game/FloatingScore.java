@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class FloatingScore {
-    int score;
-    float time_passed;
+    private int score;
+    private float time_passed;
 
     public FloatingScore(int score){
         this.score = score;
