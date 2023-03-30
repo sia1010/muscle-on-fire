@@ -35,7 +35,7 @@ public class ButtonShop extends Button {
         font2.draw(batch, "Owned: " + quantity, object.x + 18, object.y + 40);
     }
 
-    void permanentTrue(){
+    public void permanentTrue(){
         boolean buttonIsPressed= button.isPressed();
         buttonIsPressed= true;
     }
