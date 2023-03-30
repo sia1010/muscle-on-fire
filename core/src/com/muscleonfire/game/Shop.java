@@ -42,7 +42,7 @@ public class Shop extends GameObject implements Screen {
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
 
-        backButton = new Button(20,752,128,32,"back_button_pressed.png","back_button.png");
+        backButton = new Button(20,752,128,32,"Buttons/Shop/back_button_pressed.png","Buttons/Shop/back_button.png");
         buybutton = new Button(200,280,128,32,"shop_buy_pressed.png","shop_buy_button.png");
 
         shopbg = new Texture("shop_bg_items.png");

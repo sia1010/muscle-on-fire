@@ -22,7 +22,7 @@ public class Obstacles extends GameObject{
         object.width = 26;
         object.x = floors.peek().getX() + MathUtils.random(0, 128 - 64); // randomly at the floor, can be at left or right
         object.y = floors.peek().getY()+10;
-        image = new Texture(Gdx.files.internal("Medicine_box.png"));
+        image = new Texture(Gdx.files.internal("Textures/medicine_box.png"));
     }
 
     void spawnMysteryBox(Array<Floor> floors){
@@ -31,7 +31,7 @@ public class Obstacles extends GameObject{
         object.width = 64;
         object.x = floors.peek().getX() + MathUtils.random(0, 128 - 64); // randomly at the floor, can be at left or right
         object.y = floors.peek().getY()+30;
-        image = new Texture(Gdx.files.internal("Mystery Box.png"));
+        image = new Texture(Gdx.files.internal("Textures/mystery_box.png"));
     }
     void spawnRescue(Array<Floor> floors){
         object = new Rectangle();
@@ -39,13 +39,13 @@ public class Obstacles extends GameObject{
         object.width = 64;
         object.x = floors.peek().getX() + MathUtils.random(0, 128 - 64); // randomly at the floor, can be at left or right
         object.y = floors.peek().getY()+10;
-        image = new Texture(Gdx.files.internal("rescue_unsaved.png"));
-        rescueAni = new Ani().loadAnimation("rescue_unsaved(sheet).png", 2,1, 0.5f);
+        image = new Texture(Gdx.files.internal("Textures/rescue/rescue_unsaved.png"));
+        rescueAni = new Ani().loadAnimation("Textures/rescue/rescue_unsaved(sheet).png", 2,1, 0.5f);
 
         help_box = new Rectangle();
         help_box.height = 17;
         help_box.width = 33;
-        image_help = new Texture(Gdx.files.internal("Help_box.png"));
+        image_help = new Texture(Gdx.files.internal("Textures/rescue/help_box.png"));
         updateHelpBoxPos();
     }
 
@@ -55,8 +55,8 @@ public class Obstacles extends GameObject{
         object.width = 28;
         object.x = floors.peek().getX() + MathUtils.random(0, 128 - 28); // randomly at the floor, can be at left or right
         object.y = floors.peek().getY()+10;
-        image = new Texture(Gdx.files.internal("Fire.png"));
-        fireAnim = new Ani().loadAnimation("Fire(sheet).png", 3,1, 0.5f);
+        image = new Texture(Gdx.files.internal("Textures/fire/fire.png"));
+        fireAnim = new Ani().loadAnimation("Textures/fire/fire(sheet).png", 3,1, 0.5f);
     }
 
     void updateHelpBoxPos(){
@@ -69,9 +69,9 @@ public class Obstacles extends GameObject{
         }
         if (save_timer > 1 && !saved){
             saved = true;
-            image = new Texture(Gdx.files.internal("rescue_saved.png"));
-            rescueAni = new Ani().loadAnimation("rescue_saved(sheet).png", 2,1, 0.5f);
-            image_help = new Texture(Gdx.files.internal("TQ.png"));
+            image = new Texture(Gdx.files.internal("Textures/rescue/rescue_saved.png"));
+            rescueAni = new Ani().loadAnimation("Textures/rescue/rescue_saved(sheet).png", 2,1, 0.5f);
+            image_help = new Texture(Gdx.files.internal("Textures/rescue/TQ_box.png"));
             score.upScore(1000);
             pat.healDamage(1);
         }

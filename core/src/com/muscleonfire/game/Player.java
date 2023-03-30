@@ -58,9 +58,9 @@ public class Player extends GameObject{
         updateFeetAndHeadPosition();
 
         // initialise the picture of patrick
-        front = new Ani().loadAnimation("player_front.png", 2,1, 0.5f);
-        left = new Ani().loadAnimation("player_left.png", 4,1, 0.2f);
-        right = new Ani().loadAnimation("player_right.png", 4,1, 0.2f);
+        front = new Ani().loadAnimation("Textures/player/player_front.png", 2,1, 0.5f);
+        left = new Ani().loadAnimation("Textures/player/player_left.png", 4,1, 0.2f);
+        right = new Ani().loadAnimation("Textures/player/player_right.png", 4,1, 0.2f);
         playerAnim = front;
     }
 
@@ -133,9 +133,9 @@ public class Player extends GameObject{
             } else {
                 speedUp = 0;
                 powerUp = null;
-                front = new Ani().loadAnimation("player_front.png", 2, 1, 0.5f);
-                left = new Ani().loadAnimation("player_left.png", 4, 1, 0.2f);
-                right = new Ani().loadAnimation("player_right.png", 4, 1, 0.2f);
+                front = new Ani().loadAnimation("Textures/player/player_front.png", 2, 1, 0.5f);
+                left = new Ani().loadAnimation("Textures/player/player_left.png", 4, 1, 0.2f);
+                right = new Ani().loadAnimation("Textures/player/player_right.png", 4, 1, 0.2f);
             }
         }
 
@@ -207,9 +207,9 @@ public class Player extends GameObject{
     void takeDamage(int damage){ // minus health equals to passed damage
         if (powerUp == PowerUp.Shield){
             powerUp = null;
-            front = new Ani().loadAnimation("player_front.png", 2,1, 0.5f);
-            left = new Ani().loadAnimation("player_left.png", 4,1, 0.2f);
-            right = new Ani().loadAnimation("player_right.png", 4,1, 0.2f);
+            front = new Ani().loadAnimation("Textures/player/player_front.png", 2,1, 0.5f);
+            left = new Ani().loadAnimation("Textures/player/player_left.png", 4,1, 0.2f);
+            right = new Ani().loadAnimation("Textures/player/player_right.png", 4,1, 0.2f);
             return;
         }
         healthPoint.currHealth -= damage;
@@ -288,18 +288,18 @@ public class Player extends GameObject{
 
     void setShieldUp(){
         powerUp = PowerUp.Shield;
-        front = new Ani().loadAnimation("playerfront_powerup.png", 2,1, 0.5f);
-        left = new Ani().loadAnimation("playerleft_powerup.png", 4,1, 0.2f);
-        right = new Ani().loadAnimation("playerright_powerup.png", 4,1, 0.2f);
+        front = new Ani().loadAnimation("Textures/player/playerfront_powerup.png", 2,1, 0.5f);
+        left = new Ani().loadAnimation("Textures/player/playerleft_powerup.png", 4,1, 0.2f);
+        right = new Ani().loadAnimation("Textures/player/playerright_powerup.png", 4,1, 0.2f);
     }
 
     void setSpeedUp(){
         powerUp = PowerUp.Speed;
         speedTime = 0;
         speedUp = 100;
-        front = new Ani().loadAnimation("playerfront_speed.png", 2,1, 0.5f);
-        left = new Ani().loadAnimation("playerleft_speed.png", 4,1, 0.2f);
-        right = new Ani().loadAnimation("playerright_speed.png", 4,1, 0.2f);
+        front = new Ani().loadAnimation("Textures/player/playerfront_speed.png", 2,1, 0.5f);
+        left = new Ani().loadAnimation("Textures/player/playerleft_speed.png", 4,1, 0.2f);
+        right = new Ani().loadAnimation("Textures/player/playerright_speed.png", 4,1, 0.2f);
     }
 
     @Override // overlap the old thing which u inherit
