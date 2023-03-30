@@ -92,7 +92,7 @@ public class Shop extends GameObject implements Screen {
         }
 
         if(buybutton.getJustPressed(game.camera)){
-            if (selected_item.isPressed) {
+            if (selected_item.isPressed()) {
                 if (selected_item == shield){
                     game.coin.spendCoin(50);
                     item.setShield_amt(item.getShield_amt() + 1);

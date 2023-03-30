@@ -8,10 +8,20 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Button extends GameObject {
-    boolean isPressed;
-    Texture image_Pressed;
-    Texture image_notPressed;
-    Rectangle touchLocation;
+
+
+    private boolean isPressed;
+    private Texture image_Pressed;
+    private Texture image_notPressed;
+    private Rectangle touchLocation;
+
+    public boolean isPressed() {
+        return isPressed;
+    }
+
+    public void setPressed(boolean pressed) {
+        isPressed = pressed;
+    }
 
     public Button(float x, float y, float width, float height, String Pressed, String notPressed){
         object = new Rectangle(x, y, width, height);

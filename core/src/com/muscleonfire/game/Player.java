@@ -23,6 +23,7 @@ public class Player extends GameObject{
     boolean onFloor;
     boolean isFront;
     boolean forcedJump = false;
+
     PowerUp powerUp = null;
     Health healthPoint = new Health();
     Controls controls;
@@ -151,24 +152,24 @@ public class Player extends GameObject{
             setSpeedUp();
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.leftButton.isPressed && (!controls.speedButton.isPressed && !controls.shieldButton.isPressed)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.leftButton.isPressed() && (!controls.speedButton.isPressed() && !controls.shieldButton.isPressed())) {
             goLeft((150 + speedUp) * delta);
             playerAnim = left;
             isMoving = true;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || controls.rightButton.isPressed) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || controls.rightButton.isPressed()) {
             goRight((150 + speedUp) * delta);
             playerAnim = right;
             isMoving = true;
         }
 
-        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && onFloor && !forcedJump) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed()) && onFloor && !forcedJump) {
             initiateJump(1400, false);
             isMoving = true;
         }
 
-        if(!(Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed) && !forcedJump){
+        if(!(Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed()) && !forcedJump){
             jumpTime += delta * 8;
         }
 
