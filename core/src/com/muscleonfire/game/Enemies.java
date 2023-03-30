@@ -60,7 +60,7 @@ public class Enemies extends GameObject {
 
     void move(float delta){
         if (move_right && move_down){
-            batmanfly = new Ani().loadAnimation("batman(sheet).png", 2,1, 0.5f);
+            batmanfly = new Ani().loadAnimation("batman_right(sheet).png", 2,1, 0.5f);
             object.x += MathUtils.random(100,300) * delta;
             object.y -= MathUtils.random(100,300) * delta;
         }else if(!move_right && move_down){
@@ -72,7 +72,7 @@ public class Enemies extends GameObject {
             object.x -= MathUtils.random(100,200) * delta;
             object.y += MathUtils.random(100,200) * delta;
         }else if(move_right && !move_down){
-            batmanfly = new Ani().loadAnimation("batman(sheet).png", 2,1, 0.5f);
+            batmanfly = new Ani().loadAnimation("batman_right(sheet).png", 2,1, 0.5f);
             object.x += MathUtils.random(100,200) * delta;
             object.y += MathUtils.random(100,200) * delta;
         }
@@ -85,7 +85,7 @@ public class Enemies extends GameObject {
             pat.takeDamage(1);
             return true;
         }
-        return  false;
+        return false;
     }
 
 /*    boolean batmanKilled(Player pat, float delta){
