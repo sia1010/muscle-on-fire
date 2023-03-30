@@ -6,22 +6,44 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Controls {
-    Button leftButton;
-    Button rightButton;
-    Button jumpButton;
-    Button screenButton;
-    Button shieldButton;
-    Button speedButton;
-    Item item;
-
-
-    FileHandle itemFile;
+    private Button leftButton;
+    private Button rightButton;
+    private Button jumpButton;
+    private Button screenButton;
+    private Button shieldButton;
+    private Button speedButton;
+    private Item item;
+    private FileHandle itemFile;
     enum controlMode{
         button,
         touch,
         follow
     }
-    controlMode mode;
+    private controlMode mode;
+
+    public Button getLeftButton() {
+        return leftButton;
+    }
+
+    public Button getRightButton() {
+        return rightButton;
+    }
+
+    public Button getJumpButton() {
+        return jumpButton;
+    }
+
+    public Button getScreenButton() {
+        return screenButton;
+    }
+
+    public Button getShieldButton() {
+        return shieldButton;
+    }
+
+    public Button getSpeedButton() {
+        return speedButton;
+    }
 
     public Controls(controlMode setmode){ // initialise the position and size of the buttons
         item = new Item();
@@ -45,7 +67,7 @@ public class Controls {
         speedButton = new Button(30,520, 64,64,"speedButton_pressed.png", "button2.png");
     }
 
-    void getInputs(OrthographicCamera camera, Player pat){
+    public void getInputs(OrthographicCamera camera, Player pat){
         if (mode == controlMode.follow) {
             if (pat.isFront()){
                 leftButton.object.x = pat.getX() - 480 + 30;
@@ -68,7 +90,7 @@ public class Controls {
 
     }
 
-    void drawButtons(SpriteBatch batch, BitmapFont font) {
+    public void drawButtons(SpriteBatch batch, BitmapFont font) {
         if (mode == controlMode.button){
             leftButton.draw(batch);
             rightButton.draw(batch);

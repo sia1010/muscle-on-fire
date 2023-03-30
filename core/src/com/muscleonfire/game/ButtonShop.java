@@ -13,7 +13,6 @@ public class ButtonShop extends Button {
     private Texture item_img;
     private String item_name;
     private BitmapFont font2;
-    private Button button;
 
     public ButtonShop(float x, float y, String item_path, String item_name) {
         super(x, y, 100, 200, "shop_item_bg_pressed.png", "shop_item_bg.png");
@@ -36,7 +35,6 @@ public class ButtonShop extends Button {
     }
 
     public void permanentTrue(){
-        boolean buttonIsPressed= button.isPressed();
-        buttonIsPressed= true;
+        setPressed(true);
     }
 }

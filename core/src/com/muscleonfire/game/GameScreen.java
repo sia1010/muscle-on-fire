@@ -373,7 +373,7 @@ public class GameScreen implements Screen {
 
         if (gameState == State.READY) {
             // press to start
-            if (patrick.getControls().screenButton.getJustPressed(this.game.camera)) {
+            if (patrick.getControls().getScreenButton().getJustPressed(this.game.camera)) {
                 gameState = State.RUNNING;
             }
         }
@@ -385,7 +385,7 @@ public class GameScreen implements Screen {
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
-            if (patrick.getControls().screenButton.getJustPressed(this.game.camera)) {
+            if (patrick.getControls().getScreenButton().getJustPressed(this.game.camera)) {
                 this.game.setScreen(new GameOver(this.game, score));
             }
         }

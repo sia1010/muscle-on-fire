@@ -152,34 +152,34 @@ public class Player extends GameObject{
             }
         }
 
-        if(controls.shieldButton.getJustPressed(camera) && item.getShield_amt() > 0){
+        if(controls.getShieldButton().getJustPressed(camera) && item.getShield_amt() > 0){
             item.setShield_amt(item.getShield_amt() - 1);
             setShieldUp();
         }
 
-        if(controls.speedButton.getJustPressed(camera) && item.getSpeed_amt() > 0){
+        if(controls.getSpeedButton().getJustPressed(camera) && item.getSpeed_amt() > 0){
             item.setSpeed_amt(item.getSpeed_amt() - 1);
             setSpeedUp();
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.leftButton.isPressed() && (!controls.speedButton.isPressed() && !controls.shieldButton.isPressed())) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.getLeftButton().isPressed() && (!controls.getSpeedButton().isPressed() && !controls.getShieldButton().isPressed())) {
             goLeft((150 + speedUp) * delta);
             playerAnim = left;
             isMoving = true;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || controls.rightButton.isPressed()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || controls.getRightButton().isPressed()) {
             goRight((150 + speedUp) * delta);
             playerAnim = right;
             isMoving = true;
         }
 
-        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed()) && onFloor && !forcedJump) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.getJumpButton().isPressed()) && onFloor && !forcedJump) {
             initiateJump(1400, false);
             isMoving = true;
         }
 
-        if(!(Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.jumpButton.isPressed()) && !forcedJump){
+        if(!(Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.getJumpButton().isPressed()) && !forcedJump){
             jumpTime += delta * 8;
         }
 
