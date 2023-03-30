@@ -1,9 +1,6 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -193,13 +190,13 @@ public class GameScreen implements Screen {
 
         // draw bat_enemy
         for (Enemies enemy : ebat) {
-            game.batch.draw(enemy.batmanfly.getKeyFrame(time_passed, true), enemy.getX(), enemy.getY());
+            game.batch.draw(enemy.getBatmanfly().getKeyFrame(time_passed, true), enemy.getX(), enemy.getY());
             //game.batch.draw(enemy.getTexture(), enemy.getX(), enemy.getY());
         }
 
         // draw all the rescue
         for (Obstacles rescue : rescues) {
-            game.batch.draw(rescue.rescueAni.getKeyFrame(time_passed, true), rescue.getX(), rescue.getY());
+            game.batch.draw(rescue.getRescueAni().getKeyFrame(time_passed, true), rescue.getX(), rescue.getY());
             game.batch.draw(rescue.getTextureHelpBox(), rescue.getHelpX(), rescue.getHelpY());
         }
 
@@ -215,7 +212,7 @@ public class GameScreen implements Screen {
 
         // draw all the fires
         for (Obstacles fire : fires) {
-            game.batch.draw(fire.fireAnim.getKeyFrame(time_passed, true), fire.getX(), fire.getY());
+            game.batch.draw(fire.getFireAnim().getKeyFrame(time_passed, true), fire.getX(), fire.getY());
         }
 
         // draw all the falling glass
@@ -256,7 +253,7 @@ public class GameScreen implements Screen {
         patrick.drawHearts(this.game.batch, delta);
 
         // draw all the buttons
-        patrick.controls.drawButtons(this.game.batch);
+        patrick.getControls().drawButtons(this.game.batch, this.game.font);
     }
 
 
@@ -372,23 +369,23 @@ public class GameScreen implements Screen {
 
 
         // PLAYER INPUTS
-        patrick.controls.getInputs(this.game.camera, patrick);
+        patrick.getControls().getInputs(this.game.camera, patrick);
 
         if (gameState == State.READY) {
             // press to start
-            if (patrick.controls.screenButton.getJustPressed(this.game.camera)) {
+            if (patrick.getControls().getScreenButton().getJustPressed(this.game.camera)) {
                 gameState = State.RUNNING;
             }
         }
         if (gameState == State.RUNNING) {
             // player movement (next frame)
-            patrick.move(delta);
+            patrick.processControls(delta, game.camera);
             patrick.jump(delta, time_passed, floors);
 
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
-            if (patrick.controls.screenButton.getJustPressed(this.game.camera)) {
+            if (patrick.getControls().getScreenButton().getJustPressed(this.game.camera)) {
                 this.game.setScreen(new GameOver(this.game, score));
             }
         }
@@ -434,12 +431,11 @@ public class GameScreen implements Screen {
             fire.playerTouchedFire(patrick, delta);
         }
 
-
         for (Enemies enemy : ebat) {
-            if (enemy.killed) {
-                if(!enemy.givenScore){
+            if (enemy.isKilled()) {
+                if(!enemy.isGivenScore()){
                     score.upScore(500);
-                    enemy.givenScore = true;
+                    enemy.setGivenScore(true);
                 }
                 enemy.transpose(delta, time_passed);
             } else if (enemy.playerTouched(patrick, delta)) {
@@ -487,7 +483,7 @@ public class GameScreen implements Screen {
         }
 
         for (Slime slime : onfloor_slime) {
-            if(slime.onFloor) {
+            if(slime.isOnFloor()) {
                 slime.transpose(delta, time_passed);
             }
 
@@ -503,9 +499,9 @@ public class GameScreen implements Screen {
         for(Slime slime:die_slime){
             slime.transpose(delta,time_passed);
             slime.fall(slime.object,delta,floors,time_passed);
-            slime.time+=delta;
-
-            if (slime.time > 2){
+            float slime_die_time=slime.getTime();
+            slime_die_time+=delta;
+            if (slime_die_time > 2){
                 die_slime.removeValue(slime, true);
             }
         }
@@ -544,11 +540,11 @@ public class GameScreen implements Screen {
 
         if (time_passed > randomizer_objects) {
             int random = MathUtils.random(1, 10);
-            if (random <= 3) {
+            if (random <= 2) {
                 addGlass();
-            } else if (random <=5) {
+            } else if (random <=4) {
                 addStone();
-            } else if(random<=7){
+            } else if(random<=6){
                 addLife();
             }
             else{

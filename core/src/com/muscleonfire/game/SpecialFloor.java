@@ -48,7 +48,7 @@ public class SpecialFloor extends GameObject{
         leftrollAnim = new Ani().loadAnimation("leftrollingfloor.png", 2,1, 0.2f);
     }
     void touchedSpike(Player pat,float delta){
-        if (pat.feet.overlaps(object)){
+        if (pat.getFeet().overlaps(object)){
             dmg_timer += delta;
             while(dmg_timer>1){
                 dmg_timer-=1;
@@ -58,13 +58,13 @@ public class SpecialFloor extends GameObject{
     }
 
     void touchedRightRolls(Player pat,float delta){
-        if (pat.feet.overlaps(object)){
+        if (pat.getFeet().overlaps(object)){
             pat.goRight(50 * delta);
         }
     }
 
     void touchedLeftRolls(Player pat,float delta){
-        if (pat.feet.overlaps(object)){
+        if (pat.getFeet().overlaps(object)){
             pat.goLeft(50 * delta);
         }
     }

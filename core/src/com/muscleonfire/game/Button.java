@@ -8,10 +8,20 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Button extends GameObject {
-    boolean isPressed;
-    Texture image_Pressed;
-    Texture image_notPressed;
-    Rectangle touchLocation;
+
+
+    private boolean isPressed;
+    private Texture image_Pressed;
+    private Texture image_notPressed;
+    private Rectangle touchLocation;
+
+    public boolean isPressed() {
+        return isPressed;
+    }
+
+    public void setPressed(boolean pressed) {
+        isPressed = pressed;
+    }
 
     public Button(float x, float y, float width, float height, String Pressed, String notPressed){
         object = new Rectangle(x, y, width, height);
@@ -20,7 +30,7 @@ public class Button extends GameObject {
         setTexture();
     }
 
-    void setTexture(){ // set the texture to when button is pressed or not pressed
+    public void setTexture(){ // set the texture to when button is pressed or not pressed
         if (isPressed){
             image = image_Pressed;
         }else{
@@ -28,11 +38,11 @@ public class Button extends GameObject {
         }
     }
 
-    void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch){
         batch.draw(image, object.x, object.y);
     }
 
-    boolean getHeldDown(OrthographicCamera camera){ // put the coordinate of the touchPoint here
+    public boolean getHeldDown(OrthographicCamera camera){ // put the coordinate of the touchPoint here
         for (int i = 0; i < 10; i++){
             if (Gdx.input.isTouched(i)) {
                 // place the touched coordinate into a vector3
@@ -57,7 +67,7 @@ public class Button extends GameObject {
         return false;
     }
 
-    boolean getJustPressed(OrthographicCamera camera){ // put the coordinate of the touchPoint here
+    public boolean getJustPressed(OrthographicCamera camera){ // put the coordinate of the touchPoint here
         for (int i = 0; i < 10; i++) {
             if (Gdx.input.isTouched(i)) {
                 // place the touched coordinate into a vector3

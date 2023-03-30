@@ -8,13 +8,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 public class GameOver implements Screen {
+    private Button retryButton;
+    private Button menuButton;
+    private Score score;
+    private int coins;
+    private final MuscleOnFire game;
 
-
-    Button retryButton;
-    Button menuButton;
-    Score score;
-    int coins;
-    final MuscleOnFire game;
     @Override
     public void show() {
 
@@ -25,15 +24,11 @@ public class GameOver implements Screen {
         this.game.coin.addCoin(score);
         this.game.coin.saveCoin();
         this.score = score;
-        this.coins = score.score/100;
+        this.coins = score.getScore()/100;
 
         retryButton=new Button(90,400,300,64,"Buttons/GameOver/tap_to_retry_pressed.png","Buttons/GameOver/tap_to_retry.png");
         menuButton=new Button(90,250,300,64,"Buttons/GameOver/back_to_menu_pressed.png","Buttons/GameOver/back_to_menu.png");
     }
-
-
-
-
 
     @Override
     public void render(float delta) {

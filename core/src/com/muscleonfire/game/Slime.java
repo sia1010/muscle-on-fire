@@ -9,13 +9,27 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Slime extends GameObject {
-    boolean move_right;
-    boolean changeDirection=false;
-    float time=0;
-    boolean onFloor;
-    Floor currentFloor;
-    Animation<TextureRegion> slimemove;
-    void onfloor_spawn(GameObject slime){
+
+    private boolean move_right;
+    private boolean changeDirection=false;
+    private float time=0;
+    private boolean onFloor;
+    private Floor currentFloor;
+
+
+
+
+    public float getTime() {
+        return time;
+    }
+
+
+    public boolean isOnFloor() {
+        return onFloor;
+    }
+
+
+    public void onfloor_spawn(GameObject slime){
 
         object=new Rectangle();
         object.height=32;
@@ -32,7 +46,7 @@ public class Slime extends GameObject {
         }
 
     }
-    void dieSlime_spawn(GameObject onfloorslime){
+    public void dieSlime_spawn(GameObject onfloorslime){
 
         object=new Rectangle();
         object.height=32;
@@ -44,7 +58,7 @@ public class Slime extends GameObject {
 
     }
 
-    void checkMovingDirection(){
+    public void checkMovingDirection(){
         // change direction if the boolean is true
         if (changeDirection) {
             if (move_right) {
@@ -69,7 +83,7 @@ public class Slime extends GameObject {
     }
 
 
-    void move(float delta) {
+    public void move(float delta) {
         if(onFloor) {
             if (move_right) {
                 object.x += 150 * delta;
@@ -84,7 +98,7 @@ public class Slime extends GameObject {
         time+=delta;
     }
 
-    void fall(Rectangle slime, float delta, Array<Floor> floors, float time_passed){
+    public void fall(Rectangle slime, float delta, Array<Floor> floors, float time_passed){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
@@ -102,7 +116,7 @@ public class Slime extends GameObject {
         }
     }
 
-    boolean playerTouched(Player pat) {
+    public boolean playerTouched(Player pat) {
         if (pat.object.overlaps(object)) {
             pat.takeDamage(1);
 

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.*;
-import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,18 +16,16 @@ public class Shop extends GameObject implements Screen {
     final MuscleOnFire game;
     private final SpriteBatch batch;
     private final BitmapFont font;
-    Texture background;
-    Sprite backgroundSprite;
-    Button backButton;
-    Button buybutton;
-    Texture shopbg;
-    Texture textbg;
-    ButtonShop shield;
-    ButtonShop speed;
-    ButtonShop selected_item;
-    FileHandle itemFile;
-    int shield_amt;
-    int speed_amt;
+    private Texture background;
+    private Sprite backgroundSprite;
+    private Button backButton;
+    private Button buybutton;
+    private Texture shopbg;
+    private Texture textbg;
+    private ButtonShop shield;
+    private ButtonShop speed;
+    private ButtonShop selected_item;
+    private Item item;
 
     public Shop(final MuscleOnFire game){
         this.game = game;
@@ -51,18 +48,9 @@ public class Shop extends GameObject implements Screen {
         speed = new ButtonShop(270, 350, "shop_speedup.png", "Speed");
         selected_item = new ButtonShop(0,0,"nothing.png", "nothing.png");
 
-        itemFile = Gdx.files.external("item.txt");
-
-        if(itemFile.exists()){
-            String[] arr = itemFile.readString().split("@");
-            shield_amt = Integer.parseInt(arr[0]);
-            speed_amt = Integer.parseInt(arr[1]);
-        }else{
-            shield_amt = 0;
-            speed_amt = 0;
-            itemFile.writeString(shield_amt + "@" + speed_amt, false);
+        item = new Item();
         }
-    }
+
     @Override
     public void show() {
 
@@ -84,8 +72,8 @@ public class Shop extends GameObject implements Screen {
         game.font.draw(game.batch, "Shop", 210, 780);
         game.font.draw(game.batch, "Coins: "+ this.game.coin.displayCoin(), 160, 730);
         game.batch.draw(shopbg, 65, 200);
-        shield.draw(batch, font); // shield item
-        speed.draw(batch, font); // speed item
+        shield.draw(batch, font, item.getShield_amt()); // shield item
+        speed.draw(batch, font, item.getSpeed_amt()); // speed item
         backButton.draw(batch);
         buybutton.draw(batch);
 
@@ -104,16 +92,14 @@ public class Shop extends GameObject implements Screen {
         }
 
         if(buybutton.getJustPressed(game.camera)){
-            if (selected_item.isPressed) {
+            if (selected_item.isPressed()) {
                 if (selected_item == shield){
                     game.coin.spendCoin(50);
-                    shield_amt += 1;
-                }else if(selected_item == speed){
+                    item.setShield_amt(item.getShield_amt() + 1);
+                }else if(selected_item == speed && game.coin.getCoin()>=50){
                     game.coin.spendCoin(50);
-                    speed_amt += 1;
+                    item.setSpeed_amt(item.getSpeed_amt() + 1);
                 }
-                itemFile.writeString(shield_amt + "@" + speed_amt, false);
-                System.out.println(shield_amt + "@" + speed_amt);
             }
         }
 
