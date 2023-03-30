@@ -16,16 +16,16 @@ public class Shop extends GameObject implements Screen {
     final MuscleOnFire game;
     private final SpriteBatch batch;
     private final BitmapFont font;
-    Texture background;
-    Sprite backgroundSprite;
-    Button backButton;
-    Button buybutton;
-    Texture shopbg;
-    Texture textbg;
-    ButtonShop shield;
-    ButtonShop speed;
-    ButtonShop selected_item;
-    Item item;
+    private Texture background;
+    private Sprite backgroundSprite;
+    private Button backButton;
+    private Button buybutton;
+    private Texture shopbg;
+    private Texture textbg;
+    private ButtonShop shield;
+    private ButtonShop speed;
+    private ButtonShop selected_item;
+    private Item item;
 
     public Shop(final MuscleOnFire game){
         this.game = game;
@@ -93,10 +93,10 @@ public class Shop extends GameObject implements Screen {
 
         if(buybutton.getJustPressed(game.camera)){
             if (selected_item.isPressed) {
-                if (selected_item == shield && game.coin.coin>=50){
+                if (selected_item == shield && game.coin.getCoin()>=50){
                     game.coin.spendCoin(50);
                     item.setShield_amt(item.getShield_amt() + 1);
-                }else if(selected_item == speed && game.coin.coin>=50){
+                }else if(selected_item == speed && game.coin.getCoin()>=50){
                     game.coin.spendCoin(50);
                     item.setSpeed_amt(item.getSpeed_amt() + 1);
                 }

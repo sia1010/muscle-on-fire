@@ -9,14 +9,23 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Obstacles extends GameObject{
-    Animation<TextureRegion> rescueAni;
-    Rectangle help_box;
-    Texture image_help;
-    float save_timer = 0;
-    boolean saved = false;
-    float dmg_timer = 0;
-    Animation<TextureRegion> fireAnim;
-    void spawnMedicine(Array<Floor> floors){
+    private Animation<TextureRegion> rescueAni;
+    private Rectangle help_box;
+    private Texture image_help;
+    private float save_timer = 0;
+    private boolean saved = false;
+    private float dmg_timer = 0;
+    private Animation<TextureRegion> fireAnim;
+
+    public Animation<TextureRegion> getRescueAni() {
+        return rescueAni;
+    }
+
+    public Animation<TextureRegion> getFireAnim() {
+        return fireAnim;
+    }
+
+    public void spawnMedicine(Array<Floor> floors){
         object = new Rectangle();
         object.height = 32;
         object.width = 26;
@@ -25,7 +34,7 @@ public class Obstacles extends GameObject{
         image = new Texture(Gdx.files.internal("Medicine_box.png"));
     }
 
-    void spawnMysteryBox(Array<Floor> floors){
+    public void spawnMysteryBox(Array<Floor> floors){
         object = new Rectangle();
         object.height = 64;
         object.width = 64;
@@ -33,7 +42,7 @@ public class Obstacles extends GameObject{
         object.y = floors.peek().getY()+30;
         image = new Texture(Gdx.files.internal("Mystery Box.png"));
     }
-    void spawnRescue(Array<Floor> floors){
+    public void spawnRescue(Array<Floor> floors){
         object = new Rectangle();
         object.height = 64;
         object.width = 64;
@@ -49,7 +58,7 @@ public class Obstacles extends GameObject{
         updateHelpBoxPos();
     }
 
-    void spawnFire(Array<Floor> floors){
+    public void spawnFire(Array<Floor> floors){
         object = new Rectangle();
         object.height = 32;
         object.width = 28;
@@ -59,11 +68,11 @@ public class Obstacles extends GameObject{
         fireAnim = new Ani().loadAnimation("Fire(sheet).png", 3,1, 0.5f);
     }
 
-    void updateHelpBoxPos(){
+    public void updateHelpBoxPos(){
         help_box.x = object.x + 20;
         help_box.y = object.y + 70 ;
     }
-    void playerTouchedRescue(Player pat, float delta, Score score){
+    public void playerTouchedRescue(Player pat, float delta, Score score){
         if (pat.object.overlaps(object)){
             save_timer += delta;
         }
@@ -77,7 +86,7 @@ public class Obstacles extends GameObject{
         }
     }
 
-    void playerTouchedFire(Player pat, float delta){
+    public void playerTouchedFire(Player pat, float delta){
         if (pat.object.overlaps(object)){
             while(dmg_timer <= 0){
                 dmg_timer += 1;
@@ -87,7 +96,7 @@ public class Obstacles extends GameObject{
         }
     }
 
-    boolean playerTouchedMedicine(Player pat){
+    public boolean playerTouchedMedicine(Player pat){
         boolean touched=false;
         if (pat.object.overlaps(object)){
             pat.healDamage(1);
@@ -96,7 +105,7 @@ public class Obstacles extends GameObject{
         return touched;
     }
 
-    boolean playerTouchedMysteryBox(Player pat, Score score){
+    public boolean playerTouchedMysteryBox(Player pat, Score score){
         int random = MathUtils.random(1, 10);
         boolean touched=false;
         if (pat.object.overlaps(object)){
@@ -113,18 +122,18 @@ public class Obstacles extends GameObject{
         return touched;
     }
 
-    Texture getTextureHelpBox(){
+    public Texture getTextureHelpBox(){
         return image_help;
     }
-    float getHelpX(){
+    public float getHelpX(){
         return help_box.x;
     }
 
-    float getHelpY(){
+    public float getHelpY(){
         return help_box.y;
     }
 
-    void transposeRescue(float delta, float time_passed){
+    public void transposeRescue(float delta, float time_passed){
         super.transpose(delta, time_passed);
         if (saved){
             object.y += 200 * delta;
