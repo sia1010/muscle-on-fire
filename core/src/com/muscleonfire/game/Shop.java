@@ -39,13 +39,13 @@ public class Shop extends GameObject implements Screen {
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
 
-        backButton = new Button(20,752,128,32,"Buttons/Shop/back_button_pressed.png","Buttons/Shop/back_button.png");
-        buybutton = new Button(200,280,128,32,"shop_buy_pressed.png","shop_buy_button.png");
+        backButton = new Button(20,752,128,32,"Buttons/MainMenu/back_button_pressed.png","Buttons/MainMenu/back_button.png");
+        buybutton = new Button(200,280,128,32,"Buttons/Shop/shop_buy_pressed.png","Buttons/Shop/shop_buy_button.png");
 
-        shopbg = new Texture("shop_bg_items.png");
-        textbg = new Texture("textbg.png");
-        shield = new ButtonShop(100, 350,"shop_shield.png", "Shield");
-        speed = new ButtonShop(270, 350, "shop_speedup.png", "Speed");
+        shopbg = new Texture("Buttons/Shop/shop_bg_items.png");
+        textbg = new Texture("Buttons/Shop/textbg.png");
+        shield = new ButtonShop(100, 350,"Buttons/Shop/shop_shield.png", "Shield");
+        speed = new ButtonShop(270, 350, "Buttons/Shop/shop_speedup.png", "Speed");
         selected_item = new ButtonShop(0,0,"nothing.png", "nothing.png");
 
         item = new Item();

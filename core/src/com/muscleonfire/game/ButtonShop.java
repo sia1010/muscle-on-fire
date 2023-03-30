@@ -15,7 +15,7 @@ public class ButtonShop extends Button {
     private BitmapFont font2;
 
     public ButtonShop(float x, float y, String item_path, String item_name) {
-        super(x, y, 100, 200, "shop_item_bg_pressed.png", "shop_item_bg.png");
+        super(x, y, 100, 200, "Buttons/Shop/shop_item_bg_pressed.png", "Buttons/Shop/shop_item_bg.png");
         item_img = new Texture(item_path);
         this.item_name = item_name;
 

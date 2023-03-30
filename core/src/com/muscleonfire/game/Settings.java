@@ -38,7 +38,7 @@ public class Settings implements Screen {
 
         Gdx.input.setInputProcessor(stage);
 
-        backMenuButton = new Button(20,740,128,32,"back_button_pressed.png","back_button.png");
+        backMenuButton = new Button(20,740,128,32,"Buttons/MainMenu/back_button_pressed.png","Buttons/MainMenu/back_button.png");
         setSliderLocation();
         setControls();
 

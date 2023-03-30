@@ -57,19 +57,19 @@ public class Floor extends GameObject { // inheritance
     public void setAttributes(){
         switch (id){
             case floor:
-                image = new Texture(Gdx.files.internal("floor_original.png"));
+                image = new Texture(Gdx.files.internal("Textures/floor/floor_original.png"));
                 break;
             case trampoline:
-                image = new Texture(Gdx.files.internal("trampoline.png"));
+                image = new Texture(Gdx.files.internal("Textures/floor/trampoline.png"));
                 break;
             case spike:
-                image = new Texture(Gdx.files.internal("spikefloor.png"));
+                image = new Texture(Gdx.files.internal("Textures/floor/spikefloor.png"));
                 break;
             case rollLeft:
-                anim = new Ani().loadAnimation("rightrollingfloor.png", 2,1, 0.2f);
+                anim = new Ani().loadAnimation("Textures/floor/rightrollingfloor.png", 2,1, 0.2f);
                 break;
             case rollRight:
-                anim = new Ani().loadAnimation("leftrollingfloor.png", 2,1, 0.2f);
+                anim = new Ani().loadAnimation("Textures/floor/leftrollingfloor.png", 2,1, 0.2f);
                 break;
 
         }
