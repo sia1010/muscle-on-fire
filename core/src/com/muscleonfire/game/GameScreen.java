@@ -1,9 +1,6 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -19,6 +16,7 @@ public class GameScreen implements Screen {
     FallingObjects fallingObjects;
     Score score;
     Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
+    Array<Obstacles> mysteries = new Array<Obstacles>();
     Array<Obstacles> rescues = new Array<Obstacles>();
     Array<Obstacles> medicines = new Array<Obstacles>();
     Array<Obstacles> fires = new Array<Obstacles>();
@@ -48,7 +46,8 @@ public class GameScreen implements Screen {
         NULL,
         FIRE,
         RESCUE,
-        MEDICINE
+        MEDICINE,
+        MYSTERY
     }
     enum State{
         READY,
@@ -121,6 +120,15 @@ public class GameScreen implements Screen {
 
         // add the o into the medicines array
         medicines.add(medicine);
+    }
+
+    void addMystery(){
+        // add a new obstacles
+        Obstacles mystery = new Obstacles();
+        mystery.spawnMysteryBox(floors);
+
+        // add the o into the medicines array
+        mysteries.add(mystery);
     }
     void addGlass(){
         FallingObjects glass=new FallingObjects();
@@ -197,6 +205,11 @@ public class GameScreen implements Screen {
             game.batch.draw(medicine.getTexture(), medicine.getX(), medicine.getY());
         }
 
+        // draw all mystery boxes
+        for (Obstacles mystery : mysteries) {
+            game.batch.draw(mystery.getTexture(), mystery.getX(), mystery.getY());
+        }
+
         // draw all the fires
         for (Obstacles fire : fires) {
             game.batch.draw(fire.fireAnim.getKeyFrame(time_passed, true), fire.getX(), fire.getY());
@@ -240,7 +253,7 @@ public class GameScreen implements Screen {
         patrick.drawHearts(this.game.batch, delta);
 
         // draw all the buttons
-        patrick.controls.drawButtons(this.game.batch);
+        patrick.controls.drawButtons(this.game.batch, this.game.font);
     }
 
 
@@ -366,7 +379,7 @@ public class GameScreen implements Screen {
         }
         if (gameState == State.RUNNING) {
             // player movement (next frame)
-            patrick.move(delta);
+            patrick.processControls(delta, game.camera);
             patrick.jump(delta, time_passed, floors);
 
         }
@@ -403,6 +416,13 @@ public class GameScreen implements Screen {
             medicine.transpose(delta, time_passed);
             if (medicine.playerTouchedMedicine(patrick)) {
                 medicines.removeValue(medicine, true);
+            }
+        }
+
+        for (Obstacles mystery : mysteries) {
+            mystery.transpose(delta, time_passed);
+            if (mystery.playerTouchedMysteryBox(patrick, score)) {
+                mysteries.removeValue(mystery, true);
             }
         }
 
@@ -540,8 +560,10 @@ public class GameScreen implements Screen {
             int random = MathUtils.random(1, 10);
             if (random <= 3) {
                 next_obstacle = Obstacle.RESCUE;
-            } else if (random <= 7) {
+            } else if (random <= 5) {
                 next_obstacle = Obstacle.MEDICINE;
+            } else if (random <= 7) {
+                next_obstacle = Obstacle.MYSTERY;
             } else {
                 next_obstacle = Obstacle.FIRE;
             }
@@ -560,6 +582,8 @@ public class GameScreen implements Screen {
                     case MEDICINE:
                         addMedicine();
                         break;
+                    case MYSTERY:
+                        addMystery();
                 }
                 addEnemies();
                 next_obstacle = Obstacle.NULL;
@@ -622,6 +646,11 @@ public class GameScreen implements Screen {
         for (Obstacles medicine : medicines){
             if (medicine.getY() > 1000){
                 medicines.removeValue(medicine, true);
+            }
+        }
+        for (Obstacles mystery : mysteries){
+            if (mystery.getY() > 1000){
+                mysteries.removeValue(mystery, true);
             }
         }
     }

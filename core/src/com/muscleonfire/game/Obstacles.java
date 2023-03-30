@@ -25,6 +25,14 @@ public class Obstacles extends GameObject{
         image = new Texture(Gdx.files.internal("Medicine_box.png"));
     }
 
+    void spawnMysteryBox(Array<Floor> floors){
+        object = new Rectangle();
+        object.height = 64;
+        object.width = 64;
+        object.x = floors.peek().getX() + MathUtils.random(0, 128 - 64); // randomly at the floor, can be at left or right
+        object.y = floors.peek().getY()+30;
+        image = new Texture(Gdx.files.internal("Mystery Box.png"));
+    }
     void spawnRescue(Array<Floor> floors){
         object = new Rectangle();
         object.height = 64;
@@ -84,6 +92,23 @@ public class Obstacles extends GameObject{
         if (pat.object.overlaps(object)){
             pat.healDamage(1);
             touched=true;
+        }
+        return touched;
+    }
+
+    boolean playerTouchedMysteryBox(Player pat, Score score){
+        int random = MathUtils.random(1, 10);
+        boolean touched=false;
+        if (pat.object.overlaps(object)){
+            touched=true;
+            if (random <= 2) {
+                pat.setShieldUp();
+            } else if (random <= 7) {
+                pat.setSpeedUp();
+            } else {
+                score.upScore(1000);
+            }
+
         }
         return touched;
     }
