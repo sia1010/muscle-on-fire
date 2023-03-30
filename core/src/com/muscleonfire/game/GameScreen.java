@@ -196,7 +196,7 @@ public class GameScreen implements Screen {
 
         // draw all the rescue
         for (Obstacles rescue : rescues) {
-            game.batch.draw(rescue.rescueAni.getKeyFrame(time_passed, true), rescue.getX(), rescue.getY());
+            game.batch.draw(rescue.getRescueAni().getKeyFrame(time_passed, true), rescue.getX(), rescue.getY());
             game.batch.draw(rescue.getTextureHelpBox(), rescue.getHelpX(), rescue.getHelpY());
         }
 
@@ -212,7 +212,7 @@ public class GameScreen implements Screen {
 
         // draw all the fires
         for (Obstacles fire : fires) {
-            game.batch.draw(fire.fireAnim.getKeyFrame(time_passed, true), fire.getX(), fire.getY());
+            game.batch.draw(fire.getFireAnim().getKeyFrame(time_passed, true), fire.getX(), fire.getY());
         }
 
         // draw all the falling glass

@@ -10,8 +10,8 @@ import com.badlogic.gdx.math.MathUtils;
 
 
 public class Floor extends GameObject { // inheritance
-    float dmg_timer;
-    Animation<TextureRegion> anim;
+    private float dmg_timer;
+    private Animation<TextureRegion> anim;
     enum FloorID{
         floor,
         trampoline,
@@ -19,9 +19,9 @@ public class Floor extends GameObject { // inheritance
         rollLeft,
         rollRight
     }
-    FloorID id;
+    private FloorID id;
 
-    void touched(Player pat,float delta){
+    public void touched(Player pat, float delta){
         if (pat.getFeet().overlaps(object)){
             switch (id){
                 case trampoline:
@@ -44,7 +44,7 @@ public class Floor extends GameObject { // inheritance
         }
     }
 
-    void spawn(FloorID floorID){ // spawn a floor
+    public void spawn(FloorID floorID){ // spawn a floor
         object = new Rectangle(); // from GameObject
         object.height = 10;
         object.width = 129;
@@ -54,7 +54,7 @@ public class Floor extends GameObject { // inheritance
         setAttributes();
     }
 
-    void setAttributes(){
+    public void setAttributes(){
         switch (id){
             case floor:
                 image = new Texture(Gdx.files.internal("floor_original.png"));
@@ -75,7 +75,7 @@ public class Floor extends GameObject { // inheritance
         }
     }
 
-    void draw(SpriteBatch batch, float time_passed){
+    public void draw(SpriteBatch batch, float time_passed){
         if (id != FloorID.rollLeft && id != FloorID.rollRight){
             batch.draw(image, getX(), getY());
         }else{

@@ -25,15 +25,11 @@ public class GameOver implements Screen {
         this.game.coin.addCoin(score);
         this.game.coin.saveCoin();
         this.score = score;
-        this.coins = score.score/100;
+        this.coins = score.getScore()/100;
 
         retryButton=new Button(90,400,300,64,"tap_to_retry_notpressed.png","tap_to_retry.png");
         menuButton=new Button(90,250,300,64,"back_to_menu_notpressed.png","back_to_menu.png");
     }
-
-
-
-
 
     @Override
     public void render(float delta) {

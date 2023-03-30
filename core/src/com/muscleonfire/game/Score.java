@@ -11,11 +11,15 @@ import sun.font.TrueTypeFont;
 import java.util.ArrayList;
 
 public class Score {
-    int score = 0, highScore;
-    Array<FloatingScore> scoreToAdd = new Array<>();
-    float timeSinceLastAddScore = 0;
-    FileHandle highScoreFile;
-    BitmapFont scorefont;
+    private int score = 0, highScore;
+    private Array<FloatingScore> scoreToAdd = new Array<>();
+    private float timeSinceLastAddScore = 0;
+    private FileHandle highScoreFile;
+    private BitmapFont scorefont;
+
+    public int getScore() {
+        return score;
+    }
 
     public Score(MuscleOnFire game){
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = game.parameter;
@@ -23,7 +27,7 @@ public class Score {
         scorefont = game.generator.generateFont(parameter);
     }
 
-    void openHighScoreFile(){
+    public void openHighScoreFile(){
         // open highScore.txt file and set highScore to the record
         // if no record exists, make one and set value to zero
         highScoreFile = Gdx.files.external("highScore.txt");
@@ -34,7 +38,7 @@ public class Score {
             highScoreFile.writeString(Integer.toString(highScore), false);
         }
     }
-    void addScore(float delta){
+    public void addScore(float delta){
         timeSinceLastAddScore += delta;
         while (timeSinceLastAddScore > 0.1f){ //0.1 second, it is a float, java cannot write floating value directly, need to add f behind
             score += 10;
@@ -42,20 +46,20 @@ public class Score {
         }
     }
 
-    void upScore(int up_amt){
+    public void upScore(int up_amt){
         scoreToAdd.add(new FloatingScore(up_amt));
         score += up_amt;
     }
 
-    String displayScore(){
+    public String displayScore(){
         return String.valueOf(score);
     }
 
-    String displayHighScore(){
+    public String displayHighScore(){
         return String.valueOf(highScore);
     }
 
-    void saveScore(){
+    public void saveScore(){
         if (score > highScore){
             highScore = score;
             highScoreFile.writeString(Integer.toString(highScore), false);
