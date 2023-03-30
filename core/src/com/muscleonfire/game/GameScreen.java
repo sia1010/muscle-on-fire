@@ -7,41 +7,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
 
-    float floor_time = 0;
-    // VARIABLE DECLARATIONS
-    final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
-    Player patrick;
-    Building Sidewalls;
-    Array<Wallpaper> wallpapers = new Array<Wallpaper>();
-    FallingObjects fallingObjects;
-    Score score;
-    Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
-    Array<Obstacles> mysteries = new Array<Obstacles>();
-    Array<Obstacles> rescues = new Array<Obstacles>();
-    Array<Obstacles> medicines = new Array<Obstacles>();
-    Array<Obstacles> fires = new Array<Obstacles>();
-    Array<FallingObjects> falling_glass =new Array<FallingObjects>();
-    Array<FallingObjects> falling_stone =new Array<FallingObjects>();
-    Array<FallingObjects> falling_life =new Array<FallingObjects>();
-    Array<FallingObjects> falling_slime =new Array<FallingObjects>();
-    Array<Slime> onfloor_slime=new Array<Slime>();
-    Array<Enemies> ebat = new Array<Enemies>();
-
-
-    //AUDIO
-    private Sounds sounds = new Sounds();
-    private Musics musics = new Musics();
-
-    Array<Slime> die_slime=new Array<Slime>();
-
-    float time_passed;
-    float randomizer_obstacle;
-    float randomizer_spikefloor;
-    float randomizer_tramfloor;
-    float randomizer_rightroll;
-    float randomizer_leftroll;
-    float randomizer_objects;
-    Floor latestFloor;
     enum Obstacle {
         NULL,
         FIRE,
@@ -54,6 +19,45 @@ public class GameScreen implements Screen {
         RUNNING,
         OVER
     }
+
+    // VARIABLE DECLARATIONS
+    final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
+
+    // Game Objects
+    Player patrick;
+    Building Sidewalls;
+    Array<Wallpaper> wallpapers = new Array<Wallpaper>();
+    FallingObjects fallingObjects;
+    Score score;
+    Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
+    Floor latestFloor;
+    Array<Obstacles> mysteries = new Array<Obstacles>();
+    Array<Obstacles> rescues = new Array<Obstacles>();
+    Array<Obstacles> medicines = new Array<Obstacles>();
+    Array<Obstacles> fires = new Array<Obstacles>();
+    Array<FallingObjects> falling_glass =new Array<FallingObjects>();
+    Array<FallingObjects> falling_stone =new Array<FallingObjects>();
+    Array<FallingObjects> falling_life =new Array<FallingObjects>();
+    Array<FallingObjects> falling_slime =new Array<FallingObjects>();
+    Array<Slime> onfloor_slime=new Array<Slime>();
+    Array<Slime> die_slime=new Array<Slime>();
+    Array<Enemies> ebat = new Array<Enemies>();
+
+
+    // Audio
+    private Sounds sounds = new Sounds();
+    private Musics musics = new Musics();
+
+
+    // Game Data Values
+    float time_passed;
+    float randomizer_obstacle;
+    float randomizer_spikefloor;
+    float randomizer_tramfloor;
+    float randomizer_rightroll;
+    float randomizer_leftroll;
+    float randomizer_objects;
+    float floor_time = 0;
     State gameState;
     Obstacle next_obstacle = Obstacle.NULL;
 
@@ -395,7 +399,8 @@ public class GameScreen implements Screen {
         if (patrick.updateGameOver()) {
             gameState = State.OVER;
         }
-        // update everything
+        // update everything to behave as intended, which depends on what happens
+        // transpose slowly moves things up towards the top of the screen
         patrick.transpose(delta, time_passed);
 
         for (Wallpaper wallpaper : wallpapers){
@@ -534,10 +539,12 @@ public class GameScreen implements Screen {
             latestFloor.object.y = -120;
         }
 
+        // add new wallpapers when old one moves up
         if(wallpapers.peek().getY() > -210 + 120){
             addWallpaper();
         }
 
+        // add a random falling object every 8-15s
         if (time_passed > randomizer_objects) {
             int random = MathUtils.random(1, 10);
             if (random <= 2) {
@@ -553,8 +560,8 @@ public class GameScreen implements Screen {
             randomizer_objects += MathUtils.random(8, 15); // add the object time
         }
 
-        // the obstacle will be added in the range of (15, 20) of the time passed
-        // every 15-20 s will add one rescue
+        // add a random obstacle every 8-12s
+        // when obstacle is added, an enemy bat is also added
         if (time_passed > randomizer_obstacle) {
             int random = MathUtils.random(1, 10);
             if (random <= 3) {
@@ -596,7 +603,6 @@ public class GameScreen implements Screen {
 
             }
         }
-
         for (Wallpaper wallpaper : wallpapers){
             if (wallpaper.getY() > 1000){
                 wallpapers.removeValue(wallpaper, true);
@@ -624,7 +630,6 @@ public class GameScreen implements Screen {
                 falling_slime.removeValue(fallingObject, true);
             }
         }
-
         for (Slime slime : onfloor_slime){
             if (slime.getY() < -200) {
                 onfloor_slime.removeValue(slime, true);
