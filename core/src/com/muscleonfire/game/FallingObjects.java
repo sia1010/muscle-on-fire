@@ -13,7 +13,7 @@ public class FallingObjects extends GameObject{
         return onFloor;
     }
 
-    void falling_building_spawn(){
+    public void falling_building_spawn(){
         object=new Rectangle();
         object.x=5;
         object.y=350;
@@ -23,7 +23,7 @@ public class FallingObjects extends GameObject{
     }
 
 
-    void falling_glass_spawn(){
+    public void falling_glass_spawn(){
 
         object = new Rectangle();
         object.height = 32;
@@ -33,7 +33,7 @@ public class FallingObjects extends GameObject{
         image = new Texture(Gdx.files.internal("falling object(glass).png"));
     }
 
-    void falling_stone_spawn(){
+    public void falling_stone_spawn(){
 
         object = new Rectangle();
         object.height = 32;
@@ -43,7 +43,7 @@ public class FallingObjects extends GameObject{
         image = new Texture(Gdx.files.internal("falling object (stone).png"));
     }
 
-    void falling_life_spawn(){
+    public void falling_life_spawn(){
 
         object = new Rectangle();
         object.height = 64;
@@ -53,7 +53,7 @@ public class FallingObjects extends GameObject{
         image = new Texture(Gdx.files.internal("falling_life.png"));
     }
 
-    void falling_slime_spawn(Array<Floor> floors){
+    public void falling_slime_spawn(Array<Floor> floors){
 
         object=new Rectangle();
         object.height=32;
@@ -67,14 +67,14 @@ public class FallingObjects extends GameObject{
 
 
     @Override
-    void transpose(float delta, float time_passed){
+    public void transpose(float delta, float time_passed){
         super.transpose(delta, time_passed);
         object.y -= 200 * delta;
         object.y -= ((300 + time_passed) / 3) * delta;
         //object.y-=250*delta;
     }
 
-    boolean playerTouched(Player pat){
+    public boolean playerTouched(Player pat){
         boolean touched=false;
         if (pat.object.overlaps(object)){
             pat.takeDamage(1);
@@ -83,7 +83,7 @@ public class FallingObjects extends GameObject{
         return touched;
     }
 
-    boolean playerTouchedLife(Player pat){
+    public boolean playerTouchedLife(Player pat){
         boolean touched=false;
         if (pat.object.overlaps(object)){
             pat.healDamage(1);
@@ -92,7 +92,7 @@ public class FallingObjects extends GameObject{
         return touched;
     }
 
-    boolean isTouchingFloor(Array<Floor> floors){
+    public boolean isTouchingFloor(Array<Floor> floors){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
