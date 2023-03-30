@@ -5,9 +5,9 @@ import com.badlogic.gdx.files.FileHandle;
 
 public class Item extends GameObject { // can use it to spawn items
 
-    FileHandle itemFile;
-    int shield_amt;
-    int speed_amt;
+    private FileHandle itemFile;
+    private int shield_amt;
+    private int speed_amt;
 
     public Item() {
         itemFile = Gdx.files.external("item.txt");
@@ -22,8 +22,6 @@ public class Item extends GameObject { // can use it to spawn items
             itemFile.writeString(shield_amt + "@" + speed_amt, false);
         }
     }
-
-
 
     public void updateItems(){
         itemFile.writeString(shield_amt + "@" + speed_amt, false);

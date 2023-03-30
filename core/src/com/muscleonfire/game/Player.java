@@ -10,35 +10,46 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Player extends GameObject{
-
-    Rectangle feet, head, sword;
-    float timeToAddDifficulty=0;
-    float jumpTime = 0;
-    float flashTime = 0;
-    float speedUp = 0;
-    float speedTime = 0;
-    int jumpPower = 1400;
-    boolean isJumping = false;
-    boolean isFlashing;
-    boolean onFloor;
-    boolean isFront;
-    boolean forcedJump = false;
-    PowerUp powerUp = null;
-    Health healthPoint = new Health();
-    Controls controls;
-    Floor currentFloor;
-    Animation<TextureRegion> front, left, right, playerAnim;
-    Item item = new Item();
-    enum PowerUp{
+    private Rectangle feet;
+    private Rectangle head;
+    private Rectangle sword;
+    private float timeToAddDifficulty=0;
+    private float jumpTime = 0;
+    private float flashTime = 0;
+    private float speedUp = 0;
+    private float speedTime = 0;
+    private int jumpPower = 1400;
+    private boolean isJumping = false;
+    private boolean isFlashing;
+    private boolean onFloor;
+    private boolean isFront;
+    private boolean forcedJump = false;
+    private PowerUp powerUp = null;
+    private Health healthPoint = new Health();
+    private Controls controls;
+    private Floor currentFloor;
+    private Animation<TextureRegion> front, left, right, playerAnim;
+    private Item item = new Item();
+    private enum PowerUp{
         Shield,
         Speed
     }
+    public Rectangle getFeet() {
+        return feet;
+    }
 
+    public boolean isFront() {
+        return isFront;
+    }
+
+    public Controls getControls() {
+        return controls;
+    }
     public Player(Controls.controlMode controlMode){
         controls = new Controls(controlMode);
     }
 
-    void spawn(){ // spawn patrick
+    public void spawn(){ // spawn patrick
         // this is the main body
         object = new Rectangle();
         object.height = 64;
@@ -66,7 +77,7 @@ public class Player extends GameObject{
         playerAnim = front;
     }
 
-    void updateFeetAndHeadPosition(){
+    public void updateFeetAndHeadPosition(){
         // make the head Rectangle above the body
         if(isFront){
             head.x = object.x + 16;// from left + 14 pixel (left 14, center 36 - feet, right 14 = 64 pixel)
@@ -88,7 +99,7 @@ public class Player extends GameObject{
         feet.y = object.y;
     }
 
-    void initiateJump(int power, boolean forced){
+    public void initiateJump(int power, boolean forced){
         isJumping = true;
         jumpTime = 0;
         jumpPower = power;
@@ -97,7 +108,7 @@ public class Player extends GameObject{
         }
     }
 
-    void fall(float delta, Array<Floor> floors, Array<Enemies> ebat, float time_passed){
+    public void fall(float delta, Array<Floor> floors, Array<Enemies> ebat, float time_passed){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
@@ -108,9 +119,9 @@ public class Player extends GameObject{
         }
 
         for (Enemies killbat: ebat){
-            if (feet.overlaps(killbat.head)) { // killbat.object = the rectangle
+            if (feet.overlaps(killbat.getHead())) { // killbat.object = the rectangle
                 initiateJump(600, true);
-                killbat.killed = true;
+                killbat.setKilled(true);
             }
         }
 
@@ -124,7 +135,7 @@ public class Player extends GameObject{
         }
     }
 
-    void processControls(float delta, OrthographicCamera camera){
+    public void processControls(float delta, OrthographicCamera camera){
         // take controls from Controls and apply them
         // additional keyboard controls for debugging
         boolean isMoving = false;
@@ -177,7 +188,7 @@ public class Player extends GameObject{
         }
     }
 
-    void goLeft(float px){ // move patrick left
+    public void goLeft(float px){ // move patrick left
         if(object.x > 16){
             object.x -= px;
             updateFeetAndHeadPosition();
@@ -185,7 +196,7 @@ public class Player extends GameObject{
 
     }
 
-    void goRight(float px){ // move patrick right
+    public void goRight(float px){ // move patrick right
         if(object.x<(480 - 32 - 16)) {
             object.x += px;
             updateFeetAndHeadPosition();
@@ -206,7 +217,7 @@ public class Player extends GameObject{
         }
     }
 
-    boolean headIsTouching(Array<Floor> floors){
+    public boolean headIsTouching(Array<Floor> floors){
         // check if standing on floor{ // check if head is touching
         for (Floor floor: floors){
             if (head.overlaps(floor.object)) { // floor.object = the rectangle
@@ -216,7 +227,7 @@ public class Player extends GameObject{
         return false;
     }
 
-    void takeDamage(int damage){ // minus health equals to passed damage
+    public void takeDamage(int damage){ // minus health equals to passed damage
         if (powerUp == PowerUp.Shield){
             powerUp = null;
             front = new Ani().loadAnimation("player_front.png", 2,1, 0.5f);
@@ -229,13 +240,13 @@ public class Player extends GameObject{
         flashTime = 0;
     }
 
-    void healDamage(int heal){
+    public void healDamage(int heal){
         if (healthPoint.currHealth < healthPoint.maxHealth){
             healthPoint.currHealth += heal;
         }
     }
 
-    void drawHearts(SpriteBatch batch, float delta) {
+    public void drawHearts(SpriteBatch batch, float delta) {
         if (flashTime > 3){
             flashTime = 0;
             isFlashing = false;
@@ -266,7 +277,7 @@ public class Player extends GameObject{
         }
     }
 
-    void drawPatrick(SpriteBatch batch, float time_passed){
+    public void drawPatrick(SpriteBatch batch, float time_passed){
         if (playerAnim == left){
             if(isFront){
                 object.width = 32;
@@ -294,18 +305,18 @@ public class Player extends GameObject{
 
     }
 
-    boolean updateGameOver(){
+    public boolean updateGameOver(){
         return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.currHealth < 1);
     }
 
-    void setShieldUp(){
+    public void setShieldUp(){
         powerUp = PowerUp.Shield;
         front = new Ani().loadAnimation("playerfront_powerup.png", 2,1, 0.5f);
         left = new Ani().loadAnimation("playerleft_powerup.png", 4,1, 0.2f);
         right = new Ani().loadAnimation("playerright_powerup.png", 4,1, 0.2f);
     }
 
-    void setSpeedUp(){
+    public void setSpeedUp(){
         powerUp = PowerUp.Speed;
         speedTime = 0;
         speedUp = 100;
@@ -315,7 +326,7 @@ public class Player extends GameObject{
     }
 
     @Override // overlap the old thing which u inherit
-    void transpose(float delta, float time_passed) {
+    public void transpose(float delta, float time_passed) {
         super.transpose(delta, time_passed); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
         updateFeetAndHeadPosition();
     }

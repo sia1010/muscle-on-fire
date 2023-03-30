@@ -22,7 +22,7 @@ public class Floor extends GameObject { // inheritance
     FloorID id;
 
     void touched(Player pat,float delta){
-        if (pat.feet.overlaps(object)){
+        if (pat.getFeet().overlaps(object)){
             switch (id){
                 case trampoline:
                     pat.initiateJump(600, true);

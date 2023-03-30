@@ -190,7 +190,7 @@ public class GameScreen implements Screen {
 
         // draw bat_enemy
         for (Enemies enemy : ebat) {
-            game.batch.draw(enemy.batmanfly.getKeyFrame(time_passed, true), enemy.getX(), enemy.getY());
+            game.batch.draw(enemy.getBatmanfly().getKeyFrame(time_passed, true), enemy.getX(), enemy.getY());
             //game.batch.draw(enemy.getTexture(), enemy.getX(), enemy.getY());
         }
 
@@ -253,7 +253,7 @@ public class GameScreen implements Screen {
         patrick.drawHearts(this.game.batch, delta);
 
         // draw all the buttons
-        patrick.controls.drawButtons(this.game.batch, this.game.font);
+        patrick.getControls().drawButtons(this.game.batch, this.game.font);
     }
 
 
@@ -369,11 +369,11 @@ public class GameScreen implements Screen {
 
 
         // PLAYER INPUTS
-        patrick.controls.getInputs(this.game.camera, patrick);
+        patrick.getControls().getInputs(this.game.camera, patrick);
 
         if (gameState == State.READY) {
             // press to start
-            if (patrick.controls.screenButton.getJustPressed(this.game.camera)) {
+            if (patrick.getControls().screenButton.getJustPressed(this.game.camera)) {
                 gameState = State.RUNNING;
             }
         }
@@ -385,7 +385,7 @@ public class GameScreen implements Screen {
         }
         if (gameState == State.OVER) {
             // press to continue to game over screen
-            if (patrick.controls.screenButton.getJustPressed(this.game.camera)) {
+            if (patrick.getControls().screenButton.getJustPressed(this.game.camera)) {
                 this.game.setScreen(new GameOver(this.game, score));
             }
         }
@@ -431,12 +431,11 @@ public class GameScreen implements Screen {
             fire.playerTouchedFire(patrick, delta);
         }
 
-
         for (Enemies enemy : ebat) {
-            if (enemy.killed) {
-                if(!enemy.givenScore){
+            if (enemy.isKilled()) {
+                if(!enemy.isGivenScore()){
                     score.upScore(500);
-                    enemy.givenScore = true;
+                    enemy.setGivenScore(true);
                 }
                 enemy.transpose(delta, time_passed);
             } else if (enemy.playerTouched(patrick, delta)) {

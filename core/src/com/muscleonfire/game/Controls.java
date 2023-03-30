@@ -47,7 +47,7 @@ public class Controls {
 
     void getInputs(OrthographicCamera camera, Player pat){
         if (mode == controlMode.follow) {
-            if (pat.isFront){
+            if (pat.isFront()){
                 leftButton.object.x = pat.getX() - 480 + 30;
                 rightButton.object.x = pat.getX() + 34;
             }else{
