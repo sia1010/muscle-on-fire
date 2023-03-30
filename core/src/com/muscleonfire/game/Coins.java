@@ -4,10 +4,26 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 public class Coins{
-    int coin;
-    FileHandle coinFile;
+    private int coin;
+    private FileHandle coinFile;
 
-    void openCoinFile(){
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public FileHandle getCoinFile() {
+        return coinFile;
+    }
+
+    public void setCoinFile(FileHandle coinFile) {
+        this.coinFile = coinFile;
+    }
+
+    public void openCoinFile(){
         coinFile = Gdx.files.external("coin.txt");
         if(coinFile.exists()){
             coin = Integer.parseInt(coinFile.readString());
@@ -16,17 +32,17 @@ public class Coins{
             coinFile.writeString(Integer.toString(coin), false);
         }
     }
-    void addCoin(Score score){
-        coin += (int)(score.score/100);
+    public void addCoin(Score score){
+        coin += (int)(score.getScore()/100);
     }
-    void spendCoin(int payment){
+    public void spendCoin(int payment){
         coin -= payment;
         saveCoin();
     }
-    void saveCoin(){
+    public void saveCoin(){
         coinFile.writeString(Integer.toString(coin), false);
     }
-    String displayCoin(){
+    public String displayCoin(){
         return String.valueOf(coin);
     }
 }

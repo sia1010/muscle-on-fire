@@ -10,10 +10,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class ButtonShop extends Button {
 
-    Texture item_img;
-    String item_name;
-    BitmapFont font2;
-    Button button;
+    private Texture item_img;
+    private String item_name;
+    private BitmapFont font2;
+    private Button button;
 
     public ButtonShop(float x, float y, String item_path, String item_name) {
         super(x, y, 100, 200, "shop_item_bg_pressed.png", "shop_item_bg.png");
@@ -27,7 +27,7 @@ public class ButtonShop extends Button {
         font2 = generator.generateFont(parameter);
     }
 
-    void draw(SpriteBatch batch, BitmapFont font, int quantity){
+    public void draw(SpriteBatch batch, BitmapFont font, int quantity){
         batch.draw(image, object.x, object.y);
         batch.draw(item_img, object.x + 15, object.y + 110);
 
