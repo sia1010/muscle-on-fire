@@ -31,7 +31,7 @@ public class Floor extends GameObject { // inheritance
                     dmg_timer += delta;
                     while(dmg_timer>1){
                         dmg_timer-=1;
-                        pat.takeDamage(1);
+                        pat.getHealthPoint().takeDamage(1);
                     }
                     break;
                 case rollLeft:

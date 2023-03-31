@@ -254,7 +254,7 @@ public class GameScreen implements Screen {
         game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
 
         // draw hearts
-        patrick.drawHearts(this.game.batch, delta);
+        patrick.getHealthPoint().drawHearts(this.game.batch, delta);
 
         // draw all the buttons
         patrick.getControls().drawButtons(this.game.batch, this.game.font);

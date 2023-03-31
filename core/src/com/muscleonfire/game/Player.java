@@ -12,25 +12,21 @@ import com.badlogic.gdx.utils.Array;
 public class Player extends GameObject{
     private Rectangle feet;
     private Rectangle head;
-    private Rectangle sword;
-    private float timeToAddDifficulty=0;
     private float jumpTime = 0;
-    private float flashTime = 0;
     private float speedUp = 0;
     private float speedTime = 0;
     private int jumpPower = 1400;
     private boolean isJumping = false;
-    private boolean isFlashing;
     private boolean onFloor;
     private boolean isFront;
     private boolean forcedJump = false;
     private PowerUp powerUp = null;
-    private Health healthPoint = new Health();
+    private Health healthPoint;
     private Controls controls;
     private Floor currentFloor;
     private Animation<TextureRegion> front, left, right, playerAnim;
-    private Item item = new Item();
-    private enum PowerUp{
+    private Item item;
+    public enum PowerUp{
         Shield,
         Speed
     }
@@ -47,6 +43,8 @@ public class Player extends GameObject{
     }
     public Player(Controls.controlMode controlMode){
         controls = new Controls(controlMode);
+        healthPoint = new Health(this);
+        item = new Item();
     }
 
     public void spawn(){ // spawn patrick
@@ -66,14 +64,12 @@ public class Player extends GameObject{
         head.height = 4;
         head.width = 32; // if head hit floor, then will stop jump
 
-        sword = new Rectangle();
-
         updateFeetAndHeadPosition();
 
         // initialise the picture of patrick
-        front = new AnimationLoader().loadAnimation("Textures/player/player_front.png", 2,1, 0.5f);
-        left = new AnimationLoader().loadAnimation("Textures/player/player_left.png", 4,1, 0.2f);
-        right = new AnimationLoader().loadAnimation("Textures/player/player_right.png", 4,1, 0.2f);
+        setPlayerAnimTextures(new AnimationLoader().loadAnimation("Textures/player/player_front.png", 2,1, 0.5f),
+                new AnimationLoader().loadAnimation("Textures/player/player_left.png", 4,1, 0.2f),
+                new AnimationLoader().loadAnimation("Textures/player/player_right.png", 4,1, 0.2f));
         playerAnim = front;
     }
 
@@ -146,9 +142,9 @@ public class Player extends GameObject{
             } else {
                 speedUp = 0;
                 powerUp = null;
-                front = new AnimationLoader().loadAnimation("Textures/player/player_front.png", 2, 1, 0.5f);
-                left = new AnimationLoader().loadAnimation("Textures/player/player_left.png", 4, 1, 0.2f);
-                right = new AnimationLoader().loadAnimation("Textures/player/player_right.png", 4, 1, 0.2f);
+                setPlayerAnimTextures(new AnimationLoader().loadAnimation("Textures/player/player_front.png", 2,1, 0.5f),
+                        new AnimationLoader().loadAnimation("Textures/player/player_left.png", 4,1, 0.2f),
+                        new AnimationLoader().loadAnimation("Textures/player/player_right.png", 4,1, 0.2f));
             }
         }
 
@@ -227,53 +223,9 @@ public class Player extends GameObject{
         return false;
     }
 
-    public void takeDamage(int damage){ // minus health equals to passed damage
-        if (powerUp == PowerUp.Shield){
-            powerUp = null;
-            front = new AnimationLoader().loadAnimation("Textures/player/player_front.png", 2,1, 0.5f);
-            left = new AnimationLoader().loadAnimation("Textures/player/player_left.png", 4,1, 0.2f);
-            right = new AnimationLoader().loadAnimation("Textures/player/player_right.png", 4,1, 0.2f);
-            return;
-        }
-        healthPoint.currHealth -= damage;
-        isFlashing = true;
-        flashTime = 0;
-    }
-
     public void healDamage(int heal){
         if (healthPoint.currHealth < healthPoint.maxHealth){
             healthPoint.currHealth += heal;
-        }
-    }
-
-    public void drawHearts(SpriteBatch batch, float delta) {
-        if (flashTime > 3){
-            flashTime = 0;
-            isFlashing = false;
-        }
-
-        if (!isFlashing) {
-            for (int i = 0; i < healthPoint.maxHealth; i++) {
-                if (i < healthPoint.currHealth) {
-                    batch.draw(healthPoint.filledHeart, 300 + 40 * i, 100);
-                } else {
-                    batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 100);
-                }
-            }
-        } else {
-            for (int i = 0; i < healthPoint.maxHealth; i++) {
-                if (i < healthPoint.currHealth) {
-                    batch.draw(healthPoint.filledHeart, 300 + 40 * i, 100);
-                } else {
-                    if ((int) (flashTime * 5) % 2 == 0) {
-                        batch.draw(healthPoint.flashHeart, 300 + 40 * i, 100);
-                    } else if ((int) (flashTime * 5) % 2 == 1) {
-                        batch.draw(healthPoint.emptyHeart, 300 + 40 * i, 100);
-                    }
-                }
-
-                flashTime += delta;
-            }
         }
     }
 
@@ -311,23 +263,41 @@ public class Player extends GameObject{
 
     public void setShieldUp(){
         powerUp = PowerUp.Shield;
-        front = new AnimationLoader().loadAnimation("Textures/player/playerfront_powerup.png", 2,1, 0.5f);
-        left = new AnimationLoader().loadAnimation("Textures/player/playerleft_powerup.png", 4,1, 0.2f);
-        right = new AnimationLoader().loadAnimation("Textures/player/playerright_powerup.png", 4,1, 0.2f);
+        setPlayerAnimTextures(new AnimationLoader().loadAnimation("Textures/player/playerfront_shield.png", 2,1, 0.5f),
+                new AnimationLoader().loadAnimation("Textures/player/playerleft_shield.png", 4,1, 0.2f),
+                new AnimationLoader().loadAnimation("Textures/player/playerright_shield.png", 4,1, 0.2f));
     }
 
     public void setSpeedUp(){
         powerUp = PowerUp.Speed;
         speedTime = 0;
         speedUp = 100;
-        front = new AnimationLoader().loadAnimation("Textures/player/playerfront_speed.png", 2,1, 0.5f);
-        left = new AnimationLoader().loadAnimation("Textures/player/playerleft_speed.png", 4,1, 0.2f);
-        right = new AnimationLoader().loadAnimation("Textures/player/playerright_speed.png", 4,1, 0.2f);
+        setPlayerAnimTextures(new AnimationLoader().loadAnimation("Textures/player/playerfront_speed.png", 2,1, 0.5f),
+                new AnimationLoader().loadAnimation("Textures/player/playerleft_speed.png", 4,1, 0.2f),
+                new AnimationLoader().loadAnimation("Textures/player/playerright_speed.png", 4,1, 0.2f));
     }
 
     @Override // overlap the old thing which u inherit
     public void transpose(float delta, float time_passed) {
         super.transpose(delta, time_passed); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
         updateFeetAndHeadPosition();
+    }
+
+    public void setPlayerAnimTextures(Animation<TextureRegion> front, Animation<TextureRegion> left, Animation<TextureRegion> right){
+        this.front = front;
+        this.left = left;
+        this.right = right;
+    }
+
+    public PowerUp getPowerUp() {
+        return powerUp;
+    }
+
+    public void setPowerUp(PowerUp powerUp) {
+        this.powerUp = powerUp;
+    }
+
+    public Health getHealthPoint() {
+        return healthPoint;
     }
 }

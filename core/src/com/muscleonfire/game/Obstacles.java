@@ -90,7 +90,7 @@ public class Obstacles extends GameObject{
         if (pat.object.overlaps(object)){
             while(dmg_timer <= 0){
                 dmg_timer += 1;
-                pat.takeDamage(1);
+                pat.getHealthPoint().takeDamage(1);
             }
             dmg_timer -= delta;
         }

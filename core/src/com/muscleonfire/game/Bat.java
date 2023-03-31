@@ -101,7 +101,7 @@ public class Bat extends GameObject {
 
     public boolean playerTouched(Player pat, float delta) {
         if (pat.object.overlaps(body)) {
-            pat.takeDamage(1);
+            pat.getHealthPoint().takeDamage(1);
             return true;
         }
         return false;

@@ -118,7 +118,7 @@ public class Slime extends GameObject {
 
     public boolean playerTouched(Player pat) {
         if (pat.object.overlaps(object)) {
-            pat.takeDamage(1);
+            pat.getHealthPoint().takeDamage(1);
 
             return true;
         }

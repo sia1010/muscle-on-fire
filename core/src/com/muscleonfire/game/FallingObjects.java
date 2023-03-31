@@ -77,7 +77,7 @@ public class FallingObjects extends GameObject{
     public boolean playerTouched(Player pat){
         boolean touched=false;
         if (pat.object.overlaps(object)){
-            pat.takeDamage(1);
+            pat.getHealthPoint().takeDamage(1);
             touched=true;
         }
         return touched;
