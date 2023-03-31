@@ -18,7 +18,7 @@ public class FallingObjects extends GameObject{
         object.x=5;
         object.y=350;
 
-        image = new Texture(Gdx.files.internal("falling building.png"));
+        image = new Texture(Gdx.files.internal("Textures/FallingObjects/falling_building.png"));
 
     }
 
@@ -30,7 +30,7 @@ public class FallingObjects extends GameObject{
         object.width = 32;
         object.x = MathUtils.random(30, 480 - 60);
         object.y = 700;
-        image = new Texture(Gdx.files.internal("falling object(glass).png"));
+        image = new Texture(Gdx.files.internal("Textures/FallingObjects/falling_glass.png"));
     }
 
     public void falling_stone_spawn(){
@@ -40,7 +40,7 @@ public class FallingObjects extends GameObject{
         object.width = 32;
         object.x = MathUtils.random(30, 480 - 60); // randomly at the floor, can be at left or right
         object.y = 700;
-        image = new Texture(Gdx.files.internal("falling object (stone).png"));
+        image = new Texture(Gdx.files.internal("Textures/FallingObjects/falling_stone.png"));
     }
 
     public void falling_life_spawn(){
@@ -50,7 +50,7 @@ public class FallingObjects extends GameObject{
         object.width = 64;
         object.x = MathUtils.random(30, 480 - 60);
         object.y = 700;
-        image = new Texture(Gdx.files.internal("falling_life.png"));
+        image = new Texture(Gdx.files.internal("Textures/FallingObjects/falling_life.png"));
     }
 
     public void falling_slime_spawn(Array<Floor> floors){
@@ -60,7 +60,7 @@ public class FallingObjects extends GameObject{
         object.width=64;
         object.x = floors.peek().getX()+MathUtils.random(0, 128 - 64);
         object.y=700;
-        image=new Texture(Gdx.files.internal("slime.png"));
+        image=new Texture(Gdx.files.internal("Textures/FallingObjects/falling_slime.png"));
     }
 
 

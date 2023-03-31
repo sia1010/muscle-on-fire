@@ -39,10 +39,10 @@ public class Slime extends GameObject {
 
         if (MathUtils.random(1,2) == 1){
             move_right = true;
-            image=new Texture(Gdx.files.internal("slime_right.png"));
+            image=new Texture(Gdx.files.internal("Textures/slime/slime_right.png"));
         } else {
             move_right = false;
-            image=new Texture(Gdx.files.internal("slime_left.png"));
+            image=new Texture(Gdx.files.internal("Textures/slime/slime_left.png"));
         }
 
     }
@@ -53,7 +53,7 @@ public class Slime extends GameObject {
         object.width=64;
         object.x = onfloorslime.getX();
         object.y = onfloorslime.getY();
-        image=new Texture(Gdx.files.internal("slime_die.png"));
+        image=new Texture(Gdx.files.internal("Textures/slime/slime_die.png"));
         time = 0;
 
     }
@@ -63,10 +63,10 @@ public class Slime extends GameObject {
         if (changeDirection) {
             if (move_right) {
                 move_right = false;
-                image = new Texture(Gdx.files.internal("slime_left.png"));
+                image = new Texture(Gdx.files.internal("Textures/slime/slime_left.png"));
             } else {
                 move_right = true;
-                image = new Texture(Gdx.files.internal("slime_right.png"));
+                image = new Texture(Gdx.files.internal("Textures/slime/slime_right.png"));
             }
             changeDirection = false;
         }
@@ -74,11 +74,11 @@ public class Slime extends GameObject {
         // force left/right if position too to the side
         if (object.x > 360) {
             move_right = false;
-            image = new Texture(Gdx.files.internal("slime_left.png"));
+            image = new Texture(Gdx.files.internal("Textures/slime/slime_left.png"));
         }
         if (object.x < 40) {
             move_right = true;
-            image = new Texture(Gdx.files.internal("slime_right.png"));
+            image = new Texture(Gdx.files.internal("Textures/slime/slime_right.png"));
         }
     }
 
