@@ -43,7 +43,7 @@ public class Enemies extends GameObject {
         object.x = MathUtils.random(32, 480 - 64 - 32); // full screen 480 pixel, floor width 128 pixel, minus floor so that the floor will inside the screen
         object.y = 0; // below screen
         //image = new Texture(Gdx.files.internal("Batman.png"));
-        batmanfly = new Ani().loadAnimation("Textures/batman/batman_right(sheet).png", 2,1, 0.5f);
+        batmanfly = new AnimationLoader().loadAnimation("Textures/batman/batman_right(sheet).png", 2,1, 0.5f);
 
         head = new Rectangle();
         head.height = 8;
@@ -79,19 +79,19 @@ public class Enemies extends GameObject {
 
     public void move(float delta){
         if (move_right && move_down){
-            batmanfly = new Ani().loadAnimation("Textures/batman/batman_right(sheet).png", 2,1, 0.5f);
+            batmanfly = new AnimationLoader().loadAnimation("Textures/batman/batman_right(sheet).png", 2,1, 0.5f);
             object.x += MathUtils.random(100,300) * delta;
             object.y -= MathUtils.random(100,300) * delta;
         }else if(!move_right && move_down){
-            batmanfly = new Ani().loadAnimation("Textures/batman/batman_left(sheet).png", 2,1, 0.5f);
+            batmanfly = new AnimationLoader().loadAnimation("Textures/batman/batman_left(sheet).png", 2,1, 0.5f);
             object.x -= MathUtils.random(100,200) * delta;
             object.y -= MathUtils.random(100,200) * delta;
         }else if(!move_right && !move_down){
-            batmanfly = new Ani().loadAnimation("Textures/batman/batman_left(sheet).png", 2,1, 0.5f);
+            batmanfly = new AnimationLoader().loadAnimation("Textures/batman/batman_left(sheet).png", 2,1, 0.5f);
             object.x -= MathUtils.random(100,200) * delta;
             object.y += MathUtils.random(100,200) * delta;
         }else if(move_right && !move_down){
-            batmanfly = new Ani().loadAnimation("Textures/batman/batman_right(sheet).png", 2,1, 0.5f);
+            batmanfly = new AnimationLoader().loadAnimation("Textures/batman/batman_right(sheet).png", 2,1, 0.5f);
             object.x += MathUtils.random(100,200) * delta;
             object.y += MathUtils.random(100,200) * delta;
         }

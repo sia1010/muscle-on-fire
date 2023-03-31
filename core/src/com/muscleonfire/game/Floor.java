@@ -66,10 +66,10 @@ public class Floor extends GameObject { // inheritance
                 image = new Texture(Gdx.files.internal("Textures/floor/spikefloor.png"));
                 break;
             case rollLeft:
-                anim = new Ani().loadAnimation("Textures/floor/rightrollingfloor.png", 2,1, 0.2f);
+                anim = new AnimationLoader().loadAnimation("Textures/floor/rightrollingfloor.png", 2,1, 0.2f);
                 break;
             case rollRight:
-                anim = new Ani().loadAnimation("Textures/floor/leftrollingfloor.png", 2,1, 0.2f);
+                anim = new AnimationLoader().loadAnimation("Textures/floor/leftrollingfloor.png", 2,1, 0.2f);
                 break;
 
         }

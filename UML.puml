@@ -272,7 +272,7 @@ class com.muscleonfire.game.Score {
 class com.muscleonfire.game.Building {
 ~ void spawn()
 }
-class com.muscleonfire.game.Ani {
+class com.muscleonfire.game.AnimationLoader {
 ~ Animation<TextureRegion> loadAnimation(String,int,int,float)
 }
 class com.muscleonfire.game.Shop {

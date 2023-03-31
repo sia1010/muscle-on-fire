@@ -49,7 +49,7 @@ public class Obstacles extends GameObject{
         object.x = floors.peek().getX() + MathUtils.random(0, 128 - 64); // randomly at the floor, can be at left or right
         object.y = floors.peek().getY()+10;
         image = new Texture(Gdx.files.internal("Textures/rescue/rescue_unsaved.png"));
-        rescueAni = new Ani().loadAnimation("Textures/rescue/rescue_unsaved(sheet).png", 2,1, 0.5f);
+        rescueAni = new AnimationLoader().loadAnimation("Textures/rescue/rescue_unsaved(sheet).png", 2,1, 0.5f);
 
         help_box = new Rectangle();
         help_box.height = 17;
@@ -65,7 +65,7 @@ public class Obstacles extends GameObject{
         object.x = floors.peek().getX() + MathUtils.random(0, 128 - 28); // randomly at the floor, can be at left or right
         object.y = floors.peek().getY()+10;
         image = new Texture(Gdx.files.internal("Textures/fire/fire.png"));
-        fireAnim = new Ani().loadAnimation("Textures/fire/fire(sheet).png", 3,1, 0.5f);
+        fireAnim = new AnimationLoader().loadAnimation("Textures/fire/fire(sheet).png", 3,1, 0.5f);
     }
 
     public void updateHelpBoxPos(){
@@ -79,7 +79,7 @@ public class Obstacles extends GameObject{
         if (save_timer > 1 && !saved){
             saved = true;
             image = new Texture(Gdx.files.internal("Textures/rescue/rescue_saved.png"));
-            rescueAni = new Ani().loadAnimation("Textures/rescue/rescue_saved(sheet).png", 2,1, 0.5f);
+            rescueAni = new AnimationLoader().loadAnimation("Textures/rescue/rescue_saved(sheet).png", 2,1, 0.5f);
             image_help = new Texture(Gdx.files.internal("Textures/rescue/TQ_box.png"));
             score.upScore(1000);
             pat.healDamage(1);
