@@ -68,18 +68,6 @@ class com.muscleonfire.game.Medicine {
 ~ void spawn(Array<Floor>)
 ~ boolean playerTouched(Player)
 }
-class com.muscleonfire.game.SpecialFloor {
-~ float dmg_timer
-~ Animation<TextureRegion> rightrollAnim
-~ Animation<TextureRegion> leftrollAnim
-~ void trampoline_spawn()
-~ void spike_spawn()
-~ void rightroll_spawn()
-~ void leftroll_spawn()
-~ void touchedSpike(Player,float)
-~ void touchedRightRolls(Player,float)
-~ void touchedLeftRolls(Player,float)
-}
 class com.muscleonfire.game.FallingObjects {
 ~ float timetoAddDifficulty
 ~ void falling_building_spawn()
@@ -268,9 +256,6 @@ class com.muscleonfire.game.Fire {
 ~ void spawn(Array<Floor>)
 ~ void playerTouched(Player,float)
 }
-class com.muscleonfire.game.DifficultyIncrease {
-~ float timeAddDifficulty
-}
 class com.muscleonfire.game.Score {
 ~ int score
 ~ Array<FloatingScore> scoreToAdd
@@ -312,7 +297,6 @@ com.badlogic.gdx.Game <|-- com.muscleonfire.game.MuscleOnFire
 com.badlogic.gdx.Screen <|.. com.muscleonfire.game.Menu
 com.badlogic.gdx.Screen <|.. com.muscleonfire.game.GameOver
 com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Medicine
-com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.SpecialFloor
 com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.FallingObjects
 com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Player
 com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Button
