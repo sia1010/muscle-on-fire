@@ -14,7 +14,7 @@ public class FloatingScore {
         this.score = score;
     }
 
-    boolean drawScore(BitmapFont scorefont, MuscleOnFire game, float delta){
+    public boolean drawScore(BitmapFont scorefont, MuscleOnFire game, float delta){
         time_passed += delta;
         scorefont.draw(game.batch, "+" +String.valueOf(score), 270, 655 + (time_passed * 10));
 
