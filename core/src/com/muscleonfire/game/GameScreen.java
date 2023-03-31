@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
 
     // Game Objects
     Player patrick;
-    Building Sidewalls;
+    Sidewall sidewall;
     Array<Wallpaper> wallpapers = new Array<Wallpaper>();
     FallingObjects fallingObjects;
     Score score;
@@ -176,7 +176,7 @@ public class GameScreen implements Screen {
 
     void drawAllObjects(float delta){
         // draw Sidewalls
-        game.batch.draw(Sidewalls.getTexture(),Sidewalls.getX(),Sidewalls.getY());
+        game.batch.draw(sidewall.getTexture(), sidewall.getX(), sidewall.getY());
 
         game.batch.setColor(1,1,1,0.3f);
         for (Wallpaper wallpaper : wallpapers){
@@ -274,8 +274,8 @@ public class GameScreen implements Screen {
         patrick.spawn();
 
         // initialising the Sidewalls
-        Sidewalls= new Building();
-        Sidewalls.spawn();
+        sidewall = new Sidewall();
+        sidewall.spawn();
 
         //initialising the falling building
         fallingObjects = new FallingObjects();

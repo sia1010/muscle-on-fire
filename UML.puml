@@ -269,7 +269,7 @@ class com.muscleonfire.game.Score {
 ~ void saveScore()
 + void drawScore(MuscleOnFire,float)
 }
-class com.muscleonfire.game.Building {
+class com.muscleonfire.game.Sidewall {
 ~ void spawn()
 }
 class com.muscleonfire.game.AnimationLoader {
@@ -306,7 +306,7 @@ com.badlogic.gdx.Screen <|.. com.muscleonfire.game.GameScreen
 com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Bat
 com.badlogic.gdx.Screen <|.. com.muscleonfire.game.Settings
 com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Fire
-com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Building
+com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Sidewall
 com.badlogic.gdx.Screen <|.. com.muscleonfire.game.Shop
 com.muscleonfire.game.GameObject <|-- com.muscleonfire.game.Item
 @enduml
