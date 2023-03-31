@@ -21,27 +21,27 @@ public class GameScreen implements Screen {
     }
 
     // VARIABLE DECLARATIONS
-    final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
+     private final MuscleOnFire game; //setscreen,batch,camera,font are included in game class
 
     // Game Objects
-    Player patrick;
-    Sidewall sidewall;
-    Array<Wallpaper> wallpapers = new Array<Wallpaper>();
-    FallingObjects fallingObjects;
-    Score score;
-    Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
-    Floor latestFloor;
-    Array<Obstacles> mysteries = new Array<Obstacles>();
-    Array<Obstacles> rescues = new Array<Obstacles>();
-    Array<Obstacles> medicines = new Array<Obstacles>();
-    Array<Obstacles> fires = new Array<Obstacles>();
-    Array<FallingObjects> falling_glass =new Array<FallingObjects>();
-    Array<FallingObjects> falling_stone =new Array<FallingObjects>();
-    Array<FallingObjects> falling_life =new Array<FallingObjects>();
-    Array<FallingObjects> falling_slime =new Array<FallingObjects>();
-    Array<Slime> onfloor_slime=new Array<Slime>();
-    Array<Slime> die_slime=new Array<Slime>();
-    Array<Bat> ebat = new Array<Bat>();
+    private Player patrick;
+    private Sidewall sidewall;
+    private Array<Wallpaper> wallpapers = new Array<Wallpaper>();
+    private FallingObjects fallingObjects;
+    private Score score;
+    private Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
+    private Floor latestFloor;
+    private Array<Obstacles> mysteries = new Array<Obstacles>();
+    private Array<Obstacles> rescues = new Array<Obstacles>();
+    private Array<Obstacles> medicines = new Array<Obstacles>();
+    private Array<Obstacles> fires = new Array<Obstacles>();
+    private Array<FallingObjects> falling_glass =new Array<FallingObjects>();
+    private Array<FallingObjects> falling_stone =new Array<FallingObjects>();
+    private Array<FallingObjects> falling_life =new Array<FallingObjects>();
+    private Array<FallingObjects> falling_slime =new Array<FallingObjects>();
+    private Array<Slime> onfloor_slime=new Array<Slime>();
+    private Array<Slime> die_slime=new Array<Slime>();
+    private Array<Bat> ebat = new Array<Bat>();
 
 
     // Audio
@@ -50,33 +50,33 @@ public class GameScreen implements Screen {
 
 
     // Game Data Values
-    float time_passed;
-    float randomizer_obstacle;
-    float randomizer_spikefloor;
-    float randomizer_tramfloor;
-    float randomizer_rightroll;
-    float randomizer_leftroll;
-    float randomizer_objects;
-    float floor_time = 0;
-    State gameState;
-    Obstacle next_obstacle = Obstacle.NULL;
+    private float time_passed;
+    private float randomizer_obstacle;
+    private float randomizer_spikefloor;
+    private float randomizer_tramfloor;
+    private float randomizer_rightroll;
+    private float randomizer_leftroll;
+    private float randomizer_objects;
+    private float floor_time = 0;
+    private State gameState;
+    private Obstacle next_obstacle = Obstacle.NULL;
 
 
     // FUNCTIONS
 
-    void initialFloor(){
+    private void initialFloor(){
         for (int i = 0; i < 4; i++){
             addFloor(Floor.FloorID.floor);
             floors.peek().object.y += i * 120;
         }
     }
-    void initialWallpaper(){
+    private void initialWallpaper(){
         for (int i = 0; i < 8; i++){
             addWallpaper();
             wallpapers.peek().object.y += i * 120;
         }
     }
-    void addFloor(Floor.FloorID id){
+    private void addFloor(Floor.FloorID id){
         // add a new floor
         Floor floor = new Floor();
         floor.spawn(id);
@@ -85,7 +85,7 @@ public class GameScreen implements Screen {
         floors.add(floor);
     }
 
-    void addWallpaper(){
+    private void addWallpaper(){
         Wallpaper wallpaper = new Wallpaper();
         wallpaper.spawn();
 
@@ -93,7 +93,7 @@ public class GameScreen implements Screen {
         wallpapers.add(wallpaper);
     }
 
-    void addEnemies(){
+    private void addEnemies(){
 
         Bat enemy = new Bat();
         enemy.spawn();
@@ -101,7 +101,7 @@ public class GameScreen implements Screen {
         // add the floor into the floors array
         ebat.add(enemy);
     }
-    void addFire(){
+    private void addFire(){
         // add a new obstacles
         Obstacles fire = new Obstacles();
         fire.spawnFire(floors);
@@ -109,7 +109,7 @@ public class GameScreen implements Screen {
         // add the o into the obstacle array
         fires.add(fire);
     }
-    void addRescue(){
+    private void addRescue(){
         // add a new obstacles
         Obstacles rescue = new Obstacles();
         rescue.spawnRescue(floors);
@@ -117,7 +117,7 @@ public class GameScreen implements Screen {
         // add the o into the rescues array
         rescues.add(rescue);
     }
-    void addMedicine(){
+    private void addMedicine(){
         // add a new obstacles
         Obstacles medicine = new Obstacles();
         medicine.spawnMedicine(floors);
@@ -126,7 +126,7 @@ public class GameScreen implements Screen {
         medicines.add(medicine);
     }
 
-    void addMystery(){
+    private void addMystery(){
         // add a new obstacles
         Obstacles mystery = new Obstacles();
         mystery.spawnMysteryBox(floors);
@@ -134,47 +134,46 @@ public class GameScreen implements Screen {
         // add the o into the medicines array
         mysteries.add(mystery);
     }
-    void addGlass(){
+    private void addGlass(){
         FallingObjects glass=new FallingObjects();
         glass.falling_glass_spawn();
 
         falling_glass.add(glass);
     }
-    void addStone(){
+    private void addStone(){
         FallingObjects stone=new FallingObjects();
         stone.falling_stone_spawn();
 
         falling_stone.add(stone);
     }
-    void addLife(){
+    private void addLife(){
         FallingObjects life=new FallingObjects();
         life.falling_life_spawn();
 
         falling_life.add(life);
     }
 
-    void addSlime(){
+    private void addSlime(){
         FallingObjects slime=new FallingObjects();
         slime.falling_slime_spawn(floors);
 
         falling_slime.add(slime);
-
     }
 
-    void addOnFloorSlime(GameObject oldslime){
+    private void addOnFloorSlime(GameObject slime){
         Slime onfloorSlime=new Slime();
-        onfloorSlime.onfloor_spawn(oldslime);
+        onfloorSlime.onfloor_spawn(slime);
 
         onfloor_slime.add(onfloorSlime);
-
     }
-    void addDieSlime(GameObject oldonfloorslime){
+    private void addDieSlime(GameObject slime){
         Slime dieSlime=new Slime();
-        dieSlime.dieSlime_spawn(oldonfloorslime);
+        dieSlime.dieSlime_spawn(slime);
+
         die_slime.add(dieSlime);
     }
 
-    void drawAllObjects(float delta){
+    private void drawAllObjects(float delta){
         // draw Sidewalls
         game.batch.draw(sidewall.getTexture(), sidewall.getX(), sidewall.getY());
 
@@ -305,11 +304,6 @@ public class GameScreen implements Screen {
         // open High Score File
         score = new Score(game);
         score.openHighScoreFile();
-    }
-
-    @Override
-    public void show() {
-
     }
 
     @Override
@@ -660,13 +654,18 @@ public class GameScreen implements Screen {
     }
 
     @Override
+    public void show() {
+
+    }
+
+    @Override
     public void resize(int width, int height) {
 
     }
 
     @Override
     public void pause() {
-
+        gameState = State.READY;
     }
 
     @Override

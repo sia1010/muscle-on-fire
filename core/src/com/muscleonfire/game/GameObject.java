@@ -10,20 +10,20 @@ public abstract class GameObject{
     protected Rectangle object;
     protected Texture image;
 
-    void transpose(float delta, float time_passed){
+    public void transpose(float delta, float time_passed){
         object.y += ((300 + time_passed) / 3) * delta;
         //object.y+=100*delta;
 
     }
 
-    float getX(){
+    public float getX(){
         return object.x;
     }
 
-    float getY(){
+    public float getY(){
         return object.y;
     }
-    Texture getTexture(){
+    public Texture getTexture(){
         return image;
     }
 }

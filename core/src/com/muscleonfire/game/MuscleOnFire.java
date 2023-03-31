@@ -17,10 +17,7 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 	protected OrthographicCamera camera;
 	protected FreeTypeFontGenerator generator;
 	protected FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-
-
-
-	Coins coin;
+	protected Coins coin;
 
 	public void create() {
 		// initialise a SpriteBatch to be assigned to 'batch'
@@ -49,14 +46,11 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 		coin.openCoinFile();
 	}
 
-	public void render() {
-		super.render(); // important!
-	}
-
 	//after closing the app
 	public void dispose() {
 		batch.dispose();
 		font.dispose();
+		generator.dispose();
 	}
 
 	public float getMusicVolume() {
