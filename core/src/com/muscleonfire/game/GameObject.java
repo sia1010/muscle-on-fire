@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
 
-public class GameObject{
+public abstract class GameObject{
     protected Rectangle object;
     protected Texture image;
 
