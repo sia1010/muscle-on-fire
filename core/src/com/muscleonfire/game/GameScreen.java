@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
     Array<FallingObjects> falling_slime =new Array<FallingObjects>();
     Array<Slime> onfloor_slime=new Array<Slime>();
     Array<Slime> die_slime=new Array<Slime>();
-    Array<Enemies> ebat = new Array<Enemies>();
+    Array<Bat> ebat = new Array<Bat>();
 
 
     // Audio
@@ -95,7 +95,7 @@ public class GameScreen implements Screen {
 
     void addEnemies(){
 
-        Enemies enemy = new Enemies();
+        Bat enemy = new Bat();
         enemy.spawn();
 
         // add the floor into the floors array
@@ -193,7 +193,7 @@ public class GameScreen implements Screen {
         }
 
         // draw bat_enemy
-        for (Enemies enemy : ebat) {
+        for (Bat enemy : ebat) {
             game.batch.draw(enemy.getBatmanfly().getKeyFrame(time_passed, true), enemy.getX(), enemy.getY());
             //game.batch.draw(enemy.getTexture(), enemy.getX(), enemy.getY());
         }
@@ -436,7 +436,7 @@ public class GameScreen implements Screen {
             fire.playerTouchedFire(patrick, delta);
         }
 
-        for (Enemies enemy : ebat) {
+        for (Bat enemy : ebat) {
             if (enemy.isKilled()) {
                 if(!enemy.isGivenScore()){
                     score.upScore(500);

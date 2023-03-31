@@ -108,7 +108,7 @@ public class Player extends GameObject{
         }
     }
 
-    public void fall(float delta, Array<Floor> floors, Array<Enemies> ebat, float time_passed){
+    public void fall(float delta, Array<Floor> floors, Array<Bat> ebat, float time_passed){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
@@ -118,7 +118,7 @@ public class Player extends GameObject{
             }
         }
 
-        for (Enemies killbat: ebat){
+        for (Bat killbat: ebat){
             if (feet.overlaps(killbat.getHead())) { // killbat.object = the rectangle
                 initiateJump(600, true);
                 killbat.setKilled(true);

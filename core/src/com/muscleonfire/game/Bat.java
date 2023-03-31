@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Enemies extends GameObject {
+public class Bat extends GameObject {
     private Animation<TextureRegion> batmanfly;
     private Rectangle head, body;
     private boolean givenScore = false;
