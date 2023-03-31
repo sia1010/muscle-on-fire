@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Shop extends GameObject implements Screen {
+public class Shop implements Screen {
     final MuscleOnFire game;
     private final SpriteBatch batch;
     private final BitmapFont font;
