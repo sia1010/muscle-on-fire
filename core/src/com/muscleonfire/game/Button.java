@@ -15,19 +15,19 @@ public class Button extends GameObject {
     private Texture image_notPressed;
     private Rectangle touchLocation;
 
+    public Button(float x, float y, float width, float height, String pressed, String not_pressed){
+        object = new Rectangle(x, y, width, height);
+        image_Pressed = new Texture(Gdx.files.internal(pressed));
+        image_notPressed = new Texture(Gdx.files.internal(not_pressed));
+        setTexture();
+    }
+
     public boolean isPressed() {
         return isPressed;
     }
 
-    public void setPressed(boolean pressed) {
+    public void forcePressed(boolean pressed) {
         isPressed = pressed;
-    }
-
-    public Button(float x, float y, float width, float height, String Pressed, String notPressed){
-        object = new Rectangle(x, y, width, height);
-        image_Pressed = new Texture(Gdx.files.internal(Pressed));
-        image_notPressed = new Texture(Gdx.files.internal(notPressed));
-        setTexture();
     }
 
     public void setTexture(){ // set the texture to when button is pressed or not pressed

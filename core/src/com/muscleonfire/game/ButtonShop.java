@@ -1,7 +1,6 @@
 package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -35,6 +34,6 @@ public class ButtonShop extends Button {
     }
 
     public void permanentTrue(){
-        setPressed(true);
+        forcePressed(true);
     }
 }
