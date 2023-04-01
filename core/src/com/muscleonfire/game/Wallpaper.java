@@ -3,15 +3,16 @@ package com.muscleonfire.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
 
 public class Wallpaper extends GameObject { // inherits game object
+    public Wallpaper(){
+        spawn();
+    }
 
-    void spawn(){ // spawn a wallpaper
+    public void spawn(){ // spawn a wallpaper
         Random random = new Random();
         int randomNum = random.nextInt(2);
 

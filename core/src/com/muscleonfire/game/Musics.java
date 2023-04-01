@@ -1,12 +1,21 @@
 package com.muscleonfire.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.*;
+import com.badlogic.gdx.files.FileHandle;
+
+import java.io.File;
+
 public class Musics {
-    Music game = Gdx.audio.newMusic(Gdx.files.internal("Music/BGM.mp3"));
-    Music menu = Gdx.audio.newMusic(Gdx.files.internal("Music/MenuBGM.mp3"));
-    Music shop = Gdx.audio.newMusic(Gdx.files.internal("Music/shop.mp3"));
-    Music settings = Gdx.audio.newMusic(Gdx.files.internal("Music/settings.mp3"));
-    float volume = 0.5f;
+
+    private FileHandle volumeFile;
+    private Music game = Gdx.audio.newMusic(Gdx.files.internal("Music/BGM.mp3"));
+    private Music menu = Gdx.audio.newMusic(Gdx.files.internal("Music/MenuBGM.mp3"));
+    private Music shop = Gdx.audio.newMusic(Gdx.files.internal("Music/shop.mp3"));
+    private Music settings = Gdx.audio.newMusic(Gdx.files.internal("Music/settings.mp3"));
+    private float volume = 0.5f;
+    public Musics(){
+        volumeFile = Gdx.files.external("Music/volume.txt");
+    }
 
     public void gamePlay(){
         game.setVolume(volume/2);
@@ -51,6 +60,9 @@ public class Musics {
     }
 
     public void setBGMVolume(float volume){
+        this.volume = volume;
+        volumeFile.writeString(Float.toString(volume), false);
+        volume = Float.parseFloat(volumeFile.readString());
         game.setVolume(volume);
         menu.setVolume(volume);
         shop.setVolume(volume);
