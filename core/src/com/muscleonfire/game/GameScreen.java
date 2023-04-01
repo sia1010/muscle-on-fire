@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
     private Player patrick;
     private Sidewall sidewall;
     private Array<Wallpaper> wallpapers = new Array<Wallpaper>();
-    private FallingObjects fallingObjects;
+    private FallingObjects fallingBuilding;
     private Score score;
     private Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
     private Floor latestFloor;
@@ -250,7 +250,7 @@ public class GameScreen implements Screen {
         patrick.drawPlayer(this.game.batch, time_passed);
 
         //draw falling building
-        game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
+        game.batch.draw(fallingBuilding.getTexture(), fallingBuilding.getX(), fallingBuilding.getY());
 
         // draw hearts
         patrick.getHealthPoint().drawHearts(this.game.batch, delta);
@@ -277,8 +277,8 @@ public class GameScreen implements Screen {
         sidewall.spawn();
 
         //initialising the falling building
-        fallingObjects = new FallingObjects();
-        fallingObjects.falling_building_spawn();
+        fallingBuilding = new FallingObjects();
+        fallingBuilding.falling_building_spawn();
 
         latestFloor = new Floor();
         latestFloor.spawn(Floor.FloorID.floor);

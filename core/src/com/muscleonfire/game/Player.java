@@ -91,6 +91,7 @@ public class Player extends GameObject{
 
     public void fall(float delta, Array<Floor> floors, Array<Bat> bats, float time_passed){
         // check if standing on floor
+        updateFeetAndHeadPosition();
         onFloor = false;
         for (Floor floor: floors){
             if (feet.overlaps(floor.object)) { // floor.object = the rectangle
@@ -228,12 +229,6 @@ public class Player extends GameObject{
 
     public boolean updateGameOver(){
         return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.getCurrHealth() < 1);
-    }
-
-    @Override // overlap the old thing which u inherit
-    public void transpose(float delta, float time_passed) {
-        super.transpose(delta, time_passed); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
-        updateFeetAndHeadPosition();
     }
 
     public void setPlayerAnimTextures(Animation<TextureRegion> front, Animation<TextureRegion> left, Animation<TextureRegion> right){
