@@ -13,7 +13,6 @@ public class Button extends GameObject {
     private boolean isPressed;
     private Texture image_Pressed;
     private Texture image_notPressed;
-    private Rectangle touchLocation;
 
     public Button(float x, float y, float width, float height, String pressed, String not_pressed){
         object = new Rectangle(x, y, width, height);
@@ -43,6 +42,7 @@ public class Button extends GameObject {
     }
 
     public boolean getHeldDown(OrthographicCamera camera){ // put the coordinate of the touchPoint here
+        Rectangle touchLocation = new Rectangle();
         for (int i = 0; i < 10; i++){
             if (Gdx.input.isTouched(i)) {
                 // place the touched coordinate into a vector3
@@ -68,6 +68,7 @@ public class Button extends GameObject {
     }
 
     public boolean getJustPressed(OrthographicCamera camera){ // put the coordinate of the touchPoint here
+        Rectangle touchLocation = new Rectangle();
         for (int i = 0; i < 10; i++) {
             if (Gdx.input.isTouched(i)) {
                 // place the touched coordinate into a vector3
