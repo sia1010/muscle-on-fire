@@ -8,10 +8,6 @@ import com.badlogic.gdx.utils.Array;
 
 public class FallingObjects extends GameObject{
     private boolean onFloor;
-    private float timetoAddDifficulty=0;
-    public boolean isOnFloor() {
-        return onFloor;
-    }
 
     public void falling_building_spawn(){
         object=new Rectangle();
