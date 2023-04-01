@@ -14,18 +14,18 @@ import java.util.Objects;
 
 
 public class Settings implements Screen {
-    final MuscleOnFire game;
+    private final MuscleOnFire game;
     private final SpriteBatch batch;
-    Button backMenuButton;;
-    Musics musics = new Musics();
+    private Button backMenuButton;;
+    private Musics musics = new Musics();
     private final Stage stage = new Stage(new ScreenViewport());
     private final Skin skin = new Skin(Gdx.files.internal("Slider/uiskin.json"));
-    final Slider musicSlider = new Slider(0f, 2f, 0.1f, false, skin);
-    final Slider soundSlider = new Slider(0f,2f,0.1f,false, skin);
-    final CheckBox touchControls = new CheckBox("Touch Controls", skin);
-    final CheckBox buttonControls = new CheckBox("Button Controls",skin);
-    final CheckBox followControls = new CheckBox("Follow Controls", skin);
-    ButtonGroup<CheckBox> checkBoxGroup = new ButtonGroup<>();
+    private final Slider musicSlider = new Slider(0f, 2f, 0.1f, false, skin);
+    private final Slider soundSlider = new Slider(0f,2f,0.1f,false, skin);
+    private final CheckBox touchControls = new CheckBox("Touch Controls", skin);
+    private final CheckBox buttonControls = new CheckBox("Button Controls",skin);
+    private final CheckBox followControls = new CheckBox("Follow Controls", skin);
+    private ButtonGroup<CheckBox> checkBoxGroup = new ButtonGroup<>();
     private final FileHandle soundVolumeFile;
     private final FileHandle BGMVolumeFile;
     private float BGMVolume = 1.0f;
