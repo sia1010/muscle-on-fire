@@ -2,13 +2,18 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-//import jdk.internal.icu.text.UnicodeSet;
 
+import java.util.Objects;
 
 
 public class Settings implements Screen {
@@ -16,16 +21,19 @@ public class Settings implements Screen {
     private final SpriteBatch batch;
     Button backMenuButton;;
     Musics musics = new Musics();
-    private Stage stage = new Stage(new ScreenViewport());
-    private Skin skin = new Skin(Gdx.files.internal("Slider/uiskin.json"));
+    private final Stage stage = new Stage(new ScreenViewport());
+    private final Skin skin = new Skin(Gdx.files.internal("Slider/uiskin.json"));
     final Slider musicSlider = new Slider(0f, 2f, 0.1f, false, skin);
     final Slider soundSlider = new Slider(0f,2f,0.1f,false, skin);
     final CheckBox touchControls = new CheckBox("Touch Controls", skin);
     final CheckBox buttonControls = new CheckBox("Button Controls",skin);
     final CheckBox followControls = new CheckBox("Follow Controls", skin);
 
-    Controls.ControlMode mode;
-    private Controls controls;
+    //Table checkBoxGroup = new Table();
+    ButtonGroup<CheckBox> checkBoxGroup = new ButtonGroup<>();
+    Controls.controlMode mode;
+    static Controls controls;
+
 
 
     public Settings(final MuscleOnFire game){
@@ -37,6 +45,15 @@ public class Settings implements Screen {
         backMenuButton = new Button(20,740,128,32,"Buttons/MainMenu/back_button_pressed.png","Buttons/MainMenu/back_button.png");
         setSliderLocation();
         setControls();
+        if(Objects.equals(controls.getControlMode(), "follow")){
+            followControls.setChecked(true);
+        }
+        if(Objects.equals(controls.getControlMode(), "button")){
+            buttonControls.setChecked(true);
+        }
+        if(Objects.equals(controls.getControlMode(), "touch")){
+            touchControls.setChecked(true);
+        }
 
     }
 
@@ -47,6 +64,10 @@ public class Settings implements Screen {
         buttonControls.setColor(0,0,0,1);
         touchControls.setPosition(200,450);
         touchControls.setColor(0,0,0,1);
+        checkBoxGroup.add(buttonControls);
+        checkBoxGroup.add(touchControls);
+        checkBoxGroup.add(followControls);
+        checkBoxGroup.setMaxCheckCount(1);
     }
 
     public void setSliderLocation(){
@@ -64,7 +85,7 @@ public class Settings implements Screen {
     @Override
     public void render(float delta) {
         // clear the screen
-        ScreenUtils.clear(1,1,1,1);
+        ScreenUtils.clear(1, 1, 1, 1);
         // update camera
         game.camera.update();
         // set the projection area
@@ -76,7 +97,7 @@ public class Settings implements Screen {
         //touchControls.show(batch, 1);
         backMenuButton.draw(batch);
         game.font.draw(game.batch, "Music  : ", 100, 650);
-        game.font.draw(game.batch,"SFX    : ", 100, 560);
+        game.font.draw(game.batch, "SFX    : ", 100, 560);
         game.batch.end();
 
         //creates a stage with actors
@@ -88,30 +109,17 @@ public class Settings implements Screen {
         stage.addActor(soundSlider);
 
 
-
-        if(backMenuButton.getJustPressed(this.game.camera)){
+        if (backMenuButton.getJustPressed(this.game.camera)) {
+            if(followControls.isChecked()){
+                controls.setControlMode("follow");
+            }
+            if(buttonControls.isChecked()){
+                controls.setControlMode("button");
+            }
+            if(touchControls.isChecked()){
+                controls.setControlMode("touch");
+            }
             game.setScreen(new Menu(this.game));
-        }
-
-        if (touchControls.isChecked()){
-            followControls.setChecked(false);
-            buttonControls.setChecked(false);
-            mode = Controls.ControlMode.touch;
-            controls = new Controls(mode);
-
-        }
-        if (buttonControls.isChecked()){
-            followControls.setChecked(false);
-            touchControls.setChecked(false);
-            mode = Controls.ControlMode.button;
-            controls = new Controls(mode);
-
-        }
-        if (followControls.isChecked()){
-            touchControls.setChecked(false);
-            buttonControls.setChecked(false);
-            mode = Controls.ControlMode.follow;
-            controls = new Controls(mode);
         }
 
     }

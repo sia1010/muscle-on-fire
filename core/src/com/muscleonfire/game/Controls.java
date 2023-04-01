@@ -103,5 +103,26 @@ public class Controls {
         font.draw(batch, String.valueOf(item.getSpeed_amt()), 105, 560);
     }
 
+    public static void setControlMode(String control){
+        if (control == "touch"){
+            mode = controlMode.touch;
+        }if(control == "follow"){
+            mode = controlMode.follow;
+        }if(control == "button"){
+            mode = controlMode.button;
+        }
+    }
+
+    public static String getControlMode(){
+        String check = "";
+        if (mode == controlMode.touch){
+            check = "touch";
+        }if (mode == controlMode.follow){
+            check = "follow";
+        }if (mode == controlMode.button){
+            check = "button";
+        }
+        return check;
+    }
 
 }
