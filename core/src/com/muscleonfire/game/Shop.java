@@ -23,10 +23,11 @@ public class Shop implements Screen {
     private ButtonShop speed;
     private ButtonShop selected_item;
     private Item item;
+    Musics musics = new Musics();
 
     public Shop(final MuscleOnFire game){
         this.game = game;
-
+        musics.shopPlay();
         Random rand = new Random();
         int randmenu = rand.nextInt(5);
         randmenu+=1;
@@ -76,8 +77,12 @@ public class Shop implements Screen {
 
 
         game.batch.end();
+
+
         if(backButton.onReleased(game.camera)){
             game.setScreen(new Menu(game));
+            musics.shopStop();
+            Sounds.pressed();
         }
 
         if(shield.onReleased(game.camera)){
@@ -89,6 +94,7 @@ public class Shop implements Screen {
         }
 
         if(buybutton.onReleased(game.camera)){
+            Sounds.kaching();
             if (selected_item.isPressed()) {
                 if (selected_item == shield){
                     game.coin.spendCoin(50);

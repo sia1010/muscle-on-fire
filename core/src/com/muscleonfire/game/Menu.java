@@ -14,18 +14,23 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
     private SpriteBatch batch;
     Texture background;
     Sprite backgroundSprite;
-
     Button startButton;
     Button quitButton;
     Button shopButton;
     Button settingButton;
+    Musics musics = new Musics();
 
     public Menu(final MuscleOnFire game) {
         this.game = game;
         Random rand = new Random();
+
+        musics.musicStop();
+        musics.menuPlay();
+
         int randmenu = rand.nextInt(5);
         randmenu+=1;
         batch = game.batch;
+
         background = new Texture("menu_background"+randmenu+".png");
         backgroundSprite = new Sprite(background);
         backgroundSprite.setSize(480, 800);
@@ -61,6 +66,8 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
         batch.end();
 
         if(startButton.onReleased(this.game.camera)){
+            Sounds.pressed();
+            musics.musicStop();
             game.setScreen(new GameScreen(this.game));
         }
         if(quitButton.onReleased(this.game.camera)){
@@ -68,9 +75,13 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
             System.exit(0);
         }
         if(shopButton.onReleased(this.game.camera)){
+            Sounds.pressed();
+            musics.menuStop();
             game.setScreen(new Shop(this.game));
         }
         if(settingButton.onReleased(this.game.camera)){
+            Sounds.pressed();
+            musics.menuStop();
             game.setScreen(new Settings(this.game));
         }
     }

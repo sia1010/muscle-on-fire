@@ -27,6 +27,7 @@ public class Health {
     }
 
     public void takeDamage(int damage){ // minus health equals to passed damage
+        Sounds.hurt();//Sound effects
         if(pat.getPowerUp().checkShield()){
             return;
         }
@@ -36,6 +37,7 @@ public class Health {
     }
 
     public void healDamage(int heal){
+        Sounds.life();
         if (currHealth < maxHealth){
             currHealth += heal;
         }

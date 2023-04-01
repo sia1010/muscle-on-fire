@@ -36,6 +36,7 @@ public class Settings implements Screen {
         this.game = game;
         batch = this.game.batch;
 
+        musics.settingsPlay();
         Gdx.input.setInputProcessor(stage);
 
         backMenuButton = new Button(20,740,128,32,"Buttons/MainMenu/back_button_pressed.png","Buttons/MainMenu/back_button.png");
@@ -105,6 +106,8 @@ public class Settings implements Screen {
 
 
         if (backMenuButton.onReleased(this.game.camera)) {
+            Sounds.pressed();
+            musics.settingsStop();
             if(followControls.isChecked()){
                 Controls.setControlMode(Controls.ControlMode.follow);
                 Settings.settingsFile.writeString("follow", false);
@@ -117,6 +120,7 @@ public class Settings implements Screen {
                 Controls.setControlMode(Controls.ControlMode.touch);
                 Settings.settingsFile.writeString("touch", false);
             }
+
             game.setScreen(new Menu(this.game));
         }
 

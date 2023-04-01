@@ -149,6 +149,7 @@ public class Player extends GameObject{
         if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.getJumpButton().isPressed()) && onFloor && !forcedJump) {
             initiateJump(1400, false);
             isMoving = true;
+            Sounds.jump();
         }
 
         if(!(Gdx.input.isKeyPressed(Input.Keys.SPACE) || controls.getJumpButton().isPressed()) && !forcedJump){
@@ -176,6 +177,7 @@ public class Player extends GameObject{
     }
 
     public void jump(float delta, Array<Floor> floors){
+
         // check if standing on floor){ // check for isJumping, if isJumping, then jump
         if (isJumping && !headIsTouching(floors)) { // check for jumping and not hitting head
             object.y += jumpPower * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)

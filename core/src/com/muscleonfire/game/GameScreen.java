@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
     private Array<Slime> die_slime=new Array<Slime>();
     private Array<Bat> ebat = new Array<Bat>();
 
-
+    int i = 0;
     // Audio
     private Sounds sounds = new Sounds();
     private Musics musics = new Musics();
@@ -385,6 +385,7 @@ public class GameScreen implements Screen {
             // press to continue to game over screen
             if (patrick.getControls().getScreenButton().onReleased(this.game.camera)) {
                 this.game.setScreen(new GameOver(this.game, score));
+
             }
         }
 
@@ -392,6 +393,11 @@ public class GameScreen implements Screen {
         // check if patrick fall beyond the screen,if yes then game over
         if (patrick.updateGameOver()) {
             gameState = State.OVER;
+
+            if (i == 0){
+                Sounds.over();
+                i++;
+            }
         }
         // update everything to behave as intended, which depends on what happens
         // transpose slowly moves things up towards the top of the screen

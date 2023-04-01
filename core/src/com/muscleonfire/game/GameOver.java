@@ -16,6 +16,7 @@ public class GameOver implements Screen {
 
     public GameOver(final MuscleOnFire game,Score score){
         this.game = game;
+
         this.game.coin.addCoin(score);
         this.game.coin.saveCoin();
         this.score = score;
@@ -50,9 +51,11 @@ public class GameOver implements Screen {
         game.batch.end();
 
         if (retryButton.onReleased(this.game.camera)){
+            Sounds.pressed();
             game.setScreen(new GameScreen(this.game));
         }
         else if (menuButton.onReleased(this.game.camera)) {
+            Sounds.pressed();
             game.setScreen(new Menu(this.game));
         }
     }
