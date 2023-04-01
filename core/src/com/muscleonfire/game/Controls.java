@@ -14,12 +14,12 @@ public class Controls {
     private Button speedButton;
     private Item item;
     private FileHandle itemFile;
-    enum controlMode{
+    enum ControlMode {
         button,
         touch,
         follow
     }
-    private controlMode mode;
+    private ControlMode mode;
 
     public Button getLeftButton() {
         return leftButton;
@@ -45,19 +45,19 @@ public class Controls {
         return speedButton;
     }
 
-    public Controls(controlMode setmode){ // initialise the position and size of the buttons
+    public Controls(ControlMode setmode){ // initialise the position and size of the buttons
         item = new Item();
         mode = setmode;
         screenButton = new Button(0,0,480,800, "nothing.png", "nothing.png");
-        if (mode == controlMode.button) {
+        if (mode == ControlMode.button) {
             leftButton = new Button(50, 30, 64, 64, "Buttons/Controls/leftButton_unpressed.png", "Buttons/Controls/leftButton_unpressed.png");
             rightButton = new Button(150, 30, 64, 64,"Buttons/Controls/rightButton_unpressed.png", "Buttons/Controls/rightButton_unpressed.png");
             jumpButton = new Button(360, 30, 64, 64, "Buttons/Controls/jumpButton_unpressed.png", "Buttons/Controls/jumpButton_unpressed.png");
-        }else if (mode == controlMode.touch){
+        }else if (mode == ControlMode.touch){
             leftButton = new Button(0, 0, 240, 800,"nothing.png", "nothing.png");
             rightButton = new Button(240, 0, 240, 800, "nothing.png", "nothing.png");
             jumpButton = new Button(50, 30, 380, 64, "Buttons/Controls/jump_unpressed.png", "Buttons/Controls/jump_unpressed.png");
-        }else if (mode == controlMode.follow){
+        }else if (mode == ControlMode.follow){
             leftButton = new Button(0, 0, 480, 800, "nothing.png", "nothing.png");
             rightButton = new Button(240, 0, 480, 800, "nothing.png", "nothing.png");
             jumpButton = new Button(50, 30, 380, 64, "Buttons/Controls/jump_unpressed.png", "Buttons/Controls/jump_unpressed.png");
@@ -68,7 +68,7 @@ public class Controls {
     }
 
     public void getInputs(OrthographicCamera camera, Player pat){
-        if (mode == controlMode.follow) {
+        if (mode == ControlMode.follow) {
             if (pat.isFront()){
                 leftButton.object.x = pat.getX() - 480 + 30;
                 rightButton.object.x = pat.getX() + 34;
@@ -91,7 +91,7 @@ public class Controls {
     }
 
     public void drawButtons(SpriteBatch batch, BitmapFont font) {
-        if (mode == controlMode.button){
+        if (mode == ControlMode.button){
             leftButton.draw(batch);
             rightButton.draw(batch);
         }

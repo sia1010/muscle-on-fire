@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Health {
-    int maxHealth = 3;
-    int currHealth = 3;
+    private int maxHealth = 3;
+    private int currHealth = 3;
 
-    Player pat;
-    Texture filledHeart;
-    Texture emptyHeart;
-    Texture flashHeart;
+    private Player pat;
+    private Texture filledHeart;
+    private Texture emptyHeart;
+    private Texture flashHeart;
     private float flashTime;
     private boolean isFlashing;
 
@@ -20,6 +20,10 @@ public class Health {
         emptyHeart = new Texture(Gdx.files.internal("Textures/health/heart_empty.png"));
         flashHeart = new Texture(Gdx.files.internal("Textures/health/heart_flash.png"));
         this.pat = pat;
+    }
+
+    public int getCurrHealth() {
+        return currHealth;
     }
 
     public void takeDamage(int damage){ // minus health equals to passed damage

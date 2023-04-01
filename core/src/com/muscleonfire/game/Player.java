@@ -25,7 +25,7 @@ public class Player extends GameObject{
     private Item item;
     private PowerUp powerUp;
 
-    public Player(Controls.controlMode controlMode){
+    public Player(Controls.ControlMode controlMode){
         controls = new Controls(controlMode);
         healthPoint = new Health(this);
         powerUp = new PowerUp(this);
@@ -227,7 +227,7 @@ public class Player extends GameObject{
     }
 
     public boolean updateGameOver(){
-        return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.currHealth < 1);
+        return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.getCurrHealth() < 1);
     }
 
     @Override // overlap the old thing which u inherit

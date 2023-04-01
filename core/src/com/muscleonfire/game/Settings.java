@@ -2,13 +2,9 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 //import jdk.internal.icu.text.UnicodeSet;
@@ -28,7 +24,7 @@ public class Settings implements Screen {
     final CheckBox buttonControls = new CheckBox("Button Controls",skin);
     final CheckBox followControls = new CheckBox("Follow Controls", skin);
 
-    Controls.controlMode mode;
+    Controls.ControlMode mode;
     private Controls controls;
 
 
@@ -100,21 +96,21 @@ public class Settings implements Screen {
         if (touchControls.isChecked()){
             followControls.setChecked(false);
             buttonControls.setChecked(false);
-            mode = Controls.controlMode.touch;
+            mode = Controls.ControlMode.touch;
             controls = new Controls(mode);
 
         }
         if (buttonControls.isChecked()){
             followControls.setChecked(false);
             touchControls.setChecked(false);
-            mode = Controls.controlMode.button;
+            mode = Controls.ControlMode.button;
             controls = new Controls(mode);
 
         }
         if (followControls.isChecked()){
             touchControls.setChecked(false);
             buttonControls.setChecked(false);
-            mode = Controls.controlMode.follow;
+            mode = Controls.ControlMode.follow;
             controls = new Controls(mode);
         }
 
