@@ -45,7 +45,6 @@ public class GameScreen implements Screen {
 
     int i = 0;
     // Audio
-    private Sounds sounds = new Sounds();
     private Musics musics = new Musics();
 
 
