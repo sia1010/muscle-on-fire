@@ -6,20 +6,20 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Controls {
-    private Button leftButton;
-    private Button rightButton;
-    private Button jumpButton;
-    private Button screenButton;
-    private Button shieldButton;
-    private Button speedButton;
-    private Item item;
-    private FileHandle itemFile;
+    static Button leftButton;
+    static Button rightButton;
+    static Button jumpButton;
+    static Button screenButton;
+    static Button shieldButton;
+    static Button speedButton;
+    static Item item;
+    static FileHandle itemFile;
     enum ControlMode {
         button,
         touch,
         follow
     }
-    private ControlMode mode;
+    static ControlMode mode;
 
     public Button getLeftButton() {
         return leftButton;
@@ -45,9 +45,8 @@ public class Controls {
         return speedButton;
     }
 
-    public Controls(ControlMode setmode){ // initialise the position and size of the buttons
+    public Controls(){ // initialise the position and size of the buttons
         item = new Item();
-        mode = setmode;
         screenButton = new Button(0,0,480,800, "nothing.png", "nothing.png");
         if (mode == ControlMode.button) {
             leftButton = new Button(50, 30, 64, 64, "Buttons/Controls/leftButton_unpressed.png", "Buttons/Controls/leftButton_unpressed.png");
@@ -103,26 +102,12 @@ public class Controls {
         font.draw(batch, String.valueOf(item.getSpeed_amt()), 105, 560);
     }
 
-    public static void setControlMode(String control){
-        if (control == "touch"){
-            mode = controlMode.touch;
-        }if(control == "follow"){
-            mode = controlMode.follow;
-        }if(control == "button"){
-            mode = controlMode.button;
-        }
+    public static void setControlMode(ControlMode controlMode){
+            mode = controlMode;
     }
 
-    public static String getControlMode(){
-        String check = "";
-        if (mode == controlMode.touch){
-            check = "touch";
-        }if (mode == controlMode.follow){
-            check = "follow";
-        }if (mode == controlMode.button){
-            check = "button";
-        }
-        return check;
+    public static ControlMode getControlMode(){
+        return mode;
     }
 
 }

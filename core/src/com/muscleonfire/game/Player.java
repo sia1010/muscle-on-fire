@@ -25,8 +25,8 @@ public class Player extends GameObject{
     private Item item;
     private PowerUp powerUp;
 
-    public Player(Controls.ControlMode controlMode){
-        controls = new Controls(controlMode);
+    public Player(){
+        controls = new Controls();
         healthPoint = new Health(this);
         powerUp = new PowerUp(this);
         item = new Item();

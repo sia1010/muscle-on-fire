@@ -31,8 +31,7 @@ public class Settings implements Screen {
 
     //Table checkBoxGroup = new Table();
     ButtonGroup<CheckBox> checkBoxGroup = new ButtonGroup<>();
-    Controls.controlMode mode;
-    static Controls controls;
+    Controls.ControlMode mode;
 
 
 
@@ -45,13 +44,13 @@ public class Settings implements Screen {
         backMenuButton = new Button(20,740,128,32,"Buttons/MainMenu/back_button_pressed.png","Buttons/MainMenu/back_button.png");
         setSliderLocation();
         setControls();
-        if(Objects.equals(controls.getControlMode(), "follow")){
+        if(Objects.equals(Controls.getControlMode(), Controls.ControlMode.follow)){
             followControls.setChecked(true);
         }
-        if(Objects.equals(controls.getControlMode(), "button")){
+        if(Objects.equals(Controls.getControlMode(), Controls.ControlMode.button)){
             buttonControls.setChecked(true);
         }
-        if(Objects.equals(controls.getControlMode(), "touch")){
+        if(Objects.equals(Controls.getControlMode(), Controls.ControlMode.touch)){
             touchControls.setChecked(true);
         }
 
@@ -111,13 +110,13 @@ public class Settings implements Screen {
 
         if (backMenuButton.getJustPressed(this.game.camera)) {
             if(followControls.isChecked()){
-                controls.setControlMode("follow");
+                Controls.setControlMode(Controls.ControlMode.follow);
             }
             if(buttonControls.isChecked()){
-                controls.setControlMode("button");
+                Controls.setControlMode(Controls.ControlMode.button);
             }
             if(touchControls.isChecked()){
-                controls.setControlMode("touch");
+                Controls.setControlMode(Controls.ControlMode.touch);
             }
             game.setScreen(new Menu(this.game));
         }

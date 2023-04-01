@@ -269,7 +269,7 @@ public class GameScreen implements Screen {
         this.game = game;
 
         // spawn patrick
-        patrick = new Player(controls.getControlMode());
+        patrick = new Player();
         patrick.spawn();
 
         // initialising the Sidewalls
