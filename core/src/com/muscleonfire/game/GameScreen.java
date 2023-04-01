@@ -247,7 +247,7 @@ public class GameScreen implements Screen {
         }
 
         // draw patrick
-        patrick.drawPatrick(this.game.batch, time_passed);
+        patrick.drawPlayer(this.game.batch, time_passed);
 
         //draw falling building
         game.batch.draw(fallingObjects.getTexture(),fallingObjects.getX(),fallingObjects.getY());
@@ -378,7 +378,7 @@ public class GameScreen implements Screen {
         if (gameState == State.RUNNING) {
             // player movement (next frame)
             patrick.processControls(delta, game.camera);
-            patrick.jump(delta, time_passed, floors);
+            patrick.jump(delta, floors);
 
         }
         if (gameState == State.OVER) {

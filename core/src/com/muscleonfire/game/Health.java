@@ -23,16 +23,18 @@ public class Health {
     }
 
     public void takeDamage(int damage){ // minus health equals to passed damage
-        if (pat.getPowerUp() == Player.PowerUp.Shield){
-            pat.setPowerUp(null);
-            pat.setPlayerAnimTextures( new AnimationLoader().loadAnimation("Textures/player/player_front.png", 2,1, 0.5f),
-                    new AnimationLoader().loadAnimation("Textures/player/player_left.png", 4,1, 0.2f),
-                    new AnimationLoader().loadAnimation("Textures/player/player_right.png", 4,1, 0.2f));
+        if(pat.getPowerUp().checkShield()){
             return;
         }
         currHealth -= damage;
         isFlashing = true;
         flashTime = 0;
+    }
+
+    public void healDamage(int heal){
+        if (currHealth < maxHealth){
+            currHealth += heal;
+        }
     }
 
     public void drawHearts(SpriteBatch batch, float delta) {

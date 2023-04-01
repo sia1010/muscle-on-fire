@@ -82,7 +82,7 @@ public class Obstacles extends GameObject{
             rescueAni = new AnimationLoader().loadAnimation("Textures/rescue/rescue_saved(sheet).png", 2,1, 0.5f);
             image_help = new Texture(Gdx.files.internal("Textures/rescue/TQ_box.png"));
             score.upScore(1000);
-            pat.healDamage(1);
+            pat.getHealthPoint().healDamage(1);
         }
     }
 
@@ -99,7 +99,7 @@ public class Obstacles extends GameObject{
     public boolean playerTouchedMedicine(Player pat){
         boolean touched=false;
         if (pat.object.overlaps(object)){
-            pat.healDamage(1);
+            pat.getHealthPoint().healDamage(1);
             touched=true;
         }
         return touched;
@@ -111,9 +111,9 @@ public class Obstacles extends GameObject{
         if (pat.object.overlaps(object)){
             touched=true;
             if (random <= 2) {
-                pat.setShieldUp();
+                pat.getPowerUp().setShieldUp();
             } else if (random <= 7) {
-                pat.setSpeedUp();
+                pat.getPowerUp().setSpeedUp();
             } else {
                 score.upScore(1000);
             }

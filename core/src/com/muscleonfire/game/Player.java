@@ -13,37 +13,22 @@ public class Player extends GameObject{
     private Rectangle feet;
     private Rectangle head;
     private float jumpTime = 0;
-    private float speedUp = 0;
-    private float speedTime = 0;
     private int jumpPower = 1400;
     private boolean isJumping = false;
     private boolean onFloor;
     private boolean isFront;
     private boolean forcedJump = false;
-    private PowerUp powerUp = null;
     private Health healthPoint;
     private Controls controls;
     private Floor currentFloor;
     private Animation<TextureRegion> front, left, right, playerAnim;
     private Item item;
-    public enum PowerUp{
-        Shield,
-        Speed
-    }
-    public Rectangle getFeet() {
-        return feet;
-    }
+    private PowerUp powerUp;
 
-    public boolean isFront() {
-        return isFront;
-    }
-
-    public Controls getControls() {
-        return controls;
-    }
     public Player(Controls.controlMode controlMode){
         controls = new Controls(controlMode);
         healthPoint = new Health(this);
+        powerUp = new PowerUp(this);
         item = new Item();
     }
 
@@ -104,7 +89,7 @@ public class Player extends GameObject{
         }
     }
 
-    public void fall(float delta, Array<Floor> floors, Array<Bat> ebat, float time_passed){
+    public void fall(float delta, Array<Floor> floors, Array<Bat> bats, float time_passed){
         // check if standing on floor
         onFloor = false;
         for (Floor floor: floors){
@@ -114,7 +99,7 @@ public class Player extends GameObject{
             }
         }
 
-        for (Bat killbat: ebat){
+        for (Bat killbat: bats){
             if (feet.overlaps(killbat.getHead())) { // killbat.object = the rectangle
                 initiateJump(600, true);
                 killbat.setKilled(true);
@@ -136,36 +121,26 @@ public class Player extends GameObject{
         // additional keyboard controls for debugging
         boolean isMoving = false;
 
-        if(powerUp == PowerUp.Speed){
-            if (speedTime < 10) {
-                speedTime += delta;
-            } else {
-                speedUp = 0;
-                powerUp = null;
-                setPlayerAnimTextures(new AnimationLoader().loadAnimation("Textures/player/player_front.png", 2,1, 0.5f),
-                        new AnimationLoader().loadAnimation("Textures/player/player_left.png", 4,1, 0.2f),
-                        new AnimationLoader().loadAnimation("Textures/player/player_right.png", 4,1, 0.2f));
-            }
-        }
+        getPowerUp().checkSpeed(delta);
 
         if(controls.getShieldButton().getJustPressed(camera) && item.getShield_amt() > 0){
             item.setShield_amt(item.getShield_amt() - 1);
-            setShieldUp();
+            powerUp.setShieldUp();
         }
 
         if(controls.getSpeedButton().getJustPressed(camera) && item.getSpeed_amt() > 0){
             item.setSpeed_amt(item.getSpeed_amt() - 1);
-            setSpeedUp();
+            powerUp.setSpeedUp();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || controls.getLeftButton().isPressed() && (!controls.getSpeedButton().isPressed() && !controls.getShieldButton().isPressed())) {
-            goLeft((150 + speedUp) * delta);
+            goLeft((150 + powerUp.getSpeedUp()) * delta);
             playerAnim = left;
             isMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || controls.getRightButton().isPressed()) {
-            goRight((150 + speedUp) * delta);
+            goRight((150 + powerUp.getSpeedUp()) * delta);
             playerAnim = right;
             isMoving = true;
         }
@@ -199,7 +174,7 @@ public class Player extends GameObject{
         }
     }
 
-    public void jump(float delta, float time_passed, Array<Floor> floors){
+    public void jump(float delta, Array<Floor> floors){
         // check if standing on floor){ // check for isJumping, if isJumping, then jump
         if (isJumping && !headIsTouching(floors)) { // check for jumping and not hitting head
             object.y += jumpPower * Math.pow(0.01, jumpTime) * delta; // higher jump at start and lower jump when ending (a < 1 exponential graph)
@@ -214,7 +189,7 @@ public class Player extends GameObject{
     }
 
     public boolean headIsTouching(Array<Floor> floors){
-        // check if standing on floor{ // check if head is touching
+        // check if head is touching
         for (Floor floor: floors){
             if (head.overlaps(floor.object)) { // floor.object = the rectangle
                 return true;
@@ -223,13 +198,7 @@ public class Player extends GameObject{
         return false;
     }
 
-    public void healDamage(int heal){
-        if (healthPoint.currHealth < healthPoint.maxHealth){
-            healthPoint.currHealth += heal;
-        }
-    }
-
-    public void drawPatrick(SpriteBatch batch, float time_passed){
+    public void drawPlayer(SpriteBatch batch, float time_passed){
         if (playerAnim == left){
             if(isFront){
                 object.width = 32;
@@ -261,22 +230,6 @@ public class Player extends GameObject{
         return (object.y < -64 || object.y > 800 - 64-50 || healthPoint.currHealth < 1);
     }
 
-    public void setShieldUp(){
-        powerUp = PowerUp.Shield;
-        setPlayerAnimTextures(new AnimationLoader().loadAnimation("Textures/player/playerfront_shield.png", 2,1, 0.5f),
-                new AnimationLoader().loadAnimation("Textures/player/playerleft_shield.png", 4,1, 0.2f),
-                new AnimationLoader().loadAnimation("Textures/player/playerright_shield.png", 4,1, 0.2f));
-    }
-
-    public void setSpeedUp(){
-        powerUp = PowerUp.Speed;
-        speedTime = 0;
-        speedUp = 100;
-        setPlayerAnimTextures(new AnimationLoader().loadAnimation("Textures/player/playerfront_speed.png", 2,1, 0.5f),
-                new AnimationLoader().loadAnimation("Textures/player/playerleft_speed.png", 4,1, 0.2f),
-                new AnimationLoader().loadAnimation("Textures/player/playerright_speed.png", 4,1, 0.2f));
-    }
-
     @Override // overlap the old thing which u inherit
     public void transpose(float delta, float time_passed) {
         super.transpose(delta, time_passed); // super - call original(GameObject's transpose) then add this transpose, so that it will run both
@@ -289,12 +242,20 @@ public class Player extends GameObject{
         this.right = right;
     }
 
-    public PowerUp getPowerUp() {
-        return powerUp;
+    public Rectangle getFeet() {
+        return feet;
     }
 
-    public void setPowerUp(PowerUp powerUp) {
-        this.powerUp = powerUp;
+    public boolean isFront() {
+        return isFront;
+    }
+
+    public Controls getControls() {
+        return controls;
+    }
+
+    public PowerUp getPowerUp() {
+        return powerUp;
     }
 
     public Health getHealthPoint() {
