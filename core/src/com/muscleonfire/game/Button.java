@@ -13,6 +13,7 @@ public class Button extends GameObject {
     private boolean isPressed;
     private Texture image_Pressed;
     private Texture image_notPressed;
+    Rectangle touchLocation;
 
     public Button(float x, float y, float width, float height, String pressed, String not_pressed){
         object = new Rectangle(x, y, width, height);
@@ -42,7 +43,6 @@ public class Button extends GameObject {
     }
 
     public boolean onHeldDown(OrthographicCamera camera){ // put the coordinate of the touchPoint here
-        Rectangle touchLocation = new Rectangle();
         for (int i = 0; i < 10; i++){
             if (Gdx.input.isTouched(i)) {
                 // place the touched coordinate into a vector3
@@ -68,7 +68,6 @@ public class Button extends GameObject {
     }
 
     public boolean onReleased(OrthographicCamera camera){ // put the coordinate of the touchPoint here
-        Rectangle touchLocation = new Rectangle();
         for (int i = 0; i < 10; i++) {
             if (Gdx.input.isTouched(i)) {
                 // place the touched coordinate into a vector3
@@ -79,8 +78,8 @@ public class Button extends GameObject {
                 // and check if the button overlaps with the Rectangle()
                 // if it overlaps, it means the button is being pressed
                 // and isPressed = true
-                touchLocation = new Rectangle(touchPoint.x, touchPoint.y, 0,0);
-                isPressed = object.overlaps(new Rectangle(touchPoint.x, touchPoint.y, 0, 0));
+                touchLocation = new Rectangle(touchPoint.x, touchPoint.y, 0, 0);
+                isPressed = object.overlaps(touchLocation);
                 // if the button is pressed set the Texture to being pressed
                 setTexture();
             }

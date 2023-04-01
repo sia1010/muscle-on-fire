@@ -13,7 +13,6 @@ public class Controls {
     static Button shieldButton;
     static Button speedButton;
     static Item item;
-    static FileHandle itemFile;
     enum ControlMode {
         button,
         touch,

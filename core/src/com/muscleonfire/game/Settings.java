@@ -2,6 +2,7 @@ package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -27,6 +28,7 @@ public class Settings implements Screen {
     //Table checkBoxGroup = new Table();
     ButtonGroup<CheckBox> checkBoxGroup = new ButtonGroup<>();
     Controls.ControlMode mode;
+    public static FileHandle settingsFile = Gdx.files.external("settings.txt");;
 
 
 
@@ -48,7 +50,6 @@ public class Settings implements Screen {
         if(Objects.equals(Controls.getControlMode(), Controls.ControlMode.touch)){
             touchControls.setChecked(true);
         }
-
     }
 
     public void setControls(){
@@ -106,12 +107,15 @@ public class Settings implements Screen {
         if (backMenuButton.onReleased(this.game.camera)) {
             if(followControls.isChecked()){
                 Controls.setControlMode(Controls.ControlMode.follow);
+                Settings.settingsFile.writeString("follow", false);
             }
             if(buttonControls.isChecked()){
                 Controls.setControlMode(Controls.ControlMode.button);
+                Settings.settingsFile.writeString("button", false);
             }
             if(touchControls.isChecked()){
                 Controls.setControlMode(Controls.ControlMode.touch);
+                Settings.settingsFile.writeString("touch", false);
             }
             game.setScreen(new Menu(this.game));
         }

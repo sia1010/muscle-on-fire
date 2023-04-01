@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+
+import java.awt.peer.CanvasPeer;
 //cheah
 
 public class MuscleOnFire extends Game { //Game like main,can change screen using setscreen(in built method)
@@ -44,6 +46,22 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 		// open Coin File
 		coin = new Coins();
 		coin.openCoinFile();
+
+		if (Settings.settingsFile.exists()) {
+			String[] arr = Settings.settingsFile.readString().split("@");
+			if(arr[0].equals("follow")){
+				Controls.setControlMode(Controls.ControlMode.follow);
+			}
+			if(arr[0].equals("button")){
+				Controls.setControlMode(Controls.ControlMode.button);
+			}
+			if(arr[0].equals("touch")){
+				Controls.setControlMode(Controls.ControlMode.touch);
+			}
+		} else {
+			Controls.setControlMode(Controls.ControlMode.follow);
+			Settings.settingsFile.writeString("follow", false);
+		}
 	}
 
 	//after closing the app
