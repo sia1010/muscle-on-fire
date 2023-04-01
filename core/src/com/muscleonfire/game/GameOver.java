@@ -1,11 +1,6 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 public class GameOver implements Screen {
     private Button retryButton;
@@ -54,10 +49,10 @@ public class GameOver implements Screen {
 
         game.batch.end();
 
-        if (retryButton.getJustPressed(this.game.camera)){
+        if (retryButton.onReleased(this.game.camera)){
             game.setScreen(new GameScreen(this.game));
         }
-        else if (menuButton.getJustPressed(this.game.camera)) {
+        else if (menuButton.onReleased(this.game.camera)) {
             game.setScreen(new Menu(this.game));
         }
     }

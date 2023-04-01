@@ -124,12 +124,12 @@ public class Player extends GameObject{
 
         getPowerUp().checkSpeed(delta);
 
-        if(controls.getShieldButton().getJustPressed(camera) && item.getShield_amt() > 0){
+        if(controls.getShieldButton().onReleased(camera) && item.getShield_amt() > 0){
             item.setShield_amt(item.getShield_amt() - 1);
             powerUp.setShieldUp();
         }
 
-        if(controls.getSpeedButton().getJustPressed(camera) && item.getSpeed_amt() > 0){
+        if(controls.getSpeedButton().onReleased(camera) && item.getSpeed_amt() > 0){
             item.setSpeed_amt(item.getSpeed_amt() - 1);
             powerUp.setSpeedUp();
         }

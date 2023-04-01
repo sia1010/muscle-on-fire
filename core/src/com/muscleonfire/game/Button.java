@@ -41,7 +41,7 @@ public class Button extends GameObject {
         batch.draw(image, object.x, object.y);
     }
 
-    public boolean getHeldDown(OrthographicCamera camera){ // put the coordinate of the touchPoint here
+    public boolean onHeldDown(OrthographicCamera camera){ // put the coordinate of the touchPoint here
         Rectangle touchLocation = new Rectangle();
         for (int i = 0; i < 10; i++){
             if (Gdx.input.isTouched(i)) {
@@ -67,7 +67,7 @@ public class Button extends GameObject {
         return false;
     }
 
-    public boolean getJustPressed(OrthographicCamera camera){ // put the coordinate of the touchPoint here
+    public boolean onReleased(OrthographicCamera camera){ // put the coordinate of the touchPoint here
         Rectangle touchLocation = new Rectangle();
         for (int i = 0; i < 10; i++) {
             if (Gdx.input.isTouched(i)) {

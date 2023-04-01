@@ -1,26 +1,13 @@
 package com.muscleonfire.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+
 import java.util.Random;
-
-
-import javax.swing.text.View;
 
 public class Menu implements Screen { //implements=inherit, Screen-inbuilt class, can use f(x) below
     final MuscleOnFire game; //declare class as variable
@@ -73,17 +60,17 @@ public class Menu implements Screen { //implements=inherit, Screen-inbuilt class
 
         batch.end();
 
-        if(startButton.getJustPressed(this.game.camera)){
+        if(startButton.onReleased(this.game.camera)){
             game.setScreen(new GameScreen(this.game));
         }
-        if(quitButton.getJustPressed(this.game.camera)){
+        if(quitButton.onReleased(this.game.camera)){
             Gdx.app.exit();
             System.exit(0);
         }
-        if(shopButton.getJustPressed(this.game.camera)){
+        if(shopButton.onReleased(this.game.camera)){
             game.setScreen(new Shop(this.game));
         }
-        if(settingButton.getJustPressed(this.game.camera)){
+        if(settingButton.onReleased(this.game.camera)){
             game.setScreen(new Settings(this.game));
         }
     }

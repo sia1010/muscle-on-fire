@@ -1,15 +1,12 @@
 package com.muscleonfire.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.*;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Shop implements Screen {
@@ -79,19 +76,19 @@ public class Shop implements Screen {
 
 
         game.batch.end();
-        if(backButton.getJustPressed(game.camera)){
+        if(backButton.onReleased(game.camera)){
             game.setScreen(new Menu(game));
         }
 
-        if(shield.getJustPressed(game.camera)){
+        if(shield.onReleased(game.camera)){
             selected_item = shield;
         }
 
-        if(speed.getJustPressed(game.camera)){
+        if(speed.onReleased(game.camera)){
             selected_item = speed;
         }
 
-        if(buybutton.getJustPressed(game.camera)){
+        if(buybutton.onReleased(game.camera)){
             if (selected_item.isPressed()) {
                 if (selected_item == shield){
                     game.coin.spendCoin(50);

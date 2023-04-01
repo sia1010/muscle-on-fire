@@ -77,11 +77,11 @@ public class Controls {
             }
         }
         // if touch left button of patrick, set leftButtonPressed to true, else it is false
-        leftButton.getHeldDown(camera);
+        leftButton.onHeldDown(camera);
         // if touch right button of patrick, set rightButtonPressed to true, else it is false
-        rightButton.getHeldDown(camera);
+        rightButton.onHeldDown(camera);
         // if touch jump button of patrick, set jumpButtonPressed to true, else it is false
-        jumpButton.getHeldDown(camera);
+        jumpButton.onHeldDown(camera);
         // if touch jump button of patrick, set shieldButtonPressed to true, else it is false
         shieldButton.setTexture();
         // if touch jump button of patrick, set shieldButtonPressed to true, else it is false
