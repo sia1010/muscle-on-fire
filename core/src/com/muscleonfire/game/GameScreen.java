@@ -106,7 +106,7 @@ public class GameScreen implements Screen {
         Obstacles fire = new Obstacles();
         fire.spawnFire(floors);
 
-        // add the o into the obstacle array
+        // add the fire into the fire array
         fires.add(fire);
     }
     private void addRescue(){
@@ -114,7 +114,7 @@ public class GameScreen implements Screen {
         Obstacles rescue = new Obstacles();
         rescue.spawnRescue(floors);
 
-        // add the o into the rescues array
+        // add the rescue into the rescues array
         rescues.add(rescue);
     }
     private void addMedicine(){
@@ -122,7 +122,7 @@ public class GameScreen implements Screen {
         Obstacles medicine = new Obstacles();
         medicine.spawnMedicine(floors);
 
-        // add the o into the medicines array
+        // add the medicine into the medicines array
         medicines.add(medicine);
     }
 
@@ -131,7 +131,7 @@ public class GameScreen implements Screen {
         Obstacles mystery = new Obstacles();
         mystery.spawnMysteryBox(floors);
 
-        // add the o into the medicines array
+        // add the mystery into the mystery array
         mysteries.add(mystery);
     }
     private void addGlass(){
