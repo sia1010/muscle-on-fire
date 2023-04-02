@@ -8,11 +8,11 @@ import java.io.File;
 public class Musics {
 
     private FileHandle volumeFile;
-    private Music game = Gdx.audio.newMusic(Gdx.files.internal("Music/BGM.mp3"));
-    private Music menu = Gdx.audio.newMusic(Gdx.files.internal("Music/MenuBGM.mp3"));
-    private Music shop = Gdx.audio.newMusic(Gdx.files.internal("Music/shop.mp3"));
-    private Music settings = Gdx.audio.newMusic(Gdx.files.internal("Music/settings.mp3"));
-    private float volume = 0.5f;
+    private static Music game = Gdx.audio.newMusic(Gdx.files.internal("Music/BGM.mp3"));
+    private static Music menu = Gdx.audio.newMusic(Gdx.files.internal("Music/MenuBGM.mp3"));
+    private static Music shop = Gdx.audio.newMusic(Gdx.files.internal("Music/shop.mp3"));
+    private static Music settings = Gdx.audio.newMusic(Gdx.files.internal("Music/settings.mp3"));
+    private static float volume = 0.5f;
     public Musics(){
         volumeFile = Gdx.files.external("Music/volume.txt");
     }
