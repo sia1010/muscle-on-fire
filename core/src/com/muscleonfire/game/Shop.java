@@ -94,14 +94,17 @@ public class Shop implements Screen {
         }
 
         if(buybutton.onReleased(game.camera)){
-            Sounds.kaching();
             if (selected_item.isPressed()) {
-                if (selected_item == shield){
+                if (selected_item == shield && game.coin.getCoin()>=50){
+                    Sounds.kaching();
                     game.coin.spendCoin(50);
                     item.setShield_amt(item.getShield_amt() + 1);
                 }else if(selected_item == speed && game.coin.getCoin()>=50){
+                    Sounds.kaching();
                     game.coin.spendCoin(50);
                     item.setSpeed_amt(item.getSpeed_amt() + 1);
+                }else{
+                    Sounds.over();
                 }
             }
         }

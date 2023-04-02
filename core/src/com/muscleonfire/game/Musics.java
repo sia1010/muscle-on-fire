@@ -15,6 +15,10 @@ public class Musics {
     private static float volume = 0.5f;
     public Musics(){
         volumeFile = Gdx.files.external("Music/volume.txt");
+        game.setLooping(true);
+        menu.setLooping(true);
+        shop.setLooping(true);
+        settings.setLooping(true);
     }
 
     public void gamePlay(){

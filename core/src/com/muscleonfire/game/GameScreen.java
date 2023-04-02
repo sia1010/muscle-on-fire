@@ -630,8 +630,13 @@ public class GameScreen implements Screen {
             }
         }
         for (Slime slime : onfloor_slime){
-            if (slime.getY() < -200) {
+            if (slime.getY() < -200 || slime.getY() > 1000) {
                 onfloor_slime.removeValue(slime, true);
+            }
+        }
+        for(Slime slime : die_slime){
+            if (slime.getY()  < -200 || slime.getY() > 1000){
+                die_slime.removeValue(slime, true);
             }
         }
 
