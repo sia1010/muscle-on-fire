@@ -50,17 +50,21 @@ public class MuscleOnFire extends Game { //Game like main,can change screen usin
 		if (Settings.settingsFile.exists()) {
 			String[] arr = Settings.settingsFile.readString().split("@");
 			if(arr[0].equals("follow")){
+				Settings.setControlMode(Controls.ControlMode.follow);
 				Controls.setControlMode(Controls.ControlMode.follow);
-			}
-			if(arr[0].equals("button")){
+			} else if(arr[0].equals("button")){
+				Settings.setControlMode(Controls.ControlMode.button);
 				Controls.setControlMode(Controls.ControlMode.button);
-			}
-			if(arr[0].equals("touch")){
+			} else if(arr[0].equals("touch")){
+				Settings.setControlMode(Controls.ControlMode.touch);
 				Controls.setControlMode(Controls.ControlMode.touch);
 			}
+			Settings.setSettingsVolume(Float.parseFloat(arr[1]), Float.parseFloat(arr[2]));
 		} else {
 			Controls.setControlMode(Controls.ControlMode.follow);
-			Settings.settingsFile.writeString("follow", false);
+			Settings.setControlMode(Controls.ControlMode.follow);
+			Settings.setSettingsVolume(1.0f, 1.0f);
+			Settings.settingsFile.writeString("follow@1.0f@1.0f", false);
 		}
 	}
 

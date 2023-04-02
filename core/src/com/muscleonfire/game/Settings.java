@@ -26,17 +26,14 @@ public class Settings implements Screen {
     private final CheckBox buttonControls = new CheckBox("Button Controls",skin);
     private final CheckBox followControls = new CheckBox("Follow Controls", skin);
     private ButtonGroup<CheckBox> checkBoxGroup = new ButtonGroup<>();
-    private final FileHandle soundVolumeFile;
-    private final FileHandle BGMVolumeFile;
-    private float BGMVolume = 1.0f;
-    private float soundVolume = 1.0f;
+    private static float BGMVolume;
+    private static float soundVolume;
+    private static Controls.ControlMode controlMode;
     public static FileHandle settingsFile = Gdx.files.external("settings.txt");
 
 
 
     public Settings(final MuscleOnFire game){
-        soundVolumeFile = Gdx.files.external("Sounds/volume.txt");
-        BGMVolumeFile = Gdx.files.external("Music/volume.txt");
 
         this.game = game;
         batch = this.game.batch;
@@ -76,14 +73,21 @@ public class Settings implements Screen {
         checkBoxGroup.setMaxCheckCount(1);
     }
 
-    public void setVolume(){
-
-        musics.setBGMVolume(this.BGMVolume);
-        Sounds.setVolume(this.soundVolume);
+    public static void setControlMode(Controls.ControlMode controlMode) {
+        Settings.controlMode = controlMode;
     }
+
+    public static void setSettingsVolume(float BGM, float SFX){
+        BGMVolume = BGM;
+        soundVolume = SFX;
+    }
+
+    public void setVolume(){
+        musics.setBGMVolume(BGMVolume);
+        Sounds.setVolume(soundVolume);
+    }
+
     public void setSlider(){
-        BGMVolume = Float.parseFloat(BGMVolumeFile.readString());
-        soundVolume = Float.parseFloat(soundVolumeFile.readString());
         musicSlider.setVisualPercent(BGMVolume);
         soundSlider.setVisualPercent(soundVolume);
     }
@@ -137,15 +141,18 @@ public class Settings implements Screen {
             musics.settingsStop();
             if (followControls.isChecked()) {
                 Controls.setControlMode(Controls.ControlMode.follow);
-                Settings.settingsFile.writeString("follow", false);
+                controlMode = Controls.ControlMode.follow;
+                Settings.settingsFile.writeString(controlMode.toString() + "@" + BGMVolume + "@" + soundVolume, false);
             }
             if (buttonControls.isChecked()) {
                 Controls.setControlMode(Controls.ControlMode.button);
-                Settings.settingsFile.writeString("button", false);
+                controlMode = Controls.ControlMode.button;
+                Settings.settingsFile.writeString(controlMode.toString() + "@" + BGMVolume + "@" + soundVolume, false);
             }
             if (touchControls.isChecked()) {
                 Controls.setControlMode(Controls.ControlMode.touch);
-                Settings.settingsFile.writeString("touch", false);
+                controlMode = Controls.ControlMode.touch;
+                Settings.settingsFile.writeString(controlMode.toString() + "@" + BGMVolume + "@" + soundVolume, false);
             }
 
             game.setScreen(new Menu(this.game));
@@ -155,12 +162,14 @@ public class Settings implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 float volume = musicSlider.getValue();
                 BGMVolume = volume;
+                Settings.settingsFile.writeString(controlMode.toString() + "@" + BGMVolume + "@" + soundVolume, false);
             }
         });
         soundSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 float volume = soundSlider.getValue();
                 soundVolume = volume;
+                Settings.settingsFile.writeString(controlMode.toString() + "@" + BGMVolume + "@" + soundVolume, false);
             }
         });
     }
