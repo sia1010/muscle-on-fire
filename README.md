@@ -33,6 +33,7 @@ Video Presentation Link:
 // put link here
 
 
-UML Link: 
+UML Diagram Link: 
 https://utpmy-my.sharepoint.com/:b:/g/personal/sia_21001570_utp_edu_my/EXsr6FEAyXVIiCR0loOJWBIBqdAAuUqErQUB1clajhXKGg?e=wGK2CJ
+UML Slides Link:
 https://docs.google.com/presentation/d/10veAOAhdmGAgkThzX43U6iu562QjfqxuSpMXg1tMLDs/edit#slide=id.g217b5da4fc9_0_85
