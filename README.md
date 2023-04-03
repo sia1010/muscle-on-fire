@@ -24,13 +24,13 @@ https://utpmy-my.sharepoint.com/personal/sia_21001570_utp_edu_my/_layouts/15/one
 
 The end product has more features like music, sound effect, more obstacles, enemies, power ups, score system, coin system, shops, settings, animations, etc. The end product .apk file can be downloaded and installed here:
 
-// apk file link here
+https://drive.google.com/file/d/1gxMftd8tMm3hNayk980CBOUvEpL7wwBE/view?usp=sharing
 
 
 
 Video Presentation Link:
 
-// put link here
+https://youtu.be/pzB0h6hEJuc
 
 
 
