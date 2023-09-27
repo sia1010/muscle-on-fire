@@ -22,15 +22,15 @@ Here is the early proposal:
 
 https://utpmy-my.sharepoint.com/personal/sia_21001570_utp_edu_my/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fsia%5F21001570%5Futp%5Fedu%5Fmy%2FDocuments%2FJava%20Android%20Application%20Proposal%2Epdf&parent=%2Fpersonal%2Fsia%5F21001570%5Futp%5Fedu%5Fmy%2FDocuments&ga=1
 
-The end product has more features like music, sound effect, more obstacles, enemies, power ups, score system, coin system, shops, settings, animations, etc.The end product .apk file can be downloaded and installed here:
+The end product has more features like music, sound effect, more obstacles, enemies, power ups, score system, coin system, shops, settings, animations, etc. The end product .apk file can be downloaded and installed here:
 
-// apk file link here
+https://drive.google.com/file/d/1gxMftd8tMm3hNayk980CBOUvEpL7wwBE/view?usp=sharing
 
 
 
 Video Presentation Link:
 
-// put link here
+https://youtu.be/pzB0h6hEJuc
 
 
 

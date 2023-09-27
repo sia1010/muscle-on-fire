@@ -497,7 +497,9 @@ public class GameScreen implements Screen {
             slime.fall(slime.object,delta,floors,time_passed);
             float slime_die_time=slime.getTime();
             slime_die_time+=delta;
-            if (slime_die_time > 2){
+            slime.setTime(slime_die_time);
+            if (slime.getTime() > 2){
+
                 die_slime.removeValue(slime, true);
             }
         }

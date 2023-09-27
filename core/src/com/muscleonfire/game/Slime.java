@@ -23,6 +23,10 @@ public class Slime extends GameObject {
         return time;
     }
 
+    public void setTime(float time){
+        this.time=time;
+    }
+
 
     public boolean isOnFloor() {
         return onFloor;
@@ -63,23 +67,23 @@ public class Slime extends GameObject {
     //check the moving direction of the slime
     public void checkMovingDirection(){
         // change direction if the boolean is true
-        if (changeDirection) {
+        if(changeDirection){
             if (move_right) {
-                move_right = false;
-                image = new Texture(Gdx.files.internal("Textures/slime/slime_left.png"));
-            } else {
-                move_right = true;
-                image = new Texture(Gdx.files.internal("Textures/slime/slime_right.png"));
+                move_right=false;
+                image=new Texture(Gdx.files.internal("Textures/slime/slime_left.png"));
             }
-            changeDirection = false;
+            else{
+                move_right=true;
+                image=new Texture(Gdx.files.internal("Textures/slime/slime_right.png"));
+            }
+            changeDirection=false;
         }
-
-        // force left/right if position too to the side
-        if (object.x > 360) {
-            move_right = false;
-            image = new Texture(Gdx.files.internal("Textures/slime/slime_left.png"));
+        // force left or right if position too to the side
+        if(object.x>360){
+            move_right=false;
+            image=new Texture(Gdx.files.internal("Textures/slime/slime_left.png"));
         }
-        if (object.x < 40) {
+        if(object.x<40) {
             move_right = true;
             image = new Texture(Gdx.files.internal("Textures/slime/slime_right.png"));
         }
@@ -113,7 +117,7 @@ public class Slime extends GameObject {
                 currentFloor = floor;
             }
         }
-        // if not on floor, fall down
+        // if not on floor the slime will fall down
         if(!onFloor){
             object.y -= 200 * delta;
             object.y -= ((300 + time_passed) / 3) * delta;
