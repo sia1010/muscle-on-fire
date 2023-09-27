@@ -30,7 +30,6 @@ public class GameScreen implements Screen {
     private FallingObjects fallingBuilding;
     private Score score;
     private Array<Floor> floors = new Array<Floor>(); // Floor = data type Floor(class)
-    private Floor latestFloor;
     private Array<Obstacles> mysteries = new Array<Obstacles>();
     private Array<Obstacles> rescues = new Array<Obstacles>();
     private Array<Obstacles> medicines = new Array<Obstacles>();
@@ -44,6 +43,7 @@ public class GameScreen implements Screen {
     private Array<Bat> ebat = new Array<Bat>();
 
     int i = 0;
+
     // Audio
     private Musics musics = new Musics();
 
@@ -56,7 +56,6 @@ public class GameScreen implements Screen {
     private float randomizer_rightroll;
     private float randomizer_leftroll;
     private float randomizer_objects;
-    private float floor_time = 0;
     private State gameState;
     private Obstacle next_obstacle = Obstacle.NULL;
 
@@ -64,13 +63,13 @@ public class GameScreen implements Screen {
     // FUNCTIONS
 
     private void initialFloor(){
-        for (int i = 0; i < 4; i++){
+        for (int i = 1; i < 4; i++){
             addFloor(Floor.FloorID.floor);
             floors.peek().object.y += i * 120;
         }
     }
     private void initialWallpaper(){
-        for (int i = 0; i < 8; i++){
+        for (int i = 1; i < 8; i++){
             addWallpaper();
             wallpapers.peek().object.y += i * 120;
         }
@@ -279,9 +278,6 @@ public class GameScreen implements Screen {
         fallingBuilding = new FallingObjects();
         fallingBuilding.falling_building_spawn();
 
-        latestFloor = new Floor();
-        latestFloor.spawn(Floor.FloorID.floor);
-
         // add first floor
         initialFloor();
         initialWallpaper();
@@ -318,13 +314,9 @@ public class GameScreen implements Screen {
         // RECORD ANY GAME CHANGES
         // record time
         time_passed += delta;
-        floor_time += delta;
 
         // add score
         score.addScore(delta);
-
-        latestFloor.transpose(delta, time_passed);
-
 
         // DISPLAY THE SCREEN
         // clear the screen(but not rectangle)
@@ -517,7 +509,7 @@ public class GameScreen implements Screen {
         // ADD / DELETE GAME OBJECTS
         // add new floors
         // use time to control add floor
-        if (latestFloor.getY() > 0) {
+        if (floors.peek().getY() > 0) {
             if (time_passed > randomizer_tramfloor) {
                 addFloor(Floor.FloorID.trampoline);
                 randomizer_tramfloor += MathUtils.random(5, 10); // add the obstacles time
@@ -527,15 +519,13 @@ public class GameScreen implements Screen {
             }  else if (time_passed > randomizer_rightroll) {
                 addFloor(Floor.FloorID.rollRight);
                 randomizer_rightroll += MathUtils.random(10, 15);
-                floor_time = 0;
             }else if (time_passed > randomizer_leftroll) {
                 addFloor(Floor.FloorID.rollLeft);
                 randomizer_leftroll += MathUtils.random(10, 15);
-                floor_time = 0;
             } else {
                 addFloor(Floor.FloorID.floor);
             }
-            latestFloor.object.y = -120;
+            floors.peek().object.y = -120;
         }
 
         // add new wallpapers when old one moves up

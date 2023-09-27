@@ -23,7 +23,7 @@ public class Wallpaper extends GameObject { // inherits game object
         // for loop (delta) with number randomizer with specific number assigned to each type of png
         if(randomNum == 0){
             image = new Texture(Gdx.files.internal("Office BG2.png"));
-        }else if(randomNum == 1){
+        }else{
             image = new Texture(Gdx.files.internal("Burning Office BG2.png"));
         }
 
